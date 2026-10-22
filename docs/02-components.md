@@ -4,7 +4,8 @@ Every component, with its markup, its modifiers and the behaviour that
 cannot be inferred from the CSS alone.
 
 Throughout, **main** marks an element with the full ink shadow and no
-border; **sub** marks an element with the 4px border that lifts on hover.
+border; **sub** marks an element with the 4px border, no resting shadow,
+that lifts on hover and gains one as it goes.
 
 ---
 
@@ -263,8 +264,9 @@ Stack several with `fp-avatar-group`.
 </span>
 ```
 
-Sizes: `--sm` (40px), default (56px), `--lg` (72px). It lifts and grows
-its shadow on hover.
+Sizes: `--sm` (40px), default (56px), `--lg` (72px). A main element: it
+carries no border, and on hover it presses down 1px while its shadow
+contracts from 3px to 2px.
 
 ---
 
@@ -296,7 +298,7 @@ Main elements. No border — the shadow is the outline.
 | Modifier | Effect |
 |----------|--------|
 | `fp-card--flat` | No shadow. For cards nested inside another card. |
-| `fp-card--outlined` | A 4px border instead of a shadow |
+| `fp-card--outlined` | A 4px border instead of a shadow — a sub element, so it is flat at rest and lifts on hover |
 | `fp-card--accent` | Accent-coloured shadow |
 | `fp-card--interactive` | Adds a pointer cursor |
 | `fp-card--sm` / `fp-card--lg` | Shadow height 3px / 7px |
@@ -470,9 +472,9 @@ silhouette regardless of severity.
 </div>
 ```
 
-Main elements with a 5px ink shadow. On hover the tile rises 4px and the
-shadow collapses — the inverse of a press, because a stat tile is
-informational rather than actionable.
+Main elements with a 5px ink shadow. On hover the tile presses **down**
+3px and the shadow collapses to 2px — the same press every main element
+uses.
 
 ---
 
@@ -794,8 +796,8 @@ mirrors the token definitions.
 | `fp-transition` / `--fast` / `--slow` | The standard transition bundle |
 | `fp-dur-fast` / `--default` / `--slow` | Duration only |
 | `fp-ease-default` / `--out` / `--in-out` | Easing only |
-| `fp-shadow-1` … `fp-shadow-4` | Static directional shadows |
-| `fp-shadow-omni-1` … `--omni-4` | Static omni shadows |
+| `fp-shadow-1` … `fp-shadow-4` | Static hard shadows, `3px` … `14px` on both axes |
+| `fp-shadow-omni-1` … `--omni-4` | Static omni bands |
 | `fp-shadow-none` | No shadow |
 | `fp-code` / `fp-code-block` | Inline and block code |
 | `fp-kbd` | Keyboard key |

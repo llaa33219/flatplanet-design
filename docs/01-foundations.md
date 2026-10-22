@@ -238,34 +238,48 @@ are visually identical anyway.
 
 ### 3.1 The two element types
 
-The system distinguishes two kinds of element, and the difference is
-visible in the border and the shadow.
+The system distinguishes two kinds of element, and the kind decides both
+its border and its shadow.
 
 | | **Main element** | **Sub element** |
 |---|---|---|
 | **Examples** | Cards, panels, buttons, modals, hero, stat tiles | List items, tabs, chips, tags, inputs, badges |
-| **Border** | **None** | **4px** (`--fp-border-width`) |
-| **Shadow** | Full-strength ink | Softer ink (`rgba(0,25,61,0.22)`) |
-| **On hover** | Presses **down** | **Lifts up** |
+| **Border** | **None** | **4px** (`--fp-border-width`), 2px under 40px tall |
+| **Shadow** | Full-strength ink, hard, offset equally on X and Y | **None at rest** — it appears on hover |
+| **On hover** | Presses **down**, shadow shrinks | **Lifts up**, shadow appears |
 | **Purpose** | Floats above the page | Sits inside a main element |
 
 The rule is simple: a main element's shadow *is* its outline. Adding a
 border on top of the shadow would double the outline and make the element
 look heavier than it should. A sub element has no room to cast a full
-shadow, so it gets a border instead, and on hover it gains a shadow by
-lifting.
+shadow, so it gets a border instead — and its resting state is **flat**.
+The border alone carries the outline until the pointer arrives, at which
+point the element lifts and the shadow appears with it.
 
-Micro elements under 40px tall use a 2px border
-(`--fp-border-width-sm`) — the same height-driven concession as the
-radius scale.
+### 3.2 The hard shadow
 
-### 3.2 How the omni shadow is built
+A hard shadow is a solid block of ink with zero blur radius. The default
+main-element shadow offsets **equally on both axes**:
+
+```css
+box-shadow: 6px 6px 0 var(--fp-shadow-color);
+```
+
+Equal offsets are what make the shadow read as a printed block rather
+than a glow: the light source sits in the top-left corner, and the shadow
+falls to the bottom-right like ink on paper. A shadow of `8px 8px 0` is
+the same shape, only bigger.
+
+The shadow colour is `--fp-shadow-color`, which is `--fp-ink`
+(`#00193d`). The ink is the only depth colour in the system.
+
+### 3.3 The omni band
 
 A four-sided hard shadow cannot be produced by stacking four offset
 shadows: the overlapping copies leave square notches at the corners.
 
-The correct primitive is a **zero-offset, zero-blur shadow with a positive
-spread**:
+The correct primitive is a **zero-offset, zero-blur shadow with a
+positive spread**:
 
 ```css
 box-shadow: 0 0 0 6px var(--fp-shadow-color);
@@ -277,35 +291,50 @@ outward by the given distance while following the element's own
 `border-radius` exactly. The result is a band of perfectly uniform width
 on all four sides with clean rounded corners.
 
-This is the default for every main element:
+The omni band is available as `.fp-elev--omni`, but the offset shadow is
+the default, because it is the shape the whole system is built around.
 
-```css
-.fp-card {
-  --fp-elev-h: 5px;
-  box-shadow: 0 0 0 var(--fp-elev-h) var(--fp-shadow-color);
-}
-```
+### 3.4 Directional shadows
 
-### 3.3 Directional shadows
+Because a hard shadow keeps X and Y equal, a direction can only be
+expressed by the diagonal the shadow leans towards. Each variant's
+movement points the same way as its shadow, so no variant ever breaks
+the hover invariant.
 
-A single-axis shadow is available where a one-sided lift reads better,
-such as a menu floating over a busy background, or a panel anchored to
-one edge of a layout.
-
-| Class | Shadow | Hover transform |
+| Class | Shadow | Hover movement |
 |-------|--------|-----------------|
-| *(default)* | omni, spread | `translateY(h - 2px)` |
-| `.fp-elev--down` | `0 h 0` | `translateY(h - 2px)` |
-| `.fp-elev--up` | `0 -h 0` | `translateY(2px - h)` |
-| `.fp-elev--right` | `h 0 0` | `translateX(h - 2px)` |
-| `.fp-elev--left` | `-h 0 0` | `translateX(2px - h)` |
+| *(default)* | `h h 0` | `translateY(h - 2px)` |
+| `.fp-elev--down` | `h h 0` | `translateY(h - 2px)` |
 | `.fp-elev--down-right` | `h h 0` | `translate(h - 2px, h - 2px)` |
+| `.fp-elev--right` | `h h 0` | `translateX(h - 2px)` |
+| `.fp-elev--left` | `-h -h 0` | `translateX(2px - h)` |
+| `.fp-elev--up` | `-h -h 0` | `translateY(2px - h)` |
 
-### 3.4 The press
+### 3.5 The hover invariant
+
+**The direction of the movement and the direction of the shadow change
+must always agree.**
+
+| Movement | Shadow | Verdict |
+|---|---|---|
+| Down | Shrinks | Allowed — the press |
+| Up | Appears | Allowed — the lift |
+| Down | Grows | Allowed |
+| Up | Shrinks or disappears | **Forbidden** |
+
+A rising element must never lose its shadow. Rising is a sub element's
+cue; the shadow appearing is what confirms it. The reverse — rising
+while the shadow shrinks — describes an element floating away and getting
+smaller, which is never what a hover means.
+
+In practice this means main elements only ever press **down** and sub
+elements only ever lift **up**.
+
+### 3.6 The press and the lift
 
 A main element rests on a shadow of height `H`. On hover:
 
-1. the shadow collapses to a 2px band on every side
+1. the shadow collapses to a 2px block
 2. the element descends by `H - 2px`
 
 The shadow's absolute outer edge therefore never moves. The element
@@ -314,7 +343,7 @@ when the pointer leaves.
 
 ```css
 .fp-elev:hover {
-  box-shadow: 0 0 0 2px var(--fp-shadow-color);
+  box-shadow: 2px 2px 0 var(--fp-shadow-color);
   transform: translateY(calc((var(--fp-elev-h) - 2px)));
 }
 ```
@@ -325,12 +354,12 @@ resting on.
 
 ```css
 .fp-sub:hover {
-  box-shadow: 0 var(--fp-elev-h-sub) 0 var(--fp-shadow-color-sub);
+  box-shadow: var(--fp-elev-h-sub) var(--fp-elev-h-sub) 0 var(--fp-shadow-color-sub);
   transform: translateY(calc(var(--fp-elev-h-sub) * -1));
 }
 ```
 
-### 3.5 Shadow heights
+### 3.7 Shadow heights
 
 | Token | Value | Use |
 |-------|-------|-----|
@@ -346,7 +375,7 @@ resting on.
 
 ---
 
-## 3.6 Shadow specification at a glance
+### 3.8 Shadow specification at a glance
 
 | Property | Value |
 |----------|-------|
@@ -354,15 +383,17 @@ resting on.
 | Shadow colour (dark theme) | `#000309` — BLP ULTRA DEEP DARK |
 | Sub-element shadow | `rgba(0, 25, 61, 0.22)` |
 | Blur radius | `0` — always |
-| Direction | Omnidirectional by default |
-| Build method | Zero-offset, zero-blur, positive spread |
+| Offsets | Equal on X and Y (`h h 0`) |
+| Default build | Zero-blur, equal offsets |
+| Omni build | Zero-blur, positive spread (`0 0 0 h`) |
 | Hover (main) | Shadow collapses to `2px`, element descends by `h - 2px` |
 | Hover (sub) | Element rises by `h - sub`, shadow appears |
+| Forbidden | Moving up while the shadow shrinks or disappears |
 
 ### Why the ink changed to `#00193d`
 
 `#000309` (BLP ULTRA DEEP DARK) is a near-black with a blue cast, and it
-was the first ink used in the system. It reads as a hole rather than as a
+was the first ink used in the system. It reads as a hole rather than as
 shadow — the eye treats near-black against white as a gap in the page
 rather than as depth. `#00193d` is a deep navy that still belongs to the
 palette but sits closer to the surface colours, so the band reads as
@@ -372,21 +403,19 @@ In the dark theme the ink inverts: `#d4dce8` (BLP LIGHT DARK) for borders
 and inverted fills, while the shadow itself stays `#000309` so it reads as
 shadow against the `#1e2b3d` surface.
 
-### The omni shadow versus a directional one
+### The offset shadow versus the omni band
 
-| | Omni (default) | Directional |
+| | Offset (default) | Omni band |
 |---|---|---|
-| Looks like | The element floats above the surface | The element is attached to the surface |
-| Geometry | Band on all four sides | Band on one side |
+| Looks like | A block printed on the surface | The element floats above it |
+| Geometry | Offset to the bottom-right | Band on all four sides |
 | Best for | Cards, panels, modals, buttons | Menus, edge-anchored panels |
-| Implemented as | `0 0 0 h` (spread) | `0 h 0` (offset) |
+| Implemented as | `h h 0` (offset) | `0 0 0 h` (spread) |
 
-The omni shadow is the default because the system is about depth, and
-depth reads as a uniform gap on every side. A downward shadow implies a
-light source, which is a different idea — useful, but not what the
-library is built around.
-
----
+The offset shadow is the default because the system is about a light
+source in the top-left corner, and every element is lit the same way.
+The omni band is the exception, available where a surface must read as
+detached from the page rather than printed on it.
 
 ---
 

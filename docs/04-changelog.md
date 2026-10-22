@@ -1,6 +1,53 @@
 # 04 — Changelog
 
-## 1.0.0 — Current
+## 1.1.0 — Current
+
+The elevation system, finalised. The shadow geometry, the hover contract
+and the main/sub distinction are now the way the library is built.
+
+### Changed
+
+**Elevation**
+- Hard shadows are offset **equally on both axes** (`6px 6px 0`), not
+  downwards only. The light source is in the top-left corner, so every
+  shadow falls to the bottom-right like ink on paper.
+- A **sub element has no resting shadow**. Its real inline border is the
+  outline; the shadow appears on hover, as it lifts.
+- A **main element never rises**. It only presses down, and its shadow
+  contracts as it goes. The forbidden combination — moving up while the
+  shadow shrinks — appears nowhere in the library.
+- Directional variants were re-expressed as diagonals, because a hard
+  shadow keeps X and Y equal: `--down` and `--down-right` lean to the
+  bottom-right, `--left` and `--up` to the top-left.
+- `.fp-elev--up` keeps its full shadow height while it rises. A rising
+  element must never lose its shadow.
+- The omni band survives as `.fp-elev--omni` and `.fp-shadow-omni-*`,
+  but it is no longer the default.
+
+**Components**
+- `.fp-icon-tile` and `.fp-empty` are main elements: their borders are
+  gone and their shadows are now hard and square.
+- `.fp-btn--ghost` became a sub element — a real inline border, flat at
+  rest, and it lifts with the shadow appearing.
+- `.fp-card--outlined`, `.fp-alert`, `.fp-callout` and `.fp-toast` are
+  bordered, so they are sub elements: flat at rest, lifting on hover.
+- `.fp-navbar__link` and `.fp-sidebar__item` lost their resting shadow.
+- The switch thumb, the range thumbs and the timeline dot became
+  sub elements: flat at rest, shadow on hover.
+- `.fp-switch__track`, `.fp-check__box`, `.fp-input`, `.fp-select`,
+  `.fp-textarea` and `.fp-list__item` all lost their resting shadow.
+- Every shadow that faked a border became a real `border:` declaration.
+
+**Tooling**
+- `tools/verify-elevation.py` — a rule verifier for the elevation
+  contract. It parses the CSS and asserts that main elements have no
+  border and a hard square shadow, that sub elements have a real border
+  and no resting shadow, and that the sign of the hover movement agrees
+  with the direction of the shadow change.
+
+---
+
+## 1.0.0
 
 The first complete release of FlatPlanet as a component library.
 
@@ -23,6 +70,9 @@ The first complete release of FlatPlanet as a component library.
 - The press: the shadow collapses to 2px and the element descends by the
   difference
 - The lift: sub elements rise and gain a shadow
+
+*(Reworked in 1.1.0: the offset shadow became the default, sub elements
+lost their resting shadow, and the hover contract was tightened.)*
 
 **Components**
 - Buttons: 8 variants, 4 sizes, block/pill/square/icon modifiers, groups
@@ -60,8 +110,22 @@ The first complete release of FlatPlanet as a component library.
 offset shadows to fake a four-sided hard shadow leaves square notches at
 the corners. A single zero-blur shadow with positive spread is solid and
 follows the element's `border-radius` exactly, producing a band of
-uniform width on all four sides. This is the primitive the whole system
-rests on.
+uniform width on all four sides. It is still the only way to build a
+band — but since 1.1.0 the offset shadow is the default, because a
+system lit from one corner reads as more deliberate than a band lit
+from everywhere.
+
+**Why sub elements have no resting shadow.** The border already carries
+the outline, so a shadow as well would double it. More importantly, a
+shadow is a *response*: it appears when the pointer arrives and the
+element lifts. A shadow that is already there has nothing left to
+announce.
+
+**Why the shadow offsets are equal on X and Y.** A shadow offset
+downwards only reads as a drop shadow. Offsetting equally in both
+directions puts the light source in the top-left corner, and the shadow
+falls like ink on paper — the same gesture the rest of the system is
+built from.
 
 **Why main elements have no border.** A main element's shadow is a solid
 band of ink around its entire silhouette. Adding a border on top of that

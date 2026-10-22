@@ -102,7 +102,7 @@
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="2"/><path d="M6 7V4h12v3"/></svg>
         </span>
         <h3 class="fp-card__title">Hard Shadows</h3>
-        <p class="fp-text-sm fp-text-muted">Main elements carry a solid offset shadow with zero blur. Sub elements carry a lighter one. On hover, the main shadow collapses to 2&nbsp;px and the element presses down; sub elements lift and gain their shadow.</p>
+        <p class="fp-text-sm fp-text-muted">Main elements carry a solid offset shadow with zero blur, offset equally on both axes. Sub elements carry no resting shadow at all. On hover, the main shadow collapses to 2&nbsp;px and the element presses down; sub elements lift and their shadow appears.</p>
       </div>
     </article>
 
@@ -132,7 +132,7 @@
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/></svg>
         </span>
         <h3 class="fp-card__title">Sub Elements Lift</h3>
-        <p class="fp-text-sm fp-text-muted">When a parent hovers, its sub elements rise by the sub-shadow height and gain a hard shadow of their own — the depth hierarchy stays readable at every level.</p>
+        <p class="fp-text-sm fp-text-muted">When a parent hovers, its sub elements rise by the sub-shadow height and gain a hard shadow of their own — the depth hierarchy stays readable at every level. A rising element never loses its shadow.</p>
       </div>
     </article>
   </div>
@@ -147,7 +147,7 @@
     <p class="fp-section__desc">
       Every shadow is a solid block of ink with zero blur. Main elements carry a hard shadow
       and <strong>no border</strong> — the shadow is their outline. Sub elements carry a real
-      inline 4px border and a soft shadow. The ink is <code class="fp-code">#00193d</code>.
+      inline 4px border and no resting shadow. The ink is <code class="fp-code">#00193d</code>.
     </p>
   </div>
 
@@ -157,7 +157,7 @@
       <div class="fp-elev fp-elev--3" style="height: 96px; background: var(--fp-surface); border-radius: var(--fp-radius); display: grid; place-items: center; font-weight: 800;">
         Floats
       </div>
-      <p class="fp-text-sm fp-text-muted">No border. A hard shadow in ink, offset below the element. On hover the shadow collapses to 2px and the element presses down into the surface.</p>
+      <p class="fp-text-sm fp-text-muted">No border. A hard shadow in ink, offset equally on both axes. On hover the shadow collapses to 2px and the element presses down into the surface.</p>
     </div>
 
     <div class="fp-panel fp-stack">
@@ -175,7 +175,7 @@
           Lifts on hover
         </span>
       </div>
-      <p class="fp-text-sm fp-text-muted">A real inline 4px border, drawn inside the layout box, plus a soft shadow. It rises when the pointer arrives. The parent presses in as the child lifts out.</p>
+      <p class="fp-text-sm fp-text-muted">A real inline 4px border, drawn inside the layout box, and no resting shadow. It rises when the pointer arrives, and the shadow appears with it. The parent presses in as the child lifts out.</p>
     </div>
   </div>
 
@@ -281,7 +281,7 @@
   <div class="fp-section__head">
     <span class="fp-kicker">05 — Input</span>
     <h2 class="fp-section__title">Forms</h2>
-    <p class="fp-section__desc">Inputs press down on hover like buttons. Labels, hints and validation messages stack under the control.</p>
+    <p class="fp-section__desc">Inputs are sub elements: they lift on hover and their shadow appears with them. Labels, hints and validation messages stack under the control.</p>
   </div>
 
   <div class="fp-grid fp-grid--2">
@@ -475,7 +475,7 @@
   <div class="fp-section__head">
     <span class="fp-kicker">07 — Navigation</span>
     <h2 class="fp-section__title">Navigation &amp; Menus</h2>
-    <p class="fp-section__desc">Nav links are sub elements: they lift and gain a soft hard-shadow on hover.</p>
+    <p class="fp-section__desc">Nav links are sub elements: they lift on hover and gain a hard shadow of their own.</p>
   </div>
 
   <div class="fp-grid fp-grid--2">

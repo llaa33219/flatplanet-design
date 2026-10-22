@@ -116,7 +116,7 @@ blockquote {
   padding: var(--fp-space-4) var(--fp-space-6);
   background: var(--fp-surface);
   border-radius: 0 var(--fp-radius) var(--fp-radius) 0;
-  box-shadow: 0 4px 0 var(--fp-shadow-color);
+  box-shadow: none;
 }
 
 hr + * { margin-top: var(--fp-space-6); }

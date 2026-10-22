@@ -269,10 +269,14 @@ Override the semantic tokens. Never override a raw palette token.
 ### Using the elevation system directly
 
 ```html
-<div class="fp-elev fp-elev--3">Floats with a 9px omni shadow.</div>
-<div class="fp-elev fp-elev--down">Floats with a shadow below only.</div>
+<div class="fp-elev fp-elev--3">Floats with a 9px hard shadow.</div>
+<div class="fp-elev fp-elev--omni fp-elev--3">Floats with a 9px band on all sides.</div>
 <div class="fp-sub">A sub element that lifts on hover.</div>
 ```
+
+A main element's shadow is offset equally on both axes, so it reads as a
+block printed on the surface. A sub element has no shadow at rest — the
+border is its outline, and the shadow appears as it lifts.
 
 ---
 

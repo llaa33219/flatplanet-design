@@ -1,67 +1,59 @@
 /* ==========================================================================
    FlatPlanet — Elevation System
 
-   THE TWO ELEMENT TYPES
-   ---------------------
-   The whole system is built on one distinction:
+   THE CONTRACT
+   ------------
+   Every surface in the library is one of two kinds, and the kind decides
+   both its border and its shadow.
 
    MAIN element
-     A floating surface. It has NO border and a HARD shadow in ink. The
-     shadow is its outline and its depth. Nothing else.
+     No border — ever. Its outline IS a hard shadow: a solid block of ink
+     with zero blur, offset by the SAME amount on X and Y (`6px 6px 0` by
+     default). Equal offsets are what make the shadow read as a printed
+     block instead of a glow: the light source sits in the top-left corner.
 
    SUB element
-     A surface nested inside a main element. It has a real, INLINE border
-     (4px, or 2px when the element is under 40px tall) and a soft shadow.
-     On hover it lifts and its shadow appears.
+     A real INLINE border (4px, or 2px under 40px tall) drawn inside the
+     layout box, and NO resting shadow. Flat is the resting state — the
+     border alone carries the outline. The shadow appears on hover, when
+     the element lifts.
 
-   The inline border matters: it is drawn in the layout box, so it
-   participates in the element's size, aligns with neighbouring borders
-   and rounds with the element's own radius. A border faked with a
-   box-shadow ring does none of those things — it sits outside the box,
-   it doubles the visible edge, and it makes a sub element look like a
-   main element.
+   WHY THE BORDER IS REAL
+   ----------------------
+   An inline border is drawn inside the layout box, so it counts towards
+   the element's size, aligns with neighbouring borders and rounds with
+   the element's own radius. A border faked with a box-shadow ring sits
+   outside the box, doubles the visible edge and makes a sub element look
+   like a main element.
 
-   HOW A HARD SHADOW IS BUILT
-   --------------------------
-   A hard shadow is a solid block of ink with zero blur radius. A single
-   offset copy of the element gives a directional shadow:
+   HOVER: THE ONE INVARIANT
+   ------------------------
+   The direction of the movement and the direction of the shadow change
+   must always agree:
 
-       box-shadow: 0 6px 0 var(--fp-shadow-color);
+     down + shadow shrinks   the press — a main element sinking into the
+                              surface it was floating on            ALLOWED
+     up   + shadow appears   the lift — a sub element leaving its
+                              parent                                  ALLOWED
+     down + shadow grows                                           ALLOWED
+     up   + shadow shrinks   FORBIDDEN — a rising element must never
+                              lose its shadow
 
-   A four-sided band cannot be produced by stacking offset copies — the
-   overlaps leave square notches at the corners. It has to be a single
-   shadow with positive spread:
-
-       box-shadow: 0 0 0 6px var(--fp-shadow-color);
-
-   A zero-blur shadow with positive spread is SOLID (negative spread is
-   what produces a hollow ring) and it expands the element's silhouette
-   outward by the spread distance while following the element's own
-   border-radius exactly. The result is a band of uniform width on all
-   four sides with clean rounded corners.
-
-   The system ships both. The DIRECTIONAL shadow is the default for
-   interactive elements, because a shadow that bleeds equally in every
-   direction reads as a halo rather than as depth. A directional shadow
-   reads as an object sitting on a surface with a light source. Use
-   .fp-elev--omni where a true floating band is wanted.
-
-   PRESS BEHAVIOUR
-   ---------------
-   MAIN element  → on hover the shadow height collapses to 2px and the
-                   element descends by (height - 2px), so it visibly
-                   presses INTO the surface it was floating on.
-   SUB element   → on hover the element RISES by the sub-shadow height
-                   and GAINS that shadow, so it lifts off its parent.
+   MAIN elements therefore only ever press DOWN, SUB elements only ever
+   lift UP. Directional variants (.fp-elev--up and friends) keep the
+   shadow pointing the same way as the movement, so a variant never
+   breaks the invariant either.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   MAIN ELEMENT — directional by default, omni on request.
+   MAIN ELEMENT
    -------------------------------------------------------------------------- */
 .fp-elev {
   --fp-elev-h: 6px;
   position: relative;
-  box-shadow: 0 var(--fp-elev-h) 0 var(--fp-shadow-color);
+  /* A main element carries no border: the shadow is its outline. */
+  border: none;
+  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
   transition:
     box-shadow var(--fp-duration-default) var(--fp-ease),
     transform var(--fp-duration-default) var(--fp-ease),
@@ -75,64 +67,15 @@
 .fp-elev:hover,
 .fp-elev:focus-visible,
 .fp-elev:active {
-  box-shadow: 0 2px 0 var(--fp-shadow-color);
+  box-shadow: 2px 2px 0 var(--fp-shadow-color);
   transform: translateY(calc((var(--fp-elev-h) - 2px)));
 }
 
-/* --- Directional variants -------------------------------------------
-   The same press maths, with the shadow pointing elsewhere.
+/* --- Omni: a band on all four sides ----------------------------------
+   Built from a zero-blur shadow with positive spread, which follows the
+   element's own border-radius exactly — stacked offset copies would
+   leave square notches at the corners.
    ---------------------------------------------------------------------- */
-.fp-elev--up {
-  box-shadow: 0 calc(var(--fp-elev-h) * -1) 0 var(--fp-shadow-color);
-}
-.fp-elev--up:hover,
-.fp-elev--up:focus-visible,
-.fp-elev--up:active {
-  box-shadow: 0 -2px 0 var(--fp-shadow-color);
-  transform: translateY(calc((2px - var(--fp-elev-h))));
-}
-
-.fp-elev--right {
-  box-shadow: var(--fp-elev-h) 0 0 var(--fp-shadow-color);
-}
-.fp-elev--right:hover,
-.fp-elev--right:focus-visible,
-.fp-elev--right:active {
-  box-shadow: 2px 0 0 var(--fp-shadow-color);
-  transform: translateX(calc((var(--fp-elev-h) - 2px)));
-}
-
-.fp-elev--left {
-  box-shadow: calc(var(--fp-elev-h) * -1) 0 0 var(--fp-shadow-color);
-}
-.fp-elev--left:hover,
-.fp-elev--left:focus-visible,
-.fp-elev--left:active {
-  box-shadow: -2px 0 0 var(--fp-shadow-color);
-  transform: translateX(calc((2px - var(--fp-elev-h))));
-}
-
-.fp-elev--down-right {
-  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
-}
-.fp-elev--down-right:hover,
-.fp-elev--down-right:focus-visible,
-.fp-elev--down-right:active {
-  box-shadow: 2px 2px 0 var(--fp-shadow-color);
-  transform: translate(calc((var(--fp-elev-h) - 2px)), calc((var(--fp-elev-h) - 2px)));
-}
-
-.fp-elev--down-left {
-  box-shadow: calc(var(--fp-elev-h) * -1) var(--fp-elev-h) 0 var(--fp-shadow-color);
-}
-.fp-elev--down-left:hover,
-.fp-elev--down-left:focus-visible,
-.fp-elev--down-left:active {
-  box-shadow: -2px 2px 0 var(--fp-shadow-color);
-  transform: translate(calc((2px - var(--fp-elev-h))), calc((var(--fp-elev-h) - 2px)));
-}
-
-/* --- Omni: a true band on all four sides ----------------------------- */
 .fp-elev--omni {
   box-shadow: 0 0 0 var(--fp-elev-h) var(--fp-shadow-color);
 }
@@ -143,6 +86,70 @@
   transform: translateY(calc((var(--fp-elev-h) - 2px)));
 }
 
+/* --- Directional variants ---------------------------------------------
+   A hard shadow keeps X and Y equal, so a direction can only be expressed
+   by the diagonal the shadow leans towards: down-right, or up-left. The
+   press always follows the axis the shadow leans towards, so the shadow's
+   outer edge stays pinned while the element moves into it.
+   ---------------------------------------------------------------------- */
+/* Down: the shadow leans down-right and the element presses down. */
+.fp-elev--down {
+  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
+}
+.fp-elev--down:hover,
+.fp-elev--down:focus-visible,
+.fp-elev--down:active {
+  box-shadow: 2px 2px 0 var(--fp-shadow-color);
+  transform: translateY(calc((var(--fp-elev-h) - 2px)));
+}
+
+/* Down-right: the shadow leans down-right and the element presses along
+   that diagonal. */
+.fp-elev--down-right {
+  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
+}
+.fp-elev--down-right:hover,
+.fp-elev--down-right:focus-visible,
+.fp-elev--down-right:active {
+  box-shadow: 2px 2px 0 var(--fp-shadow-color);
+  transform: translate(calc((var(--fp-elev-h) - 2px)), calc((var(--fp-elev-h) - 2px)));
+}
+
+/* Right: the shadow leans right and the element presses right. */
+.fp-elev--right {
+  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
+}
+.fp-elev--right:hover,
+.fp-elev--right:focus-visible,
+.fp-elev--right:active {
+  box-shadow: 2px 2px 0 var(--fp-shadow-color);
+  transform: translateX(calc((var(--fp-elev-h) - 2px)));
+}
+
+/* Left: the shadow leans up-left and the element presses left. */
+.fp-elev--left {
+  box-shadow: calc(var(--fp-elev-h) * -1) calc(var(--fp-elev-h) * -1) 0 var(--fp-shadow-color);
+}
+.fp-elev--left:hover,
+.fp-elev--left:focus-visible,
+.fp-elev--left:active {
+  box-shadow: -2px -2px 0 var(--fp-shadow-color);
+  transform: translateX(calc((2px - var(--fp-elev-h))));
+}
+
+/* Up: the shadow sits ABOVE the element, so the element rises — but a
+   rising element must never lose its shadow, so the band keeps its full
+   height and simply travels with the element. */
+.fp-elev--up {
+  box-shadow: calc(var(--fp-elev-h) * -1) calc(var(--fp-elev-h) * -1) 0 var(--fp-shadow-color);
+}
+.fp-elev--up:hover,
+.fp-elev--up:focus-visible,
+.fp-elev--up:active {
+  box-shadow: calc(var(--fp-elev-h) * -1) calc(var(--fp-elev-h) * -1) 0 var(--fp-shadow-color);
+  transform: translateY(calc((2px - var(--fp-elev-h))));
+}
+
 /* --- Height scale ---------------------------------------------------- */
 .fp-elev--1 { --fp-elev-h: 3px; }
 .fp-elev--2 { --fp-elev-h: 6px; }
@@ -151,7 +158,8 @@
 
 /* --------------------------------------------------------------------------
    SUB ELEMENT
-   A real inline border, a soft shadow, and a lift on hover.
+   A real inline border and a flat resting state. The shadow arrives with
+   the lift.
    -------------------------------------------------------------------------- */
 .fp-sub {
   --fp-elev-h-sub: 3px;
@@ -165,7 +173,7 @@
 }
 .fp-sub:hover,
 .fp-sub:focus-within {
-  box-shadow: 0 var(--fp-elev-h-sub) 0 var(--fp-shadow-color-sub);
+  box-shadow: var(--fp-elev-h-sub) var(--fp-elev-h-sub) 0 var(--fp-shadow-color-sub);
   transform: translateY(calc(var(--fp-elev-h-sub) * -1));
 }
 .fp-sub--1 { --fp-elev-h-sub: 2px; }
@@ -175,10 +183,10 @@
 /* --------------------------------------------------------------------------
    STATIC SHADOWS — no press behaviour.
    -------------------------------------------------------------------------- */
-.fp-shadow-1    { box-shadow: 0 3px 0 var(--fp-shadow-color); }
-.fp-shadow-2    { box-shadow: 0 6px 0 var(--fp-shadow-color); }
-.fp-shadow-3    { box-shadow: 0 9px 0 var(--fp-shadow-color); }
-.fp-shadow-4    { box-shadow: 0 14px 0 var(--fp-shadow-color); }
+.fp-shadow-1    { box-shadow: 3px 3px 0 var(--fp-shadow-color); }
+.fp-shadow-2    { box-shadow: 6px 6px 0 var(--fp-shadow-color); }
+.fp-shadow-3    { box-shadow: 9px 9px 0 var(--fp-shadow-color); }
+.fp-shadow-4    { box-shadow: 14px 14px 0 var(--fp-shadow-color); }
 .fp-shadow-none { box-shadow: none; }
 
 /* Omni static */
