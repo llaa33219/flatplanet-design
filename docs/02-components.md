@@ -460,6 +460,10 @@ Sizes: `fp-progress--sm` (12px), default (18px), `fp-progress--lg` (26px).
 The left border is 6px on every variant so the alert keeps a consistent
 silhouette regardless of severity.
 
+An alert is a **sub element**: it carries a 4px inline border and has no
+resting shadow. On hover it lifts and the shadow appears, like any other
+sub element.
+
 ---
 
 ## 11. Stat tiles
