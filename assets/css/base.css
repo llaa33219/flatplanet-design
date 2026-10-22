@@ -45,14 +45,14 @@ table { border-collapse: collapse; border-spacing: 0; }
 
 hr {
   border: none;
-  border-top: var(--fp-border-width) solid var(--fp-border-subtle);
+  border-top: var(--fp-border-width-sm) solid var(--fp-line);
 }
 
 /* --------------------------------------------------------------------------
    Focus — visible, consistent, never removed
    -------------------------------------------------------------------------- */
 :focus-visible {
-  outline: var(--fp-border-width-strong) solid var(--fp-accent);
+  outline: var(--fp-border-width-sm) solid var(--fp-accent);
   outline-offset: 3px;
   border-radius: var(--fp-radius-xs);
 }
@@ -112,7 +112,7 @@ mark {
 small { font-size: var(--fp-text-sm); }
 
 blockquote {
-  border-left: var(--fp-border-width-strong) solid var(--fp-accent);
+  border-left: var(--fp-border-width) solid var(--fp-ink);
   padding: var(--fp-space-4) var(--fp-space-6);
   background: var(--fp-surface);
   border-radius: 0 var(--fp-radius) var(--fp-radius) 0;
@@ -156,8 +156,8 @@ hr + * { margin-top: var(--fp-space-6); }
 .fp-grid--auto { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 .fp-grid--auto-sm { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
 
-.fp-divider { height: var(--fp-border-width); background: var(--fp-border-subtle); border: none; }
-.fp-divider--vertical { width: var(--fp-border-width); height: auto; align-self: stretch; }
+.fp-divider { height: var(--fp-border-width-sm); background: var(--fp-line); border: none; }
+.fp-divider--vertical { width: var(--fp-border-width-sm); height: auto; align-self: stretch; }
 
 /* --------------------------------------------------------------------------
    Text utilities
@@ -246,74 +246,6 @@ hr + * { margin-top: var(--fp-space-6); }
     transform var(--fp-duration-slow) var(--fp-ease),
     opacity var(--fp-duration-slow) var(--fp-ease);
 }
-
-/* --------------------------------------------------------------------------
-   Elevation system
-   --------------------------------------------------------------------------
-   MAIN elements carry a hard shadow. Two custom properties drive everything:
-     --fp-elev-h  : the shadow height (band thickness / offset), e.g. 6px
-     --fp-elev-h-sub : the shadow height used by sub elements, e.g. 3px
-
-   Hover behaviour (the FlatPlanet press):
-     MAIN element  → the visible shadow shrinks to 2px and the element
-                     descends by (--fp-elev-h - 2px).  The shadow's absolute
-                     geometry is preserved, so the element visibly presses into
-                     the surface it was floating on.
-     SUB element   → the element rises by --fp-elev-h-sub and gains a hard
-                     shadow of that same height, so it lifts off the surface.
-   -------------------------------------------------------------------------- */
-.fp-elev {
-  --fp-elev-h: 6px;
-  box-shadow: 0 var(--fp-elev-h) 0 var(--fp-shadow-color);
-  transition:
-    box-shadow var(--fp-duration-default) var(--fp-ease),
-    transform var(--fp-duration-default) var(--fp-ease),
-    background-color var(--fp-duration-default) var(--fp-ease),
-    color var(--fp-duration-default) var(--fp-ease),
-    border-color var(--fp-duration-default) var(--fp-ease);
-}
-.fp-elev:hover {
-  box-shadow: 0 2px 0 var(--fp-shadow-color);
-  transform: translateY(calc((var(--fp-elev-h) - 2px)));
-}
-.fp-elev:focus-visible {
-  box-shadow: 0 2px 0 var(--fp-shadow-color);
-  transform: translateY(calc((var(--fp-elev-h) - 2px)));
-}
-.fp-elev:active {
-  box-shadow: 0 2px 0 var(--fp-shadow-color);
-  transform: translateY(calc((var(--fp-elev-h) - 2px)));
-}
-
-.fp-elev--1 { --fp-elev-h: 3px; }
-.fp-elev--2 { --fp-elev-h: 6px; }
-.fp-elev--3 { --fp-elev-h: 9px; }
-.fp-elev--4 { --fp-elev-h: 14px; }
-
-/* Sub element: lifts on hover and gains a hard shadow. */
-.fp-sub {
-  --fp-elev-h-sub: 3px;
-  transition:
-    box-shadow var(--fp-duration-default) var(--fp-ease),
-    transform var(--fp-duration-default) var(--fp-ease),
-    background-color var(--fp-duration-default) var(--fp-ease),
-    color var(--fp-duration-default) var(--fp-ease),
-    border-color var(--fp-duration-default) var(--fp-ease);
-}
-.fp-sub:hover {
-  box-shadow: 0 var(--fp-elev-h-sub) 0 var(--fp-shadow-color-sub);
-  transform: translateY(calc(var(--fp-elev-h-sub) * -1));
-}
-.fp-sub--1 { --fp-elev-h-sub: 2px; }
-.fp-sub--2 { --fp-elev-h-sub: 3px; }
-.fp-sub--3 { --fp-elev-h-sub: 5px; }
-
-/* Elevation that never animates (static decoration) */
-.fp-shadow-1    { box-shadow: var(--fp-shadow-1); }
-.fp-shadow-2    { box-shadow: var(--fp-shadow-2); }
-.fp-shadow-3    { box-shadow: var(--fp-shadow-3); }
-.fp-shadow-4    { box-shadow: var(--fp-shadow-4); }
-.fp-shadow-none { box-shadow: none; }
 
 /* --------------------------------------------------------------------------
    Print

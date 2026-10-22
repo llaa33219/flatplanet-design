@@ -1,13 +1,14 @@
 /* ==========================================================================
    FlatPlanet — Design Tokens
    The single source of truth for colour, radius, elevation and motion.
-   Source of truth for colour: 색깔-3.pdf (BLP palette).
+
+   Colour source of truth: 색깔-3.pdf (BLP palette).
+   Depth source of truth:    one ink colour (#00193d) + hard offset shadows.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. RAW PALETTE — every colour shipped in the BLP palette.
-   Name pattern: --fp-<hue>-<step>.  Steps: base, deep, ultra-deep, soft,
-   light, light-deep, light-ultra-deep, paper, neon.
+   Name pattern: --fp-<hue>-<step>.
    -------------------------------------------------------------------------- */
 :root {
   /* --- BLUE ------------------------------------------------------------ */
@@ -94,36 +95,57 @@
 
 /* --------------------------------------------------------------------------
    2. SEMANTIC TOKENS — the only layer components should reference.
+
+   SURFACES
+     --fp-surface is the MAIN colour of the product: BLP White (#fefeff).
+     Blue is an ACCENT and is used sparingly, never as a default fill.
+
+   INK
+     --fp-ink (#00193d) is the single depth colour. It is used for every
+     hard shadow and for the 4px border of sub elements. Main elements
+     carry NO border — the shadow is their outline.
+
+   BORDERS
+     Sub elements use a 4px border. Micro elements shorter than 40px use
+     2px, for the same reason they use a smaller radius.
    -------------------------------------------------------------------------- */
 :root {
-  /* Surfaces */
-  --fp-surface:                 var(--fp-white);       /* default page/card   */
-  --fp-surface-raised:          #ffffff;               /* elevated surfaces   */
-  --fp-surface-sunken:          var(--fp-bg-gray);     /* wells, track, inset */
+  /* --- Surfaces ------------------------------------------------------- */
+  --fp-surface:                 var(--fp-white);        /* MAIN colour    */
+  --fp-surface-raised:          var(--fp-white);        /* elevated       */
+  --fp-surface-sunken:          var(--fp-bg-gray);      /* wells, tracks  */
   --fp-surface-inverse:         var(--fp-dark-ultra-deep);
-  --fp-page-bg:                 var(--fp-bg-gray);
-  --fp-overlay-scrim:           rgba(0, 3, 9, 0.55);
+  --fp-surface-inverse-soft:    var(--fp-dark-soft);
+  --fp-page-bg:                 var(--fp-bg-gray);      /* canvas         */
+  --fp-overlay-scrim:           rgba(0, 25, 61, 0.45);
 
-  /* Text */
-  --fp-text:                    var(--fp-dark-ultra-deep); /* #000309 */
-  --fp-text-muted:              var(--fp-sub-dark);       /* #3e4d5f */
-  --fp-text-subtle:             var(--fp-dark-light-ultra-deep);
+  /* --- Ink (the single depth colour) --------------------------------- */
+  --fp-ink:                     #00193d;                /* BLP DARK       */
+  --fp-ink-soft:                #3e4d5f;                /* BLP SUB DARK   */
+  --fp-ink-muted:               #94989e;                /* LIGHT ULTRA    */
+  --fp-ink-faint:               #c7cbd1;                /* LIGHT DEEP     */
+
+  /* --- Text ----------------------------------------------------------- */
+  --fp-text:                    var(--fp-dark-ultra-deep); /* #000309      */
+  --fp-text-muted:              var(--fp-ink-soft);        /* #3e4d5f      */
+  --fp-text-subtle:             var(--fp-ink-muted);
   --fp-text-inverse:            var(--fp-white);
-  --fp-text-accent:             var(--fp-blue);
+  --fp-text-accent:             var(--fp-blue);            /* use sparingly */
   --fp-text-danger:             var(--fp-red-deep);
   --fp-text-success:            var(--fp-green-deep);
   --fp-text-warning:            var(--fp-yellow-ultra-deep);
 
-  /* Lines */
-  --fp-border:                  var(--fp-dark-ultra-deep);
-  --fp-border-muted:            var(--fp-dark-light-ultra-deep);
-  --fp-border-subtle:           var(--fp-dark-light-deep);
-  --fp-border-accent:           var(--fp-blue);
+  /* --- Lines ---------------------------------------------------------- */
+  --fp-line:                    var(--fp-ink-faint);   /* hairline rules  */
+  --fp-line-strong:             var(--fp-ink);         /* 4px sub border  */
 
-  /* Accent & status */
+  /* --- Accent (use sparingly) ----------------------------------------- */
   --fp-accent:                  var(--fp-blue);        /* #007bff */
   --fp-accent-hover:            var(--fp-blue-deep);
   --fp-accent-active:           var(--fp-blue-ultra-deep);
+  --fp-accent-ink:              var(--fp-blue-ultra-deep);
+
+  /* --- Status --------------------------------------------------------- */
   --fp-danger:                  var(--fp-red);
   --fp-danger-hover:            var(--fp-red-deep);
   --fp-success:                 var(--fp-green);
@@ -132,40 +154,49 @@
   --fp-warning-hover:           var(--fp-yellow-deep);
   --fp-info:                    var(--fp-blue);
   --fp-info-hover:              var(--fp-blue-deep);
-  --fp-neutral:                 var(--fp-dark-light-ultra-deep);
-  --fp-neutral-hover:           var(--fp-dark-light-deep);
+  --fp-neutral:                 var(--fp-ink-muted);
+  --fp-neutral-hover:           var(--fp-ink-faint);
 
-  /* Radii — 36px is the maximum allowed anywhere in the system. */
-  --fp-radius:                  36px;   /* DEFAULT. Everything else derives from this. */
-  --fp-radius-lg:              36px;   /* hero surfaces, large panels               */
-  --fp-radius-md:              36px;   /* buttons, inputs, cards                    */
-  --fp-radius-sm:              18px;   /* height < 48px containers                  */
-  --fp-radius-xs:              12px;   /* height < 32px containers (badges, tags)   */
-  --fp-radius-pill:            36px;   /* capped at the 36px ceiling                */
-  --fp-radius-circle:           50%;    /* only for true circles (avatar, dot)       */
-  --fp-border-width:            2px;
-  --fp-border-width-strong:     3px;
+  /* --- Tints (background + matching foreground) ---------------------- */
+  --fp-tint-info:               var(--fp-blue-light);
+  --fp-tint-info-fg:            var(--fp-blue-ultra-deep);
+  --fp-tint-success:            var(--fp-green-paper);
+  --fp-tint-success-fg:         var(--fp-green-ultra-deep);
+  --fp-tint-warning:            var(--fp-yellow-light);
+  --fp-tint-warning-fg:         var(--fp-yellow-ultra-deep);
+  --fp-tint-danger:             var(--fp-red-light);
+  --fp-tint-danger-fg:          var(--fp-red-ultra-deep);
+  --fp-tint-neutral:            var(--fp-bg-gray);
+  --fp-tint-neutral-fg:         var(--fp-text);
+  --fp-on-blue-light:           var(--fp-blue-ultra-deep);
 
-  /* Elevation — HARD shadows only. Zero blur, always. */
-  --fp-shadow-color:            var(--fp-dark-ultra-deep); /* main elements   */
-  --fp-shadow-color-sub:        rgba(0, 3, 9, 0.16);        /* sub elements    */
-  --fp-shadow-1:                0 3px 0 var(--fp-shadow-color);
-  --fp-shadow-2:                0 6px 0 var(--fp-shadow-color);
-  --fp-shadow-3:                0 9px 0 var(--fp-shadow-color);
-  --fp-shadow-4:                0 14px 0 var(--fp-shadow-color);
-  --fp-shadow-1-sub:            0 3px 0 var(--fp-shadow-color-sub);
-  --fp-shadow-2-sub:            0 6px 0 var(--fp-shadow-color-sub);
-  --fp-shadow-3-sub:            0 9px 0 var(--fp-shadow-color-sub);
+  /* --- Radii — 36px is the maximum allowed anywhere in the system. --- */
+  --fp-radius:                  36px;   /* DEFAULT. Everything derives from it. */
+  --fp-radius-lg:              36px;   /* hero surfaces, large panels          */
+  --fp-radius-md:              36px;   /* buttons, inputs, cards               */
+  --fp-radius-sm:              18px;   /* height < 48px containers             */
+  --fp-radius-xs:              12px;   /* height < 32px containers             */
+  --fp-radius-pill:            36px;   /* capped at the 36px ceiling           */
+  --fp-radius-circle:           50%;    /* only for true circles                */
 
-  /* Motion — 0.1s fast / 0.2s default / 0.3s slow */
+  /* --- Borders --------------------------------------------------------- */
+  --fp-border-width:            4px;   /* SUB elements                        */
+  --fp-border-width-sm:         2px;   /* micro elements (< 40px tall)        */
+  --fp-border-width-strong:     4px;
+
+  /* --- Elevation — HARD shadows only. Zero blur, always. --------------- */
+  --fp-shadow-color:            var(--fp-ink);        /* #00193d            */
+  --fp-shadow-color-sub:        rgba(0, 25, 61, 0.22);/* sub elements       */
+
+  /* --- Motion — 0.1s fast / 0.2s default / 0.3s slow ---------------- */
   --fp-duration-fast:           0.1s;
   --fp-duration-default:        0.2s;
   --fp-duration-slow:           0.3s;
   --fp-ease:                    cubic-bezier(0.4, 0, 0.2, 1);
-  --fp-ease-out:               cubic-bezier(0.16, 1, 0.3, 1);
-  --fp-ease-in-out:            cubic-bezier(0.65, 0, 0.35, 1);
+  --fp-ease-out:                cubic-bezier(0.16, 1, 0.3, 1);
+  --fp-ease-in-out:             cubic-bezier(0.65, 0, 0.35, 1);
 
-  /* Spacing scale (4px base) */
+  /* --- Spacing scale (4px base) --------------------------------------- */
   --fp-space-0:   0;
   --fp-space-1:   4px;
   --fp-space-2:   8px;
@@ -181,7 +212,7 @@
   --fp-space-24:  96px;
   --fp-space-32:  128px;
 
-  /* Type scale */
+  /* --- Type scale ----------------------------------------------------- */
   --fp-font-sans: "Inter", "Pretendard", -apple-system, BlinkMacSystemFont,
                   "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans KR",
                   sans-serif;
@@ -201,78 +232,62 @@
   --fp-text-5xl:  56px;
   --fp-text-6xl:  72px;
 
-  /* Layout */
-  --fp-container:  1200px;
-  --fp-container-wide: 1440px;
+  /* --- Layout --------------------------------------------------------- */
+  --fp-container:        1200px;
+  --fp-container-wide:   1440px;
   --fp-container-narrow: 760px;
-  --fp-z-sticky:  20;
-  --fp-z-header:  50;
-  --fp-z-dropdown: 100;
-  --fp-z-drawer:  200;
-  --fp-z-modal:   300;
-  --fp-z-toast:   400;
-  --fp-z-tooltip: 500;
-}
-
-/* --------------------------------------------------------------------------
-   2b. TINT TOKENS — tinted backgrounds that need a matching foreground.
-   Light mode maps them onto the BLP pastel steps; dark mode remaps them
-   to deep tints so contrast is preserved in both themes.
-   -------------------------------------------------------------------------- */
-:root {
-  --fp-tint-info:        var(--fp-blue-light);
-  --fp-tint-info-fg:     var(--fp-blue-ultra-deep);
-  --fp-tint-success:     var(--fp-green-paper);
-  --fp-tint-success-fg:  var(--fp-green-ultra-deep);
-  --fp-tint-warning:     var(--fp-yellow-light);
-  --fp-tint-warning-fg:  var(--fp-yellow-ultra-deep);
-  --fp-tint-danger:      var(--fp-red-light);
-  --fp-tint-danger-fg:   var(--fp-red-ultra-deep);
-  --fp-tint-neutral:     var(--fp-bg-gray);
-  --fp-tint-neutral-fg:  var(--fp-text);
-  --fp-on-blue-light:    var(--fp-blue-ultra-deep);
+  --fp-z-sticky:         20;
+  --fp-z-header:         50;
+  --fp-z-dropdown:       100;
+  --fp-z-drawer:         200;
+  --fp-z-modal:          300;
+  --fp-z-toast:          400;
+  --fp-z-tooltip:        500;
 }
 
 /* --------------------------------------------------------------------------
    3. DARK THEME — token overrides only, no component changes required.
 
-   The page canvas (#0f1b2e) is deliberately lighter than pure black so the
-   hard #000309 shadow band stays legible against it. Surfaces sit a step
-   above the canvas, which keeps the standard "elevated = lighter" hierarchy
-   while keeping the hard-shadow geometry intact.
+   The canvas is deliberately a step above pure black so the hard ink
+   shadow band stays legible against it. Surfaces sit one step above the
+   canvas, keeping the "elevated = lighter" hierarchy intact.
    -------------------------------------------------------------------------- */
 [data-theme="dark"] {
-  /* Surfaces */
-  --fp-surface:            #1e2b3d;   /* BLP Soft Dark      */
+  /* --- Surfaces ------------------------------------------------------- */
+  --fp-surface:            var(--fp-dark-soft);   /* #1e2b3d BLP SOFT DARK */
   --fp-surface-raised:     #27384f;
   --fp-surface-sunken:     #14202f;
   --fp-surface-inverse:    var(--fp-white);
-  --fp-page-bg:            #0f1b2e;
-  --fp-overlay-scrim:       rgba(0, 3, 9, 0.7);
+  --fp-surface-inverse-soft: var(--fp-dark-soft);
+  --fp-page-bg:            var(--fp-dark-ultra-deep); /* #000309          */
+  --fp-overlay-scrim:      rgba(0, 3, 9, 0.7);
 
-  /* Text */
+  /* --- Ink ------------------------------------------------------------ */
+  --fp-ink:                #d4dce8;   /* BLP LIGHT DARK — ink inverts     */
+  --fp-ink-soft:           var(--fp-dark-light-deep);
+  --fp-ink-muted:          var(--fp-dark-light-ultra-deep);
+  --fp-ink-faint:          #2a3a52;
+
+  /* --- Text ----------------------------------------------------------- */
   --fp-text:               var(--fp-white);
   --fp-text-muted:         var(--fp-dark-light-deep);
   --fp-text-subtle:        var(--fp-dark-light-ultra-deep);
   --fp-text-inverse:       var(--fp-dark-ultra-deep);
 
-  /* Lines */
-  --fp-border:             var(--fp-dark-ultra-deep);
-  --fp-border-muted:       var(--fp-sub-dark);
-  --fp-border-subtle:      #2a3a52;
+  /* --- Lines ---------------------------------------------------------- */
+  --fp-line:               #2a3a52;
+  --fp-line-strong:        var(--fp-ink);
 
-  /* Elevation — the hard shadow keeps its canonical #000309. */
+  /* --- Shadows: the ink is now light, so shadows read as a glow band --- */
   --fp-shadow-color:       #000309;
-  --fp-shadow-color-sub:   rgba(0, 3, 9, 0.55);
+  --fp-shadow-color-sub:   rgba(0, 3, 9, 0.6);
 
-  /* Neutral fills that would otherwise stay light in dark mode */
+  /* --- Neutral fills that would otherwise stay light ------------------ */
   --fp-bg-gray:            #14202f;
   --fp-bg-orange:          #2a2118;
   --fp-bg-brown:           #4a3527;
 
-  /* Tinted surfaces, re-mapped for dark mode */
-  --fp-blue-light:         #16293f;
-  --fp-on-blue-light:      #9fd0ff;
+  /* --- Tints re-mapped for dark mode ---------------------------------- */
   --fp-tint-info:          #16293f;
   --fp-tint-info-fg:       #9fd0ff;
   --fp-tint-success:       #12301f;
@@ -283,4 +298,5 @@
   --fp-tint-danger-fg:     #ff9ea5;
   --fp-tint-neutral:       #14202f;
   --fp-tint-neutral-fg:    var(--fp-text);
+  --fp-on-blue-light:      #9fd0ff;
 }
