@@ -4,8 +4,8 @@
 
    CONVENTIONS
    -----------
-   MAIN element   no border, omni hard shadow (see elevation.css).
-   SUB element    4px border, subtle hard shadow, lifts on hover.
+   MAIN element   no border, hard down-right shadow (see elevation.css).
+   SUB element    4px border, flat at rest, lifts on hover.
    Blue (#007bff) is an ACCENT — it appears on the single most important
    action of a view, never on everything. Most surfaces stay BLP White.
    ========================================================================== */
@@ -87,7 +87,7 @@
   --fp-btn-bg: transparent;
   --fp-btn-fg: var(--fp-text);
   box-shadow: none;
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
 }
 /* The button's own hover rule is more specific than the ghost's, so
    the ghost states the same specificity to take the hover state over. */
@@ -193,7 +193,7 @@
   font-size: var(--fp-text-base);
   color: var(--fp-text);
   background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-md);
   transition:
     box-shadow var(--fp-duration-default) var(--fp-ease),
@@ -235,17 +235,17 @@
 
 /* Each control states its own border, so the outline never depends on
    which rule happens to win the cascade. */
-.fp-input { border: var(--fp-border-width) solid var(--fp-line-strong); }
+.fp-input { border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong)); }
 
 .fp-textarea {
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   min-height: 120px;
   resize: vertical;
   line-height: 1.6;
 }
 
 .fp-select {
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   padding-right: var(--fp-space-12);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300193d' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -270,7 +270,7 @@
   font-weight: 700;
   color: var(--fp-text-muted);
   background: var(--fp-surface-sunken);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   white-space: nowrap;
 }
 .fp-input-group__addon:first-child { border-right: none; border-radius: var(--fp-radius) 0 0 var(--fp-radius); }
@@ -309,7 +309,7 @@
   display: grid;
   place-items: center;
   background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-xs);
   transition:
     background-color var(--fp-duration-fast) var(--fp-ease),
@@ -349,7 +349,7 @@
 
 .fp-check--card {
   padding: var(--fp-space-4) var(--fp-space-5);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius);
   background: var(--fp-surface);
   transition:
@@ -357,7 +357,7 @@
     background-color var(--fp-duration-default) var(--fp-ease);
 }
 .fp-check--card:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
-.fp-check--card:has(input:checked) { background: var(--fp-bg-gray); border-color: var(--fp-ink); }
+.fp-check--card:has(input:checked) { background: var(--fp-bg-gray); border-color: var(--fp-sub-border-color, var(--fp-ink)); }
 
 /* Switch */
 .fp-switch { display: inline-flex; align-items: center; gap: var(--fp-space-3); cursor: pointer; user-select: none; }
@@ -368,7 +368,7 @@
   height: 34px;
   flex: 0 0 auto;
   background: var(--fp-bg-gray);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -399,7 +399,7 @@
 .fp-range::-webkit-slider-runnable-track {
   height: 14px;
   background: var(--fp-surface-sunken);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
 }
 .fp-range::-webkit-slider-thumb {
@@ -408,7 +408,7 @@
   height: 28px;
   margin-top: -9px;
   background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-circle);
   transition: transform var(--fp-duration-fast) var(--fp-ease);
 }
@@ -416,14 +416,14 @@
 .fp-range::-moz-range-track {
   height: 14px;
   background: var(--fp-surface-sunken);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
 }
 .fp-range::-moz-range-thumb {
   width: 26px;
   height: 26px;
   background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-circle);
   transition: transform var(--fp-duration-fast) var(--fp-ease);
 }
@@ -447,7 +447,7 @@
   letter-spacing: 0.02em;
   color: var(--fp-text);
   background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-xs);
   white-space: nowrap;
 }
@@ -480,7 +480,7 @@
   font-weight: 700;
   color: var(--fp-text);
   background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -515,7 +515,7 @@
   font-weight: 700;
   color: var(--fp-text);
   background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
   cursor: pointer;
   user-select: none;
@@ -547,7 +547,7 @@
   font-weight: 800;
   color: var(--fp-ink);
   background: var(--fp-bg-gray);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-circle);
   overflow: hidden;
   user-select: none;
@@ -602,7 +602,7 @@
 .fp-icon-tile--light { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); }
 
 /* ==========================================================================
-   CARDS — main elements. No border; the omni shadow is the outline.
+   CARDS — main elements. No border; the hard shadow is the outline.
    ========================================================================== */
 .fp-card {
   --fp-elev-h: 5px;
@@ -627,7 +627,7 @@
 .fp-card--interactive { cursor: pointer; }
 .fp-card--outlined {
   box-shadow: none;
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
 }
 .fp-card--outlined:hover {
   box-shadow: 3px 3px 0 var(--fp-shadow-color);
@@ -682,7 +682,7 @@
   gap: var(--fp-space-4);
   padding: var(--fp-space-4) var(--fp-space-5);
   background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius);
   transition:
     transform var(--fp-duration-default) var(--fp-ease),
@@ -721,7 +721,7 @@
   font-weight: 700;
   color: var(--fp-text-muted);
   white-space: nowrap;
-  border: var(--fp-border-width) solid transparent;
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, transparent);
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -734,7 +734,7 @@
 .fp-tab.is-active {
   background: var(--fp-surface);
   color: var(--fp-text);
-  border-color: var(--fp-line-strong);
+  border-color: var(--fp-sub-border-color, var(--fp-line-strong));
   box-shadow: 3px 3px 0 var(--fp-shadow-color);
 }
 .fp-tabs--pill .fp-tab[aria-selected="true"] { background: var(--fp-ink); color: var(--fp-surface); border-color: transparent; box-shadow: none; }
@@ -750,14 +750,16 @@
 .fp-accordion { display: flex; flex-direction: column; gap: var(--fp-space-3); }
 .fp-accordion__item {
   background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius);
   overflow: hidden;
   transition: box-shadow var(--fp-duration-default) var(--fp-ease), transform var(--fp-duration-default) var(--fp-ease);
 }
 /* The open state is declared first, so the hover rule — which has the
-   same specificity — wins while the pointer is over it. */
-.fp-accordion__item[open] { box-shadow: 4px 4px 0 var(--fp-shadow-color); }
+   same specificity — wins while the pointer is over it. The open shadow
+   is the SAME SIZE as the hover shadow: an open item that shrinks its
+   shadow while it rises would be the forbidden combination. */
+.fp-accordion__item[open] { box-shadow: 3px 3px 0 var(--fp-shadow-color); }
 .fp-accordion__item:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
 .fp-accordion__trigger {
   display: flex;
@@ -781,7 +783,7 @@
   flex: 0 0 auto;
   background: var(--fp-surface);
   color: var(--fp-ink);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-circle);
   transition: transform var(--fp-duration-default) var(--fp-ease), background-color var(--fp-duration-default) var(--fp-ease);
 }
@@ -835,7 +837,7 @@
   width: 100%;
   height: 18px;
   background: var(--fp-surface-sunken);
-  border: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
   overflow: hidden;
 }
@@ -876,7 +878,7 @@
   gap: var(--fp-space-4);
   padding: var(--fp-space-5);
   background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-left-width: 6px;
   border-radius: var(--fp-radius);
   font-size: var(--fp-text-base);
@@ -887,10 +889,10 @@
 .fp-alert__icon { flex: 0 0 auto; display: flex; }
 .fp-alert__content { flex: 1; }
 .fp-alert__title { font-weight: 800; margin-bottom: var(--fp-space-1); }
-.fp-alert--info { background: var(--fp-tint-info); border-color: var(--fp-accent); border-left-color: var(--fp-accent); color: var(--fp-tint-info-fg); }
-.fp-alert--success { background: var(--fp-tint-success); border-color: var(--fp-success); border-left-color: var(--fp-success); color: var(--fp-tint-success-fg); }
-.fp-alert--warning { background: var(--fp-tint-warning); border-color: var(--fp-warning); border-left-color: var(--fp-warning); color: var(--fp-tint-warning-fg); }
-.fp-alert--danger { background: var(--fp-tint-danger); border-color: var(--fp-danger); border-left-color: var(--fp-danger); color: var(--fp-tint-danger-fg); }
+.fp-alert--info { background: var(--fp-tint-info); border-color: var(--fp-sub-border-color, var(--fp-accent)); border-left-color: var(--fp-sub-border-color, var(--fp-accent)); color: var(--fp-tint-info-fg); }
+.fp-alert--success { background: var(--fp-tint-success); border-color: var(--fp-sub-border-color, var(--fp-success)); border-left-color: var(--fp-sub-border-color, var(--fp-success)); color: var(--fp-tint-success-fg); }
+.fp-alert--warning { background: var(--fp-tint-warning); border-color: var(--fp-sub-border-color, var(--fp-warning)); border-left-color: var(--fp-sub-border-color, var(--fp-warning)); color: var(--fp-tint-warning-fg); }
+.fp-alert--danger { background: var(--fp-tint-danger); border-color: var(--fp-sub-border-color, var(--fp-danger)); border-left-color: var(--fp-sub-border-color, var(--fp-danger)); color: var(--fp-tint-danger-fg); }
 
 /* ==========================================================================
    STAT
@@ -942,7 +944,7 @@
   font-weight: 700;
   color: var(--fp-text);
   background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-xs);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -976,7 +978,7 @@
   font-size: var(--fp-text-sm);
   font-weight: 700;
   color: var(--fp-text-muted);
-  border: var(--fp-border-width) solid transparent;
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, transparent);
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -988,7 +990,7 @@
 .fp-segment__item[aria-pressed="true"], .fp-segment__item.is-active {
   background: var(--fp-surface);
   color: var(--fp-text);
-  border-color: var(--fp-line-strong);
+  border-color: var(--fp-sub-border-color, var(--fp-line-strong));
   box-shadow: 3px 3px 0 var(--fp-shadow-color);
 }
 
@@ -1057,7 +1059,7 @@
   flex: 0 0 auto;
   background: var(--fp-surface);
   color: var(--fp-ink);
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-circle);
   transition: box-shadow var(--fp-duration-default) var(--fp-ease), transform var(--fp-duration-default) var(--fp-ease);
 }

@@ -146,6 +146,10 @@
   --fp-accent-hover:            var(--fp-blue-deep);
   --fp-accent-active:           var(--fp-blue-ultra-deep);
   --fp-accent-ink:              var(--fp-blue-ultra-deep);
+  /* The accent as a SUB-ELEMENT BORDER. This is the one sanctioned way
+     to emphasise a sub element: it recolours the border that is already
+     there, without making the element bigger or moving it. */
+  --fp-accent-border:           var(--fp-blue);        /* #007bff */
 
   /* --- Status --------------------------------------------------------- */
   --fp-danger:                  var(--fp-red);
@@ -302,6 +306,11 @@
   --fp-bg-gray:            #14202f;
   --fp-bg-orange:          #2a2118;
   --fp-bg-brown:           #4a3527;
+
+  /* --- Accent border --------------------------------------------------
+     The accent blue is bright enough to read as a border on the dark
+     surface, so it is not remapped. */
+  --fp-accent-border:           var(--fp-blue);
 
   /* --- Tints re-mapped for dark mode ---------------------------------- */
   --fp-tint-info:          #16293f;

@@ -5,24 +5,64 @@
 The elevation system, finalised. The shadow geometry, the hover contract
 and the main/sub distinction are now the way the library is built.
 
+### The shadow contract
+
+**Every shadow in the library is `(positive px) (positive px) 0 <ink>`.**
+Both offsets are positive, both are equal, the blur is zero and the
+spread is zero. A shadow always falls to the bottom-right.
+
+**Removed**
+- `.fp-elev--omni` and `.fp-shadow-omni-1` … `--omni-4`. A shadow with a
+  positive spread paints ink on all four sides; that is a border, not a
+  shadow, and the library already has a border primitive. The classes are
+  gone, not renamed.
+- `.fp-elev--up` and `.fp-elev--left`. Both produced negative offsets,
+  which is illegal.
+- `.fp-elev--right` and `.fp-elev--down-right`. With the up-left
+  diagonals gone, both would have been identical to `.fp-elev--down`.
+  A variant that produces no distinct shadow does not exist.
+- `.fp-elev--down-left`. Never legal, and never shipped.
+- `.fp-elev--down`. It produced exactly the default shadow, so it was a
+  second name for one thing. A hard shadow has one direction and one
+  size scale; there is no modifier for either.
+
+**Changed**
+- `.fp-drawer` cast an up-left shadow (`-6px -6px 0`) because it is
+  anchored to the right edge. It is now `6px 6px 0`, like everything
+  else. A shadow that changes direction with the element's position is
+  a second lighting model, not depth.
+- `.fp-accordion__item[open]` carried a 4px shadow while its hover
+  shadow was 3px — an open item that shrank its shadow as it rose, which
+  is the forbidden combination. The open shadow is now the same size as
+  the hover shadow.
+
 ### Changed
 
 **Elevation**
-- Hard shadows are offset **equally on both axes** (`6px 6px 0`), not
-  downwards only. The light source is in the top-left corner, so every
-  shadow falls to the bottom-right like ink on paper.
+- Hard shadows are offset **equally and positively** on both axes
+  (`6px 6px 0`), not downwards only. The light source is in the
+  top-left corner, so every shadow falls to the bottom-right like ink on
+  paper.
 - A **sub element has no resting shadow**. Its real inline border is the
   outline; the shadow appears on hover, as it lifts.
 - A **main element never rises**. It only presses down, and its shadow
   contracts as it goes. The forbidden combination — moving up while the
   shadow shrinks — appears nowhere in the library.
-- Directional variants were re-expressed as diagonals, because a hard
-  shadow keeps X and Y equal: `--down` and `--down-right` lean to the
-  bottom-right, `--left` and `--up` to the top-left.
-- `.fp-elev--up` keeps its full shadow height while it rises. A rising
-  element must never lose its shadow.
-- The omni band survives as `.fp-elev--omni` and `.fp-shadow-omni-*`,
-  but it is no longer the default.
+
+**Accent**
+- `.fp-sub--accent` — the accent as a **sub element's border**. This is
+  the sanctioned way to emphasise a sub element: it recolours the
+  border that is already there, without making the element bigger or
+  moving it. The colour travels through the new
+  `--fp-sub-border-color` custom property, so the modifier works on
+  every sub element without out-specifying the component's own border
+  rule.
+- `.fp-highlight` — the accent as a **block of colour behind emphasised
+  text**. The words are bold and sit on a plain rectangle of accent
+  colour with no radius. Works on `<strong>` and `<mark>` alike.
+- `mark` keeps its own neutral yellow identity, but follows the same
+  shape rules as `.fp-highlight`: bold, rectangular, no radius. A
+  `<mark class="fp-highlight">` takes the accent treatment.
 
 **Components**
 - `.fp-icon-tile` and `.fp-empty` are main elements: their borders are
@@ -42,7 +82,8 @@ and the main/sub distinction are now the way the library is built.
 - `tools/verify-elevation.py` — a rule verifier for the elevation
   contract. It parses the CSS and asserts that main elements have no
   border and a hard square shadow, that sub elements have a real border
-  and no resting shadow, and that the sign of the hover movement agrees
+  and no resting shadow, that **every shadow has positive, equal offsets
+  with zero blur and zero spread**, and that the sign of the hover movement agrees
   with the direction of the shadow change.
 
 ---
@@ -106,14 +147,15 @@ lost their resting shadow, and the hover contract was tightened.)*
 
 ## Design decisions worth recording
 
-**Why the omni shadow is built with spread, not offsets.** Stacking four
-offset shadows to fake a four-sided hard shadow leaves square notches at
-the corners. A single zero-blur shadow with positive spread is solid and
-follows the element's `border-radius` exactly, producing a band of
-uniform width on all four sides. It is still the only way to build a
-band — but since 1.1.0 the offset shadow is the default, because a
-system lit from one corner reads as more deliberate than a band lit
-from everywhere.
+**Why the four-sided band was removed.** The band was technically
+correct: a single zero-blur shadow with positive spread is solid and
+follows the element's `border-radius` exactly, so the corners stay clean
+where four stacked offset shadows would have left notches. But a band on
+all four sides is an *outline*, not depth, and the library already has a
+primitive for outlines — the real inline `border:` that every sub element
+carries. Two primitives for one job, and a second lighting model that
+lit from everywhere instead of from the top-left corner. The band is
+gone; an element that needs an outline on every side now uses a border.
 
 **Why sub elements have no resting shadow.** The border already carries
 the outline, so a shadow as well would double it. More importantly, a

@@ -102,7 +102,7 @@
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="2"/><path d="M6 7V4h12v3"/></svg>
         </span>
         <h3 class="fp-card__title">Hard Shadows</h3>
-        <p class="fp-text-sm fp-text-muted">Main elements carry a solid offset shadow with zero blur, offset equally on both axes. Sub elements carry no resting shadow at all. On hover, the main shadow collapses to 2&nbsp;px and the element presses down; sub elements lift and their shadow appears.</p>
+        <p class="fp-text-sm fp-text-muted">Every shadow is a solid offset shadow with zero blur, offset <strong>equally and positively</strong> on both axes — it always falls to the bottom-right. Main elements carry the shadow and no border. Sub elements carry a real inline border and no resting shadow at all. On hover, the main shadow collapses to 2&nbsp;px and the element presses down; sub elements lift and their shadow appears.</p>
       </div>
     </article>
 
@@ -145,27 +145,31 @@
     <span class="fp-kicker">02 — Elevation</span>
     <h2 class="fp-section__title">Hard Shadows</h2>
     <p class="fp-section__desc">
-      Every shadow is a solid block of ink with zero blur. Main elements carry a hard shadow
-      and <strong>no border</strong> — the shadow is their outline. Sub elements carry a real
+      Every shadow is a solid block of ink with zero blur, offset <strong>equally and
+      positively</strong> on both axes. Main elements carry a hard shadow and
+      <strong>no border</strong> — the shadow is their outline. Sub elements carry a real
       inline 4px border and no resting shadow. The ink is <code class="fp-code">#00193d</code>.
     </p>
   </div>
 
   <div class="fp-grid fp-grid--3">
     <div class="fp-panel fp-stack">
-      <span class="fp-kicker">Main · directional</span>
+      <span class="fp-kicker">Main · the one direction</span>
       <div class="fp-elev fp-elev--3" style="height: 96px; background: var(--fp-surface); border-radius: var(--fp-radius); display: grid; place-items: center; font-weight: 800;">
         Floats
       </div>
-      <p class="fp-text-sm fp-text-muted">No border. A hard shadow in ink, offset equally on both axes. On hover the shadow collapses to 2px and the element presses down into the surface.</p>
+      <p class="fp-text-sm fp-text-muted">No border. A hard shadow in ink, offset equally on both axes, so it always falls to the bottom-right. On hover the shadow collapses to 2px and the element presses down into the surface.</p>
     </div>
 
     <div class="fp-panel fp-stack">
-      <span class="fp-kicker">Main · omni</span>
-      <div class="fp-elev fp-elev--omni fp-elev--3" style="height: 96px; background: var(--fp-surface); border-radius: var(--fp-radius); display: grid; place-items: center; font-weight: 800;">
-        Band
+      <span class="fp-kicker">Main · one size per tier</span>
+      <div class="fp-row" style="align-items: flex-end;">
+        <div class="fp-elev fp-elev--1" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">3</div>
+        <div class="fp-elev fp-elev--2" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">6</div>
+        <div class="fp-elev fp-elev--3" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">9</div>
+        <div class="fp-elev fp-elev--4" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">14</div>
       </div>
-      <p class="fp-text-sm fp-text-muted">A band on all four sides, built from a zero-blur shadow with positive spread. It follows the element's own border-radius, so the corners stay clean.</p>
+      <p class="fp-text-sm fp-text-muted">A hard shadow has exactly one direction. The only way to vary it is its <strong>size</strong> — 3px, 6px, 9px, 14px. There is no upward shadow, no leftward shadow, and no band on all four sides: a band is a border, not a shadow.</p>
     </div>
 
     <div class="fp-panel fp-stack">
@@ -190,14 +194,40 @@
   </div>
 
   <div class="fp-panel" style="margin-top: var(--fp-space-8)">
-    <h3 class="fp-text-lg" style="margin-bottom: var(--fp-space-5)">Shadow directions</h3>
-    <div class="fp-row">
-      <div class="fp-elev fp-elev--down" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Down</div>
-      <div class="fp-elev fp-elev--up" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Up</div>
-      <div class="fp-elev fp-elev--right" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Right</div>
-      <div class="fp-elev fp-elev--left" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Left</div>
-      <div class="fp-elev fp-elev--down-right" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Down-right</div>
+    <h3 class="fp-text-lg" style="margin-bottom: var(--fp-space-5)">The shadow contract</h3>
+    <div class="fp-row fp-row--between">
+      <div class="fp-stack" style="gap: var(--fp-space-2); max-width: 620px;">
+        <p class="fp-text-sm fp-text-muted">Every shadow in the library is <code class="fp-code">(positive px) (positive px) 0 &lt;ink&gt;</code> — both offsets positive and equal, zero blur, zero spread. A shadow always falls to the bottom-right.</p>
+        <p class="fp-text-sm fp-text-muted">There is no upward shadow, no leftward shadow, and no four-sided band: a positive spread paints ink on all four sides, which is a border, not a shadow. A variant is a different <strong>size</strong>, never a different direction.</p>
+      </div>
     </div>
+  </div>
+
+  <div class="fp-panel" style="margin-top: var(--fp-space-8)">
+    <h3 class="fp-text-lg" style="margin-bottom: var(--fp-space-5)">Accent on a sub element's border</h3>
+    <div class="fp-grid fp-grid--2">
+      <div class="fp-stack" style="gap: var(--fp-space-2);">
+        <p class="fp-text-sm fp-text-muted">The accent never makes a sub element bigger or moves it. It recolours the one border that is already there, so the eye goes to that element and nowhere else.</p>
+        <p class="fp-text-sm fp-text-muted">One mechanism, one modifier: <code class="fp-code">fp-sub--accent</code>. It works on any sub element.</p>
+      </div>
+      <div class="fp-stack" style="gap: var(--fp-space-3);">
+        <div class="fp-list__item" style="border-radius: var(--fp-radius-sm); padding: var(--fp-space-3) var(--fp-space-4); font-weight: 700; font-size: var(--fp-text-sm);">Default border</div>
+        <div class="fp-list__item fp-sub--accent" style="border-radius: var(--fp-radius-sm); padding: var(--fp-space-3) var(--fp-space-4); font-weight: 700; font-size: var(--fp-text-sm);">Accent border</div>
+        <div class="fp-chip fp-sub--accent" style="font-size: var(--fp-text-sm);">Accent chip</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fp-panel" style="margin-top: var(--fp-space-8)">
+    <h3 class="fp-text-lg" style="margin-bottom: var(--fp-space-5)">Accent on text</h3>
+    <p class="fp-text-sm fp-text-muted" style="margin-bottom: var(--fp-space-4);">
+      When the accent emphasises <em>words</em>, the words are bold and sit on a plain
+      rectangular block of accent colour. A rectangle, not a pill.
+    </p>
+    <p class="fp-text-md">
+      The emphasised words are <strong class="fp-highlight">bold, on an accent rectangle</strong>,
+      and the rest of the sentence is not.
+    </p>
   </div>
 </section>
 
@@ -776,6 +806,15 @@
         </summary>
         <div class="fp-accordion__panel">
           A main element's shadow starts at height H. On hover the shadow collapses to 2&nbsp;px and the element descends by H&nbsp;−&nbsp;2&nbsp;px, so the shadow's absolute bottom edge never moves. Sub elements do the opposite: they rise by the sub-shadow height and gain that shadow at the same time.
+        </div>
+      </details>
+      <details class="fp-accordion__item">
+        <summary class="fp-accordion__trigger">
+          <span>Which way can a shadow fall?</span>
+          <span class="fp-accordion__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </summary>
+        <div class="fp-accordion__panel">
+          Only to the bottom-right. Every shadow is <code class="fp-code">(positive px) (positive px) 0 &lt;ink&gt;</code> — positive offsets, equal on both axes, zero blur, zero spread. There is no upward shadow, no leftward shadow, and no band on all four sides: a band is a border, not a shadow. If you want a different look, change the shadow's <em>size</em>, not its direction.
         </div>
       </details>
       <details class="fp-accordion__item">

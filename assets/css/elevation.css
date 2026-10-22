@@ -3,20 +3,41 @@
 
    THE CONTRACT
    ------------
-   Every surface in the library is one of two kinds, and the kind decides
-   both its border and its shadow.
+   Every shadow in the library is `(positive px) (positive px) 0 <ink>`:
+
+     * both offsets are POSITIVE and EQUAL
+     * the blur radius is 0
+     * the spread is 0
+
+   Three consequences, all of them mandatory:
+
+     * A shadow ALWAYS falls to the bottom-right. There is no upward
+       shadow, no leftward shadow and no diagonal that leans anywhere
+       else. A variant is a different SIZE, never a different direction.
+
+     * A positive spread (`0 0 0 6px`) paints ink on all four sides.
+       That is a border, not a shadow, and it is forbidden — use a real
+       `border:` declaration instead.
+
+     * Equal offsets are what make a shadow read as a printed block
+       instead of a glow: the light source sits in the top-left corner
+       and the ink falls to the bottom-right like a print on paper.
+
+   THE TWO ELEMENT KINDS
+   ---------------------
+   The kind of an element decides both its border and its shadow.
 
    MAIN element
-     No border — ever. Its outline IS a hard shadow: a solid block of ink
-     with zero blur, offset by the SAME amount on X and Y (`6px 6px 0` by
-     default). Equal offsets are what make the shadow read as a printed
-     block instead of a glow: the light source sits in the top-left corner.
+     No border — ever. Its outline IS a hard shadow: a solid block of
+     ink with zero blur, offset by the SAME amount on X and Y (`6px 6px 0`
+     by default). On hover it presses DOWN (positive translateY) and its
+     shadow SHRINKS (offset gets smaller, e.g. `6px 6px 0` -> `2px 2px 0`).
 
    SUB element
      A real INLINE border (4px, or 2px under 40px tall) drawn inside the
      layout box, and NO resting shadow. Flat is the resting state — the
-     border alone carries the outline. The shadow appears on hover, when
-     the element lifts.
+     border alone carries the outline. On hover it lifts UP (negative
+     translateY) and a shadow APPEARS (`3px 3px 0`).
 
    WHY THE BORDER IS REAL
    ----------------------
@@ -40,9 +61,7 @@
                               lose its shadow
 
    MAIN elements therefore only ever press DOWN, SUB elements only ever
-   lift UP. Directional variants (.fp-elev--up and friends) keep the
-   shadow pointing the same way as the movement, so a variant never
-   breaks the invariant either.
+   lift UP. A main element never rises.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -71,85 +90,13 @@
   transform: translateY(calc((var(--fp-elev-h) - 2px)));
 }
 
-/* --- Omni: a band on all four sides ----------------------------------
-   Built from a zero-blur shadow with positive spread, which follows the
-   element's own border-radius exactly — stacked offset copies would
-   leave square notches at the corners.
+/* --- The one direction -------------------------------------------------
+   A hard shadow has exactly one legal direction: down-right. This class
+   is the explicit spelling of it, kept so that markup can say what it
+   means. There is no `--up`, `--left`, `--right` or `--down-right`:
+   those either lean the wrong way (illegal) or are indistinguishable
+   from this one (noise).
    ---------------------------------------------------------------------- */
-.fp-elev--omni {
-  box-shadow: 0 0 0 var(--fp-elev-h) var(--fp-shadow-color);
-}
-.fp-elev--omni:hover,
-.fp-elev--omni:focus-visible,
-.fp-elev--omni:active {
-  box-shadow: 0 0 0 2px var(--fp-shadow-color);
-  transform: translateY(calc((var(--fp-elev-h) - 2px)));
-}
-
-/* --- Directional variants ---------------------------------------------
-   A hard shadow keeps X and Y equal, so a direction can only be expressed
-   by the diagonal the shadow leans towards: down-right, or up-left. The
-   press always follows the axis the shadow leans towards, so the shadow's
-   outer edge stays pinned while the element moves into it.
-   ---------------------------------------------------------------------- */
-/* Down: the shadow leans down-right and the element presses down. */
-.fp-elev--down {
-  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
-}
-.fp-elev--down:hover,
-.fp-elev--down:focus-visible,
-.fp-elev--down:active {
-  box-shadow: 2px 2px 0 var(--fp-shadow-color);
-  transform: translateY(calc((var(--fp-elev-h) - 2px)));
-}
-
-/* Down-right: the shadow leans down-right and the element presses along
-   that diagonal. */
-.fp-elev--down-right {
-  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
-}
-.fp-elev--down-right:hover,
-.fp-elev--down-right:focus-visible,
-.fp-elev--down-right:active {
-  box-shadow: 2px 2px 0 var(--fp-shadow-color);
-  transform: translate(calc((var(--fp-elev-h) - 2px)), calc((var(--fp-elev-h) - 2px)));
-}
-
-/* Right: the shadow leans right and the element presses right. */
-.fp-elev--right {
-  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
-}
-.fp-elev--right:hover,
-.fp-elev--right:focus-visible,
-.fp-elev--right:active {
-  box-shadow: 2px 2px 0 var(--fp-shadow-color);
-  transform: translateX(calc((var(--fp-elev-h) - 2px)));
-}
-
-/* Left: the shadow leans up-left and the element presses left. */
-.fp-elev--left {
-  box-shadow: calc(var(--fp-elev-h) * -1) calc(var(--fp-elev-h) * -1) 0 var(--fp-shadow-color);
-}
-.fp-elev--left:hover,
-.fp-elev--left:focus-visible,
-.fp-elev--left:active {
-  box-shadow: -2px -2px 0 var(--fp-shadow-color);
-  transform: translateX(calc((2px - var(--fp-elev-h))));
-}
-
-/* Up: the shadow sits ABOVE the element, so the element rises — but a
-   rising element must never lose its shadow, so the band keeps its full
-   height and simply travels with the element. */
-.fp-elev--up {
-  box-shadow: calc(var(--fp-elev-h) * -1) calc(var(--fp-elev-h) * -1) 0 var(--fp-shadow-color);
-}
-.fp-elev--up:hover,
-.fp-elev--up:focus-visible,
-.fp-elev--up:active {
-  box-shadow: calc(var(--fp-elev-h) * -1) calc(var(--fp-elev-h) * -1) 0 var(--fp-shadow-color);
-  transform: translateY(calc((2px - var(--fp-elev-h))));
-}
-
 /* --- Height scale ---------------------------------------------------- */
 .fp-elev--1 { --fp-elev-h: 3px; }
 .fp-elev--2 { --fp-elev-h: 6px; }
@@ -160,10 +107,14 @@
    SUB ELEMENT
    A real inline border and a flat resting state. The shadow arrives with
    the lift.
+
+   The border colour is read from `--fp-sub-border-color`, which is unset
+   by default. A modifier that sets it therefore wins the cascade without
+   having to out-specify the component's own `border:` declaration.
    -------------------------------------------------------------------------- */
 .fp-sub {
   --fp-elev-h-sub: 3px;
-  border: var(--fp-border-width) solid var(--fp-line-strong);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
   transition:
     box-shadow var(--fp-duration-default) var(--fp-ease),
     transform var(--fp-duration-default) var(--fp-ease),
@@ -181,16 +132,27 @@
 .fp-sub--3 { --fp-elev-h-sub: 5px; }
 
 /* --------------------------------------------------------------------------
-   STATIC SHADOWS — no press behaviour.
+   THE ACCENT BORDER — the sanctioned way to emphasise a sub element.
+
+   The accent does not make a sub element bigger and does not move it;
+   it recolours the one border that is already there. One mechanism, one
+   modifier, usable on any sub element:
+
+       <div class="fp-list__item fp-sub--accent">…</div>
+
+   Because the colour travels through a custom property rather than
+   through a `border-color` declaration, the modifier never has to win a
+   specificity fight with the component's own border.
+   -------------------------------------------------------------------------- */
+.fp-sub--accent {
+  --fp-sub-border-color: var(--fp-accent-border);
+}
+
+/* --------------------------------------------------------------------------
+   STATIC SHADOWS — no press behaviour. Same contract: down-right, hard.
    -------------------------------------------------------------------------- */
 .fp-shadow-1    { box-shadow: 3px 3px 0 var(--fp-shadow-color); }
 .fp-shadow-2    { box-shadow: 6px 6px 0 var(--fp-shadow-color); }
 .fp-shadow-3    { box-shadow: 9px 9px 0 var(--fp-shadow-color); }
 .fp-shadow-4    { box-shadow: 14px 14px 0 var(--fp-shadow-color); }
 .fp-shadow-none { box-shadow: none; }
-
-/* Omni static */
-.fp-shadow-omni-1 { box-shadow: 0 0 0 3px var(--fp-shadow-color); }
-.fp-shadow-omni-2 { box-shadow: 0 0 0 6px var(--fp-shadow-color); }
-.fp-shadow-omni-3 { box-shadow: 0 0 0 9px var(--fp-shadow-color); }
-.fp-shadow-omni-4 { box-shadow: 0 0 0 14px var(--fp-shadow-color); }

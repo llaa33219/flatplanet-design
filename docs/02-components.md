@@ -7,6 +7,84 @@ Throughout, **main** marks an element with the full ink shadow and no
 border; **sub** marks an element with the 4px border, no resting shadow,
 that lifts on hover and gains one as it goes.
 
+Every shadow in the library is `(positive px) (positive px) 0 <ink>` — it
+always falls to the bottom-right, with zero blur and zero spread. There
+is no four-sided band and no directional variant; a shadow differs only
+in its **size**.
+
+---
+
+## 0. The accent treatments
+
+The accent (`#007bff`) has two sanctioned uses, and both of them are
+about emphasis rather than decoration.
+
+### The accent border — `.fp-sub--accent`
+
+A sub element may wear the accent as its border colour. This is the
+sanctioned way to draw the eye to one specific sub element: it recolours
+the border that is already there, so the element keeps its size, its
+place and its flat resting state.
+
+```html
+<div class="fp-list__item fp-sub--accent">
+  <div class="fp-list__content">
+    <div class="fp-list__title">Storage at 72%</div>
+    <div class="fp-list__meta">2 hours ago</div>
+  </div>
+</div>
+```
+
+| Rule | Value |
+|------|-------|
+| Border colour | `--fp-accent-border` (`#007bff`) |
+| Border width | Unchanged — 4px, or 2px under 40px tall |
+| Resting shadow | Still none. The accent border is not a shadow |
+| Hover | Unchanged: the element lifts and its shadow appears |
+
+One modifier, applied to any sub element:
+
+```html
+<div class="fp-list__item fp-sub--accent">…</div>
+<div class="fp-chip fp-sub--accent">…</div>
+<div class="fp-tab fp-sub--accent">…</div>
+```
+
+It is a **generic** modifier rather than a per-component one
+(`.fp-list__item--accent`, `.fp-chip--accent`, `.fp-tab--accent`, …) for
+one reason: with sixty components in the library, sixty accent modifiers
+would be a worse API than one. The colour travels through the
+`--fp-sub-border-color` custom property, so the modifier never has to
+out-specify the component's own `border:` rule — it just sets the
+property, and the border declaration reads it.
+
+Do not put an accent border on everything. The accent border is a
+pointer, not a decoration; more than one per view and it stops pointing
+at anything.
+
+### The highlight — `.fp-highlight`
+
+When the accent emphasises *words* rather than an element, the treatment
+is bold text on a plain rectangle of accent colour.
+
+```html
+<p>Some <strong class="fp-highlight">emphasised words</strong> in a sentence.</p>
+```
+
+| Rule | Value |
+|------|-------|
+| Font weight | `800` — bold |
+| Background | `--fp-accent` (`#007bff`) |
+| Border radius | `0` — a plain rectangle, not a pill |
+| Text colour | `--fp-white` |
+| Works on | `<strong>`, `<mark>`, `<span>`, any inline element |
+
+`mark` is the neutral sibling of the same treatment. It keeps its own
+yellow identity — an ordinary editorial highlight should not spend the
+accent — but it follows the same shape rules, so the two read as one
+family: bold, rectangular, no radius. A `<mark class="fp-highlight">`
+takes the accent treatment.
+
 ---
 
 ## 1. Buttons
@@ -632,6 +710,13 @@ Sizes: `fp-modal--sm` (400px), default (520px), `--lg` (720px),
 Opens with `data-drawer-open="demoDrawer"`, closes with
 `data-drawer-close`. `fp-drawer--left` moves it to the left edge.
 
+Both drawers cast their shadow to the **bottom-right**, like every other
+surface in the library. The drawer used to lean its shadow up and to the
+left, to match the edge it was anchored to — but a shadow that changes
+direction with the element's position is not depth, it is a second
+lighting model. The edge-anchored drawer and the free-floating card now
+share one light source.
+
 ### Toast
 
 ```html
@@ -801,8 +886,9 @@ mirrors the token definitions.
 | `fp-dur-fast` / `--default` / `--slow` | Duration only |
 | `fp-ease-default` / `--out` / `--in-out` | Easing only |
 | `fp-shadow-1` … `fp-shadow-4` | Static hard shadows, `3px` … `14px` on both axes |
-| `fp-shadow-omni-1` … `--omni-4` | Static omni bands |
 | `fp-shadow-none` | No shadow |
+| `fp-sub--accent` | The accent as a sub element's border colour |
+| `fp-highlight` | Bold text on a rectangular block of accent colour |
 | `fp-code` / `fp-code-block` | Inline and block code |
 | `fp-kbd` | Keyboard key |
 | `fp-divider-label` | A rule with a centred label |

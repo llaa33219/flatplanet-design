@@ -17,7 +17,7 @@ system; everything else is detail.
 |---|------|---------------|
 | 1 | **36px radius ceiling** | One corner radius everywhere. Smaller radii only when a short height makes 36px unreadable. |
 | 2 | **Zero gradients** | Depth comes from flat fills plus solid offset shadows. Never from a colour ramp. |
-| 3 | **Hard shadows** | Every shadow is a solid block of ink with zero blur radius, offset equally on both axes. |
+| 3 | **Hard shadows** | Every shadow is a solid block of ink with zero blur radius, offset equally and positively on both axes — it always falls to the bottom-right. |
 | 4 | **Three speeds** | `0.1s` fast, `0.2s` default, `0.3s` slow. Nothing else. |
 | 5 | **BLP colours only** | Every colour comes from the palette in `색깔-3.pdf`. |
 

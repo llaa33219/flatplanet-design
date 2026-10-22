@@ -38,15 +38,18 @@ A hard shadow is `6px 6px 0`, never `0 6px 0`. The light source sits in
 the top-left corner, so every shadow falls to the bottom-right. A
 directional variant is a diagonal, not an axis.
 
-### Directional variants are kept
+### Directional variants are gone
 
-`.fp-elev--down`, `--down-right`, `--right`, `--left` and `--up` all
-exist, and each one's shadow direction agrees with its hover movement.
+A hard shadow has exactly one legal direction — down-right. `--up` and
+`--left` leaned the wrong way; `--right` and `--down-right` were
+indistinguishable from `--down`. Only `--down` survives, as the explicit
+spelling of the one direction.
 
-### The omni band is kept, but it is not the default
+### The omni band is gone
 
-`.fp-elev--omni` (`0 0 0 6px`) stays available for surfaces that must
-read as detached from the page. The offset shadow is the default.
+A band on all four sides is a border, not a shadow. `.fp-elev--omni` and
+`.fp-shadow-omni-*` are removed; an element that needs an outline on
+every side uses a real `border:`.
 
 ### Radius ceiling is 36px
 
@@ -89,3 +92,39 @@ A main element's shadow is a footprint on the surface below it. When the
 pointer arrives, the element sinks toward that surface and the footprint
 contracts. A sub element's shadow is its own; it has none at rest, and
 when the pointer arrives it rises and casts one.
+
+---
+
+## 2026-10-22 — Rule clarifications
+
+### The shadow contract is now absolute
+
+Every shadow is `(positive px) (positive px) 0 <ink>`. The shadow always
+falls to the bottom-right. There is no upward shadow, no leftward shadow,
+and no band on all four sides — a band is a border, not a shadow.
+
+The omni variant and the up/left directional variants are gone. A hard
+shadow has exactly one direction.
+
+### Accent has two sanctioned uses
+
+1. **On a sub element's border** — to draw the eye to that one sub
+   element. This is how a sub element gets emphasised, not by making it
+   bigger or moving it.
+2. **On text** — the emphasised words are bold, on a rectangular block of
+   accent colour behind them. A rectangle, not a pill.
+
+### The accent border is one generic modifier
+
+`.fp-sub--accent` is the single mechanism, usable on any sub element.
+Sixty components cannot afford sixty accent modifiers. The colour
+travels through the `--fp-sub-border-color` custom property, so the
+modifier sets a property rather than fighting the component's own
+`border:` declaration for specificity.
+
+### `mark` stays neutral, but matches the shape
+
+`mark` keeps its yellow identity — an editorial highlight should not
+spend the accent — while `fp-highlight` is the accent-emphasis
+primitive. The two are consistent in shape: bold, rectangular, no
+radius. A `<mark class="fp-highlight">` takes the accent treatment.

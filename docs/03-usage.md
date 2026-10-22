@@ -109,6 +109,55 @@ for the same "main action" slot:
   `fp-progress__bar--accent`
 - the kicker label above a section heading
 
+### The two sanctioned accent treatments
+
+Beyond the single accent-filled element per view, the accent has exactly
+two more uses, and both of them are about **emphasis** rather than
+decoration. There is no third.
+
+**One — the border of a sub element.** `.fp-sub--accent` recolours the
+border a sub element already has, so the eye goes to that one element:
+
+```html
+<!-- Good: one sub element is pointed at -->
+<div class="fp-list">
+  <div class="fp-list__item">Ordinary item</div>
+  <div class="fp-list__item fp-sub--accent">The one that matters</div>
+</div>
+```
+
+```html
+<!-- Bad: the accent border stops pointing at anything -->
+<div class="fp-list__item fp-sub--accent">One</div>
+<div class="fp-list__item fp-sub--accent">Two</div>
+<div class="fp-list__item fp-sub--accent">Three</div>
+```
+
+The accent border is a pointer. It never makes the element bigger, never
+moves it, and never gives it a resting shadow — a sub element stays flat
+at rest whatever colour its border is.
+
+**Two — a block of colour behind emphasised words.** `.fp-highlight`
+puts bold text on a plain rectangle of accent colour:
+
+```html
+<p>Some <strong class="fp-highlight">emphasised words</strong> in a sentence.</p>
+```
+
+The rectangle has no radius: it is a print, not a pill. `mark` is the
+neutral sibling — same shape, yellow instead of blue — for when the
+highlight is editorial rather than emphatic.
+
+### What the accent is not for
+
+- **Not a border on everything.** An accent border on every sub element
+  is the same mistake as an accent fill on every button.
+- **Not a hover state.** Hover is expressed with movement and shadow,
+  which is what the elevation system is for. Reach for `--fp-ink` or a
+  surface change instead.
+- **Not a status colour.** Red, green and yellow are for status. Blue is
+  for emphasis and for actions.
+
 ---
 
 ## 4. Writing copy that fits the components
@@ -270,13 +319,18 @@ Override the semantic tokens. Never override a raw palette token.
 
 ```html
 <div class="fp-elev fp-elev--3">Floats with a 9px hard shadow.</div>
-<div class="fp-elev fp-elev--omni fp-elev--3">Floats with a 9px band on all sides.</div>
+<div class="fp-elev fp-elev--3">The one direction, at a larger size.</div>
 <div class="fp-sub">A sub element that lifts on hover.</div>
+<div class="fp-sub fp-sub--accent">A sub element the accent points at.</div>
 ```
 
-A main element's shadow is offset equally on both axes, so it reads as a
-block printed on the surface. A sub element has no shadow at rest — the
-border is its outline, and the shadow appears as it lifts.
+A main element's shadow is offset **equally and positively** on both
+axes, so it reads as a block printed on the surface, falling to the
+bottom-right. There is no upward shadow, no leftward shadow and no
+four-sided band: the shadow's only variable is its size.
+
+A sub element has no shadow at rest — the border is its outline, and the
+shadow appears as it lifts. Add `.fp-sub--accent` to point at it.
 
 ---
 

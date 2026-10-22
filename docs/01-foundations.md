@@ -200,6 +200,21 @@ hardcoded colour.
 In the dark theme each tint maps to a deep background with a light
 foreground, so contrast holds in both directions.
 
+**Accent**
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--fp-accent` | `#007bff` | Accent fills. One per view. |
+| `--fp-accent-hover` | `#005bdd` | Accent fill on hover |
+| `--fp-accent-active` | `#0026a3` | Accent fill, pressed |
+| `--fp-accent-border` | `#007bff` | The accent as a **sub-element border** |
+| `--fp-accent-ink` | `#0026a3` | Accent-coloured text that is not a link |
+
+`--fp-accent-border` exists because the accent has a second sanctioned
+use: as the border colour of a sub element that needs emphasising. It is
+a separate token so that the border can be re-pointed without touching
+every component that uses it — see [3.8 The accent border](#38-the-accent-border).
+
 ---
 
 ## 2. Radius
@@ -256,61 +271,65 @@ shadow, so it gets a border instead — and its resting state is **flat**.
 The border alone carries the outline until the pointer arrives, at which
 point the element lifts and the shadow appears with it.
 
-### 3.2 The hard shadow
+### 3.2 The shadow contract
 
-A hard shadow is a solid block of ink with zero blur radius. The default
-main-element shadow offsets **equally on both axes**:
+**Every shadow in the library is `(positive px) (positive px) 0 <ink>`.**
+
+That is the whole contract, and it is not negotiable:
+
+- both offsets are **positive**
+- both offsets are **equal**
+- the blur radius is **0**
+- the spread is **0**
 
 ```css
 box-shadow: 6px 6px 0 var(--fp-shadow-color);
 ```
 
-Equal offsets are what make the shadow read as a printed block rather
-than a glow: the light source sits in the top-left corner, and the shadow
-falls to the bottom-right like ink on paper. A shadow of `8px 8px 0` is
-the same shape, only bigger.
+Three consequences follow, and all three are mandatory.
+
+**A shadow always falls to the bottom-right.** There is no upward
+shadow, no leftward shadow, and no diagonal that leans anywhere else.
+The light source sits in the top-left corner, so the ink falls to the
+bottom-right like a print on paper. If you want a different shadow, you
+want a different *size* — never a different direction.
+
+**There is no four-sided band.** A shadow with a positive spread
+(`0 0 0 6px`) paints ink on all four sides. That is a border, not a
+shadow, and it is forbidden. When an element needs an outline on every
+side, it needs a real `border:` declaration — which is exactly what a
+sub element already has.
+
+**The offsets are equal.** Equal offsets are what make the shadow read as
+a printed block rather than a glow. A shadow of `8px 8px 0` is the same
+shape as `6px 6px 0`, only bigger.
 
 The shadow colour is `--fp-shadow-color`, which is `--fp-ink`
 (`#00193d`). The ink is the only depth colour in the system.
 
-### 3.3 The omni band
+### 3.3 Sizes, not directions
 
-A four-sided hard shadow cannot be produced by stacking four offset
-shadows: the overlapping copies leave square notches at the corners.
+Because a hard shadow keeps X and Y equal and always positive, a
+directional *variant* has nothing left to express. The only two options
+were "leans up-left" (illegal) and "identical to the default" (noise), so
+the directional variants are gone.
 
-The correct primitive is a **zero-offset, zero-blur shadow with a
-positive spread**:
-
-```css
-box-shadow: 0 0 0 6px var(--fp-shadow-color);
-```
-
-A zero-blur shadow with positive spread is *solid* — it is negative spread
-that produces a hollow ring. The spread expands the element's silhouette
-outward by the given distance while following the element's own
-`border-radius` exactly. The result is a band of perfectly uniform width
-on all four sides with clean rounded corners.
-
-The omni band is available as `.fp-elev--omni`, but the offset shadow is
-the default, because it is the shape the whole system is built around.
-
-### 3.4 Directional shadows
-
-Because a hard shadow keeps X and Y equal, a direction can only be
-expressed by the diagonal the shadow leans towards. Each variant's
-movement points the same way as its shadow, so no variant ever breaks
-the hover invariant.
+What survives is the **size scale**. A variant changes how far the
+shadow reaches, not where it points.
 
 | Class | Shadow | Hover movement |
 |-------|--------|-----------------|
-| *(default)* | `h h 0` | `translateY(h - 2px)` |
-| `.fp-elev--down` | `h h 0` | `translateY(h - 2px)` |
-| `.fp-elev--down-right` | `h h 0` | `translate(h - 2px, h - 2px)` |
-| `.fp-elev--right` | `h h 0` | `translateX(h - 2px)` |
-| `.fp-elev--left` | `-h -h 0` | `translateX(2px - h)` |
-| `.fp-elev--up` | `-h -h 0` | `translateY(2px - h)` |
+| *(default)* | `6px 6px 0` | `translateY(4px)` |
+| `.fp-elev--1` | `3px 3px 0` | `translateY(1px)` |
+| `.fp-elev--2` | `6px 6px 0` | `translateY(4px)` |
+| `.fp-elev--3` | `9px 9px 0` | `translateY(7px)` |
+| `.fp-elev--4` | `14px 14px 0` | `translateY(12px)` |
 
-### 3.5 The hover invariant
+There is no "down" modifier, because it would produce exactly the shadow
+the default already produces. A variant that changes nothing but its
+name is noise, and the library does not ship noise.
+
+### 3.4 The hover invariant
 
 **The direction of the movement and the direction of the shadow change
 must always agree.**
@@ -330,7 +349,7 @@ smaller, which is never what a hover means.
 In practice this means main elements only ever press **down** and sub
 elements only ever lift **up**.
 
-### 3.6 The press and the lift
+### 3.5 The press and the lift
 
 A main element rests on a shadow of height `H`. On hover:
 
@@ -359,7 +378,7 @@ resting on.
 }
 ```
 
-### 3.7 Shadow heights
+### 3.6 Shadow heights
 
 | Token | Value | Use |
 |-------|-------|-----|
@@ -375,7 +394,7 @@ resting on.
 
 ---
 
-### 3.8 Shadow specification at a glance
+### 3.7 Shadow specification at a glance
 
 | Property | Value |
 |----------|-------|
@@ -383,12 +402,39 @@ resting on.
 | Shadow colour (dark theme) | `#000309` — BLP ULTRA DEEP DARK |
 | Sub-element shadow | `rgba(0, 25, 61, 0.22)` |
 | Blur radius | `0` — always |
-| Offsets | Equal on X and Y (`h h 0`) |
-| Default build | Zero-blur, equal offsets |
-| Omni build | Zero-blur, positive spread (`0 0 0 h`) |
+| Offsets | **Positive and equal** on X and Y (`h h 0`) |
+| Spread | `0` — always. A positive spread is a border, not a shadow |
+| Direction | Bottom-right. Always. |
 | Hover (main) | Shadow collapses to `2px`, element descends by `h - 2px` |
 | Hover (sub) | Element rises by `h - sub`, shadow appears |
 | Forbidden | Moving up while the shadow shrinks or disappears |
+
+### 3.8 The accent border
+
+The accent has exactly two sanctioned uses, and neither of them is "make
+the element bigger" or "make the element move".
+
+**One — as a sub element's border.** This is how a sub element gets
+emphasised. The accent recolours the border that is already there; the
+element keeps its size, its place and its resting flatness.
+
+```html
+<div class="fp-list__item fp-sub--accent">…</div>
+```
+
+`.fp-sub--accent` is the one mechanism. It is a generic modifier rather
+than a per-component one (`.fp-list__item--accent`, `.fp-chip--accent`,
+`.fp-tab--accent`, …) because a generic modifier can be attached to
+*any* sub element, and a library with sixty components cannot afford
+sixty accent modifiers. The colour travels through the
+`--fp-sub-border-color` custom property rather than through a
+`border-color` declaration, so the modifier never has to win a
+specificity fight with the component's own border rule.
+
+**Two — as a block of colour behind emphasised text.** See
+[5. Typography](#5-typography) for the `fp-highlight` treatment.
+
+---
 
 ### Why the ink changed to `#00193d`
 
@@ -403,19 +449,23 @@ In the dark theme the ink inverts: `#d4dce8` (BLP LIGHT DARK) for borders
 and inverted fills, while the shadow itself stays `#000309` so it reads as
 shadow against the `#1e2b3d` surface.
 
-### The offset shadow versus the omni band
+### Why there is no four-sided band
 
-| | Offset (default) | Omni band |
-|---|---|---|
-| Looks like | A block printed on the surface | The element floats above it |
-| Geometry | Offset to the bottom-right | Band on all four sides |
-| Best for | Cards, panels, modals, buttons | Menus, edge-anchored panels |
-| Implemented as | `h h 0` (offset) | `0 0 0 h` (spread) |
+The band used to be available as `.fp-elev--omni`, built from
+`0 0 0 h` — a zero-blur shadow with a positive spread. It looked good,
+and it was geometrically correct: the spread follows the element's own
+`border-radius` exactly, so the corners stayed clean where four stacked
+offset shadows would have left notches.
 
-The offset shadow is the default because the system is about a light
-source in the top-left corner, and every element is lit the same way.
-The omni band is the exception, available where a surface must read as
-detached from the page rather than printed on it.
+It is gone because it is not a shadow. A band on all four sides is an
+outline, and the system already has a primitive for outlines: the real
+inline `border:` that every sub element carries. Two primitives for the
+same job is one too many, and the band quietly broke the rule that made
+the library feel like one thing — one light source, in the top-left
+corner, with every shadow falling to the bottom-right.
+
+An element that needs an outline on every side now uses a border. An
+element that needs depth uses a shadow. The two never swap.
 
 ---
 
@@ -490,6 +540,32 @@ section, immediately above a heading.
 
 **The lead** is a section-level intro paragraph: 18px, muted colour,
 `1.7` line height, capped at 640px wide.
+
+### Highlighted text
+
+When the accent emphasises *words* rather than an element, the treatment
+is a **rectangular block of accent colour** behind bold text:
+
+```html
+<p>Some <strong class="fp-highlight">emphasised words</strong> in a sentence.</p>
+```
+
+| Rule | Value | Why |
+|------|-------|-----|
+| Weight | `800` | The words must read as emphasised even without colour. |
+| Background | `--fp-accent` (`#007bff`) | The accent itself. |
+| Shape | A plain rectangle, `border-radius: 0` | A pill would soften the accent into a shape the system does not use. |
+| Text colour | `--fp-white` | `#007bff` is a mid-dark blue; white is the readable colour on top of it. |
+
+The class works on `<strong>` and on `<mark>` alike.
+
+`mark` is the **neutral** sibling of the same idea: it keeps its own
+yellow identity, so an ordinary editorial highlight does not spend the
+accent. The two are consistent — both are bold, both are rectangles with
+no radius — but they are not the same. `mark` is a primitive for
+marking something in a document; `fp-highlight` is the accent-emphasis
+primitive. A `<mark class="fp-highlight">` takes the accent treatment,
+because the more specific class is declared last.
 
 ---
 
