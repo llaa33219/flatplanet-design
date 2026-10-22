@@ -17,7 +17,7 @@
   background: var(--fp-surface);
   border: none;
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 5px var(--fp-shadow-color);
+  box-shadow: 0 5px 0 var(--fp-shadow-color);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-8px);
@@ -87,7 +87,7 @@
   background: var(--fp-surface);
   border: none;
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 6px var(--fp-shadow-color);
+  box-shadow: 0 8px 0 var(--fp-shadow-color);
   transform: translateY(16px) scale(0.98);
   transition: transform var(--fp-duration-default) var(--fp-ease-out);
 }
@@ -185,7 +185,7 @@
   border: var(--fp-border-width-sm) solid var(--fp-line-strong);
   border-left-width: 6px;
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 4px var(--fp-shadow-color);
+  box-shadow: 0 4px 0 var(--fp-shadow-color);
   font-size: var(--fp-text-sm);
   font-weight: 600;
   pointer-events: auto;
@@ -239,7 +239,7 @@
   background: var(--fp-surface);
   border: none;
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 6px var(--fp-shadow-color);
+  box-shadow: 0 10px 0 var(--fp-shadow-color);
   overflow: hidden;
 }
 .fp-hero__title { font-size: var(--fp-text-6xl); line-height: 1.05; margin-block: var(--fp-space-4) var(--fp-space-6); }
@@ -255,7 +255,7 @@
   background: var(--fp-surface);
   border: none;
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 6px var(--fp-shadow-color);
+  box-shadow: 0 8px 0 var(--fp-shadow-color);
 }
 .fp-feature--reverse { flex-direction: row-reverse; }
 .fp-feature__body { flex: 1; display: flex; flex-direction: column; gap: var(--fp-space-4); }
@@ -302,6 +302,7 @@
   background: var(--fp-ink);
   color: var(--fp-white);
   border-radius: var(--fp-radius-sm);
+  box-shadow: 0 3px 0 var(--fp-shadow-color);
 }
 .fp-navbar__links { display: flex; align-items: center; gap: var(--fp-space-1); }
 .fp-navbar__link {
@@ -312,7 +313,9 @@
   font-size: var(--fp-text-sm);
   font-weight: 700;
   color: var(--fp-text-muted);
+  border: var(--fp-border-width-sm) solid transparent;
   border-radius: var(--fp-radius-sm);
+  box-shadow: 0 2px 0 var(--fp-shadow-color-sub);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
     color var(--fp-duration-default) var(--fp-ease),
@@ -325,7 +328,7 @@
   box-shadow: 0 3px 0 var(--fp-shadow-color-sub);
   text-decoration: none;
 }
-.fp-navbar__link.is-active { color: var(--fp-text); background: var(--fp-bg-gray); }
+.fp-navbar__link.is-active { color: var(--fp-text); background: var(--fp-bg-gray); border-color: var(--fp-line-strong); }
 .fp-navbar__actions { margin-left: auto; display: flex; align-items: center; gap: var(--fp-space-3); }
 
 /* Sidebar navigation */
@@ -339,7 +342,7 @@
   background: var(--fp-surface);
   border: none;
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 6px var(--fp-shadow-color);
+  box-shadow: 0 6px 0 var(--fp-shadow-color);
 }
 .fp-sidebar__group { display: flex; flex-direction: column; gap: var(--fp-space-1); }
 .fp-sidebar__title {
@@ -358,7 +361,9 @@
   font-size: var(--fp-text-sm);
   font-weight: 700;
   color: var(--fp-text-muted);
+  border: var(--fp-border-width-sm) solid transparent;
   border-radius: var(--fp-radius-sm);
+  box-shadow: 0 2px 0 var(--fp-shadow-color-sub);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
     color var(--fp-duration-default) var(--fp-ease),
@@ -372,7 +377,7 @@
   box-shadow: 0 3px 0 var(--fp-shadow-color-sub);
   text-decoration: none;
 }
-.fp-sidebar__item.is-active { color: var(--fp-surface); background: var(--fp-ink); box-shadow: none; }
+.fp-sidebar__item.is-active { color: var(--fp-surface); background: var(--fp-ink); border-color: transparent; box-shadow: 0 2px 0 var(--fp-shadow-color); }
 
 /* ==========================================================================
    MENU BAR
@@ -451,6 +456,7 @@
   background: var(--fp-surface);
   border: var(--fp-border-width-sm) dashed var(--fp-ink-muted);
   border-radius: var(--fp-radius);
+  box-shadow: 0 4px 0 var(--fp-shadow-color);
 }
 .fp-empty__icon {
   display: grid;
@@ -500,7 +506,7 @@
   background: var(--fp-surface);
   border: none;
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 5px var(--fp-shadow-color);
+  box-shadow: 0 5px 0 var(--fp-shadow-color);
 }
 .fp-panel--flat { box-shadow: none; }
 
@@ -514,6 +520,7 @@
   background: var(--fp-tint-info);
   border: var(--fp-border-width-sm) solid var(--fp-blue-soft);
   border-radius: var(--fp-radius);
+  box-shadow: 0 3px 0 var(--fp-shadow-color-sub);
   font-size: var(--fp-text-sm);
   line-height: 1.65;
   color: var(--fp-tint-info-fg);
@@ -534,12 +541,12 @@
   background: var(--fp-surface);
   border: none;
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 6px var(--fp-shadow-color);
+  box-shadow: 0 6px 0 var(--fp-shadow-color);
   transition: transform var(--fp-duration-default) var(--fp-ease), box-shadow var(--fp-duration-default) var(--fp-ease);
 }
-.fp-price-card:hover { transform: translateY(4px); box-shadow: 0 0 0 2px var(--fp-shadow-color); }
+.fp-price-card:hover { transform: translateY(4px); box-shadow: 0 2px 0 var(--fp-shadow-color); }
 .fp-price-card--featured {
-  box-shadow: 0 0 0 6px var(--fp-accent);
+  box-shadow: 0 6px 0 var(--fp-accent);
 }
 .fp-price-card__price { display: flex; align-items: baseline; gap: var(--fp-space-2); }
 .fp-price-card__amount { font-size: var(--fp-text-4xl); font-weight: 800; line-height: 1; }
@@ -618,10 +625,10 @@
   border-radius: var(--fp-radius);
   overflow: hidden;
   background: var(--fp-surface);
-  box-shadow: 0 0 0 3px var(--fp-shadow-color);
+  box-shadow: 0 3px 0 var(--fp-shadow-color);
   transition: transform var(--fp-duration-default) var(--fp-ease), box-shadow var(--fp-duration-default) var(--fp-ease);
 }
-.fp-swatch:hover { transform: translateY(3px); box-shadow: 0 0 0 2px var(--fp-shadow-color); }
+.fp-swatch:hover { transform: translateY(1px); box-shadow: 0 2px 0 var(--fp-shadow-color); }
 .fp-swatch__chip {
   height: 84px;
 }
@@ -640,7 +647,7 @@
   padding: var(--fp-space-5);
   background: var(--fp-surface);
   border-radius: var(--fp-radius);
-  box-shadow: 0 0 0 4px var(--fp-shadow-color);
+  box-shadow: 0 4px 0 var(--fp-shadow-color);
 }
 .fp-spec__label { font-size: var(--fp-text-xs); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fp-text-muted); }
 .fp-spec__value { font-size: var(--fp-text-2xl); font-weight: 800; font-variant-numeric: tabular-nums; }

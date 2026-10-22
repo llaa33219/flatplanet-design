@@ -138,10 +138,73 @@
   </div>
 </section>
 
+
+<!-- ================= ELEVATION ================= -->
+<section class="fp-section fp-container" id="elevation">
+  <div class="fp-section__head">
+    <span class="fp-kicker">02 — Elevation</span>
+    <h2 class="fp-section__title">Hard Shadows</h2>
+    <p class="fp-section__desc">
+      Every shadow is a solid block of ink with zero blur. Main elements carry a hard shadow
+      and <strong>no border</strong> — the shadow is their outline. Sub elements carry a real
+      inline 4px border and a soft shadow. The ink is <code class="fp-code">#00193d</code>.
+    </p>
+  </div>
+
+  <div class="fp-grid fp-grid--3">
+    <div class="fp-panel fp-stack">
+      <span class="fp-kicker">Main · directional</span>
+      <div class="fp-elev fp-elev--3" style="height: 96px; background: var(--fp-surface); border-radius: var(--fp-radius); display: grid; place-items: center; font-weight: 800;">
+        Floats
+      </div>
+      <p class="fp-text-sm fp-text-muted">No border. A hard shadow in ink, offset below the element. On hover the shadow collapses to 2px and the element presses down into the surface.</p>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <span class="fp-kicker">Main · omni</span>
+      <div class="fp-elev fp-elev--omni fp-elev--3" style="height: 96px; background: var(--fp-surface); border-radius: var(--fp-radius); display: grid; place-items: center; font-weight: 800;">
+        Band
+      </div>
+      <p class="fp-text-sm fp-text-muted">A band on all four sides, built from a zero-blur shadow with positive spread. It follows the element's own border-radius, so the corners stay clean.</p>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <span class="fp-kicker">Sub element</span>
+      <div style="height: 96px; background: var(--fp-surface-sunken); border-radius: var(--fp-radius); display: grid; place-items: center;">
+        <span class="fp-sub" style="padding: var(--fp-space-3) var(--fp-space-5); background: var(--fp-surface); border-radius: var(--fp-radius-sm); font-weight: 800; font-size: var(--fp-text-sm);">
+          Lifts on hover
+        </span>
+      </div>
+      <p class="fp-text-sm fp-text-muted">A real inline 4px border, drawn inside the layout box, plus a soft shadow. It rises when the pointer arrives. The parent presses in as the child lifts out.</p>
+    </div>
+  </div>
+
+  <div class="fp-panel" style="margin-top: var(--fp-space-8)">
+    <h3 class="fp-text-lg" style="margin-bottom: var(--fp-space-5)">Shadow heights</h3>
+    <div class="fp-row">
+      <div class="fp-elev fp-elev--1" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">3px</div>
+      <div class="fp-elev fp-elev--2" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">6px</div>
+      <div class="fp-elev fp-elev--3" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">9px</div>
+      <div class="fp-elev fp-elev--4" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">14px</div>
+    </div>
+  </div>
+
+  <div class="fp-panel" style="margin-top: var(--fp-space-8)">
+    <h3 class="fp-text-lg" style="margin-bottom: var(--fp-space-5)">Shadow directions</h3>
+    <div class="fp-row">
+      <div class="fp-elev fp-elev--down" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Down</div>
+      <div class="fp-elev fp-elev--up" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Up</div>
+      <div class="fp-elev fp-elev--right" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Right</div>
+      <div class="fp-elev fp-elev--left" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Left</div>
+      <div class="fp-elev fp-elev--down-right" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">Down-right</div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= TOKENS / PALETTE ================= -->
 <section class="fp-section fp-container" id="palette">
   <div class="fp-section__head">
-    <span class="fp-kicker">02 — Colour</span>
+    <span class="fp-kicker">03 — Colour</span>
     <h2 class="fp-section__title">BLP Palette</h2>
     <p class="fp-section__desc">The complete palette extracted from <code class="fp-code">색깔-3.pdf</code> — 60 colours across seven hues with base, deep, ultra-deep, soft, light, light-deep and light-ultra-deep steps.</p>
   </div>
@@ -151,7 +214,7 @@
 <!-- ================= BUTTONS ================= -->
 <section class="fp-section fp-container" id="buttons">
   <div class="fp-section__head">
-    <span class="fp-kicker">03 — Actions</span>
+    <span class="fp-kicker">04 — Actions</span>
     <h2 class="fp-section__title">Buttons</h2>
     <p class="fp-section__desc">Buttons are main elements. They carry a hard shadow that collapses to 2&nbsp;px on hover while the button presses down by the difference.</p>
   </div>
@@ -216,7 +279,7 @@
 <!-- ================= FORMS ================= -->
 <section class="fp-section fp-container" id="forms">
   <div class="fp-section__head">
-    <span class="fp-kicker">04 — Input</span>
+    <span class="fp-kicker">05 — Input</span>
     <h2 class="fp-section__title">Forms</h2>
     <p class="fp-section__desc">Inputs press down on hover like buttons. Labels, hints and validation messages stack under the control.</p>
   </div>
@@ -317,14 +380,14 @@
 <!-- ================= SURFACES ================= -->
 <section class="fp-section fp-container" id="surfaces">
   <div class="fp-section__head">
-    <span class="fp-kicker">05 — Surfaces</span>
+    <span class="fp-kicker">06 — Surfaces</span>
     <h2 class="fp-section__title">Cards &amp; Panels</h2>
     <p class="fp-section__desc">Cards are main elements with a hard shadow. Their inner blocks act as sub elements and lift on hover.</p>
   </div>
 
   <div class="fp-grid fp-grid--3">
     <article class="fp-card">
-      <div class="fp-card__media" style="background: var(--fp-blue-light); display:grid; place-items:center;">
+      <div class="fp-card__media" style="background: var(--fp-tint-info); display:grid; place-items:center;">
         <span class="fp-icon-tile fp-icon-tile--lg fp-icon-tile--light">
           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9M14 17H5M17 4v5M7 15v5"/></svg>
         </span>
@@ -390,7 +453,7 @@
 
   <!-- Feature panel -->
   <div class="fp-feature" style="margin-top: var(--fp-space-8)">
-    <div class="fp-feature__art" style="background: var(--fp-blue-light);">
+    <div class="fp-feature__art" style="background: var(--fp-tint-info);">
       <span class="fp-icon-tile fp-icon-tile--lg">
         <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
       </span>
@@ -410,7 +473,7 @@
 <!-- ================= NAVIGATION ================= -->
 <section class="fp-section fp-container" id="navigation">
   <div class="fp-section__head">
-    <span class="fp-kicker">06 — Navigation</span>
+    <span class="fp-kicker">07 — Navigation</span>
     <h2 class="fp-section__title">Navigation &amp; Menus</h2>
     <p class="fp-section__desc">Nav links are sub elements: they lift and gain a soft hard-shadow on hover.</p>
   </div>
@@ -493,7 +556,7 @@
 <!-- ================= FEEDBACK ================= -->
 <section class="fp-section fp-container" id="feedback">
   <div class="fp-section__head">
-    <span class="fp-kicker">07 — Feedback</span>
+    <span class="fp-kicker">08 — Feedback</span>
     <h2 class="fp-section__title">Alerts &amp; Notifications</h2>
     <p class="fp-section__desc">Colour-coded status surfaces. Each alert has a 6&nbsp;px left border and a solid shadow.</p>
   </div>
@@ -536,7 +599,7 @@
 <!-- ================= DATA ================= -->
 <section class="fp-section fp-container" id="data">
   <div class="fp-section__head">
-    <span class="fp-kicker">08 — Data</span>
+    <span class="fp-kicker">09 — Data</span>
     <h2 class="fp-section__title">Tables &amp; Display</h2>
     <p class="fp-section__desc">Tables sit in a bordered shell with a hard shadow. Rows lift a soft tint on hover.</p>
   </div>
@@ -628,7 +691,7 @@
           </div>
         </div>
         <div class="fp-timeline__item">
-          <span class="fp-timeline__dot" style="background: var(--fp-yellow); color: var(--fp-dark-ultra-deep);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/></svg></span>
+          <span class="fp-timeline__dot" style="background: var(--fp-yellow-light);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/></svg></span>
           <div class="fp-timeline__content">
             <div class="fp-timeline__time">11:02</div>
             <div class="fp-text-md" style="font-weight:700">Build in progress</div>
@@ -636,7 +699,7 @@
           </div>
         </div>
         <div class="fp-timeline__item">
-          <span class="fp-timeline__dot" style="background: var(--fp-dark-light-ultra-deep);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg></span>
+          <span class="fp-timeline__dot"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg></span>
           <div class="fp-timeline__content">
             <div class="fp-timeline__time">13:47</div>
             <div class="fp-text-md" style="font-weight:700">Deployed to production</div>
@@ -649,7 +712,7 @@
     <div class="fp-panel">
       <h3 class="fp-text-lg" style="margin-bottom: var(--fp-space-4)">Pricing</h3>
       <div class="fp-grid" style="grid-template-columns: 1fr 1fr; gap: var(--fp-space-4)">
-        <div class="fp-price-card" style="padding: var(--fp-space-5); box-shadow: 0 5px 0 var(--fp-shadow-color);">
+        <div class="fp-price-card" style="padding: var(--fp-space-5);">
           <div>
             <div class="fp-text-xs fp-text-muted fp-text-uppercase" style="font-weight:800; letter-spacing:.1em">Starter</div>
             <div class="fp-price-card__price" style="margin-top: var(--fp-space-2)">
@@ -685,7 +748,7 @@
 <!-- ================= OVERLAY / ACCORDION ================= -->
 <section class="fp-section fp-container" id="overlay">
   <div class="fp-section__head">
-    <span class="fp-kicker">09 — Overlay</span>
+    <span class="fp-kicker">10 — Overlay</span>
     <h2 class="fp-section__title">Modals, Drawers &amp; Disclosure</h2>
     <p class="fp-section__desc">Overlays use the same shell as cards — 36&nbsp;px radius, hard shadow, solid scrim.</p>
   </div>
