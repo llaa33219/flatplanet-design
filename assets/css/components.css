@@ -100,7 +100,7 @@
 }
 
 .fp-btn--dark {
-  --fp-btn-bg: var(--fp-dark-ultra-deep);
+  --fp-btn-bg: var(--fp-surface-ink);
   --fp-btn-fg: var(--fp-white);
 }
 .fp-btn--dark:hover:not(:disabled) { --fp-btn-bg: var(--fp-dark-deep); }

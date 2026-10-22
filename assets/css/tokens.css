@@ -124,6 +124,8 @@
   --fp-ink-soft:                #3e4d5f;                /* BLP SUB DARK   */
   --fp-ink-muted:               #94989e;                /* LIGHT ULTRA    */
   --fp-ink-faint:               #c7cbd1;                /* LIGHT DEEP     */
+  --fp-ink-border:              #00193d;                /* sub borders    */
+  --fp-surface-ink:             #000309;                /* inverted fills */
 
   /* --- Text ----------------------------------------------------------- */
   --fp-text:                    var(--fp-dark-ultra-deep); /* #000309      */
@@ -262,11 +264,17 @@
   --fp-page-bg:            var(--fp-dark-ultra-deep); /* #000309          */
   --fp-overlay-scrim:      rgba(0, 3, 9, 0.7);
 
-  /* --- Ink ------------------------------------------------------------ */
-  --fp-ink:                #d4dce8;   /* BLP LIGHT DARK — ink inverts     */
+  /* --- Ink ------------------------------------------------------------
+     The ink inverts for fills (an inverted surface needs light ink), but
+     the SUB-ELEMENT BORDER does not: a light border on a dark surface
+     screams for attention and destroys the quiet outline a sub element
+     is supposed to have. The border keeps a dim ink instead, only a
+     step above the surface it sits on. */
+  --fp-ink:                #d4dce8;   /* BLP LIGHT DARK — for inverted fills */
   --fp-ink-soft:           var(--fp-dark-light-deep);
   --fp-ink-muted:          var(--fp-dark-light-ultra-deep);
   --fp-ink-faint:          #2a3a52;
+  --fp-ink-border:         #3d5170;   /* dim ink for sub-element borders    */
 
   /* --- Text ----------------------------------------------------------- */
   --fp-text:               var(--fp-white);
@@ -276,11 +284,19 @@
 
   /* --- Lines ---------------------------------------------------------- */
   --fp-line:               #2a3a52;
-  --fp-line-strong:        var(--fp-ink);
+  --fp-line-strong:        var(--fp-ink-border);
 
-  /* --- Shadows: the ink is now light, so shadows read as a glow band --- */
+  /* --- Shadows
+     The shadow stays dark. A light shadow on a dark surface reads as a
+     glow, not as depth, and the hard-shadow character of the system
+     would be lost. It is the canvas colour, so a main element reads as
+     a solid block sitting on the page. */
   --fp-shadow-color:       #000309;
-  --fp-shadow-color-sub:   rgba(0, 3, 9, 0.6);
+  --fp-shadow-color-sub:   rgba(0, 3, 9, 0.75);
+
+  /* --- Dark button fill: the canvas colour would vanish into the page,
+     so it takes a lifted ink instead. */
+  --fp-surface-ink:        #24344a;
 
   /* --- Neutral fills that would otherwise stay light ------------------ */
   --fp-bg-gray:            #14202f;
