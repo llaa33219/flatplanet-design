@@ -447,8 +447,20 @@ def main():
         for (dx, dy, blur, spread, colour) in parse_shadow(decl(r.body, "box-shadow"), ctx_for(base_of(r.selector))):
             if blur != 0:
                 fail(f"{name}: '{r.selector}' shadow has blur {blur:g}px — shadows must be hard (blur 0)")
-            if dx != dy and spread == 0:
-                fail(f"{name}: '{r.selector}' shadow offsets differ (x={dx:g}, y={dy:g}) — main shadows must be square (x == y)")
+            # THE SHADOW CONTRACT
+            #   * X and Y offsets are both POSITIVE — a shadow always
+            #     falls to the bottom-right. A negative offset means the
+            #     shadow falls the wrong way, and the system forbids it.
+            #   * X and Y are EQUAL — a square shadow, never a skewed one.
+            #   * blur is 0 (checked above) and spread is 0. A positive
+            #     spread paints a band on all four sides; that is a
+            #     border, not a shadow, and it is forbidden.
+            if spread != 0:
+                fail(f"{name}: '{r.selector}' shadow has spread {spread:g}px — spread paints a band on all four sides, which is a border, not a shadow")
+            if dx <= 0 or dy <= 0:
+                fail(f"{name}: '{r.selector}' shadow offsets must be POSITIVE (x={dx:g}, y={dy:g}) — shadows always fall to the bottom-right")
+            elif dx != dy:
+                fail(f"{name}: '{r.selector}' shadow offsets differ (x={dx:g}, y={dy:g}) — shadows must be square (x == y)")
 
     # ---- 2. main elements: no border, and they do have a shadow --------
     for marker in MAIN_MARKERS:
