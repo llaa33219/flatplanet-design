@@ -260,7 +260,7 @@ its border and its shadow.
 |---|---|---|
 | **Examples** | Cards, panels, buttons, modals, hero, stat tiles | List items, tabs, chips, tags, inputs, badges |
 | **Border** | **None** | **4px** (`--fp-border-width`), 2px under 40px tall |
-| **Shadow** | Full-strength ink, hard, offset equally on X and Y | **None at rest** — it appears on hover |
+| **Shadow** | The system's one shadow ink, offset equally and positively | **None at rest** — it appears on hover |
 | **On hover** | Presses **down**, shadow shrinks | **Lifts up**, shadow appears |
 | **Purpose** | Floats above the page | Sits inside a main element |
 
@@ -283,7 +283,7 @@ That is the whole contract, and it is not negotiable:
 - the spread is **0**
 
 ```css
-box-shadow: 6px 6px 0 var(--fp-shadow-color);
+box-shadow: 6px 6px 0 var(--fp-shadow-color-sub);
 ```
 
 Three consequences follow, and all three are mandatory.
@@ -304,8 +304,14 @@ sub element already has.
 a printed block rather than a glow. A shadow of `8px 8px 0` is the same
 shape as `6px 6px 0`, only bigger.
 
-The shadow colour is `--fp-shadow-color`, which is `--fp-ink`
-(`#00193d`). The ink is the only depth colour in the system.
+The shadow colour is `--fp-shadow-color-sub`. There is exactly one
+shadow colour in the system: main elements and sub elements share it, so
+a lifted sub element and a pressed main element are made of the same ink.
+
+In the light theme it is `rgba(0, 25, 61, 0.22)` — the BLP DARK `#00193d`
+at low opacity, so a shadow reads as ink soaking into the page rather
+than as a solid block sitting on it. In the dark theme it is the
+palette's darkest `#000309`, which is darker than the canvas.
 
 ### 3.3 Sizes, not directions
 
@@ -362,7 +368,7 @@ when the pointer leaves.
 
 ```css
 .fp-elev:hover {
-  box-shadow: 2px 2px 0 var(--fp-shadow-color);
+  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
   transform: translateY(calc((var(--fp-elev-h) - 2px)));
 }
 ```
@@ -398,9 +404,8 @@ resting on.
 
 | Property | Value |
 |----------|-------|
-| Shadow colour (light theme) | `#00193d` — BLP DARK |
-| Shadow colour (dark theme) | `#000309` — BLP ULTRA DEEP DARK |
-| Sub-element shadow | `rgba(0, 25, 61, 0.22)` |
+| Shadow colour (light theme) | `rgba(0, 25, 61, 0.22)` — BLP DARK at low opacity |
+| Shadow colour (dark theme) | `#000309` — BLP ULTRA DEEP DARK, darker than the canvas |
 | Blur radius | `0` — always |
 | Offsets | **Positive and equal** on X and Y (`h h 0`) |
 | Spread | `0` — always. A positive spread is a border, not a shadow |

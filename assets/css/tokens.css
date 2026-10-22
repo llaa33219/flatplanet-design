@@ -190,9 +190,11 @@
   --fp-border-width-sm:         2px;   /* micro elements (< 40px tall)        */
   --fp-border-width-strong:     4px;
 
-  /* --- Elevation — HARD shadows only. Zero blur, always. --------------- */
-  --fp-shadow-color:            var(--fp-ink);        /* #00193d            */
-  --fp-shadow-color-sub:        rgba(0, 25, 61, 0.22);/* sub elements       */
+  /* --- Elevation — HARD shadows only. Zero blur, always. ---------------
+     ONE shadow colour for the whole system. Main and sub elements share
+     it, so a lifted sub element and a pressed main element are made of
+     the same ink. */
+  --fp-shadow-color-sub:        rgba(0, 25, 61, 0.22);/* the only shadow ink */
 
   /* --- Motion — 0.1s fast / 0.2s default / 0.3s slow ---------------- */
   --fp-duration-fast:           0.1s;
@@ -265,7 +267,7 @@
   --fp-surface-sunken:     #14202f;
   --fp-surface-inverse:    var(--fp-white);
   --fp-surface-inverse-soft: var(--fp-dark-soft);
-  --fp-page-bg:            var(--fp-dark-ultra-deep); /* #000309          */
+  --fp-page-bg:            #0b1524;   /* lifted off black so the shadow band reads */
   --fp-overlay-scrim:      rgba(0, 3, 9, 0.7);
 
   /* --- Ink ------------------------------------------------------------
@@ -293,10 +295,14 @@
   /* --- Shadows
      The shadow stays dark. A light shadow on a dark surface reads as a
      glow, not as depth, and the hard-shadow character of the system
-     would be lost. It is the canvas colour, so a main element reads as
-     a solid block sitting on the page. */
-  --fp-shadow-color:       #000309;
-  --fp-shadow-color-sub:   rgba(0, 3, 9, 0.75);
+     would be lost.
+
+     The shadow is one step darker than the canvas, not the same colour
+     as it. A shadow that matches the canvas exactly is invisible: the
+     eye reads the element as a flat shape rather than as a block
+     floating above the page. The canvas is therefore lifted to #0b1524
+     and the shadow stays at the palette's darkest #000309. */
+  --fp-shadow-color-sub:   #000309;   /* darker than the canvas, so the band is visible */
 
   /* --- Dark button fill: the canvas colour would vanish into the page,
      so it takes a lifted ink instead. */

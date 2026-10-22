@@ -72,7 +72,7 @@
   position: relative;
   /* A main element carries no border: the shadow is its outline. */
   border: none;
-  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color);
+  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color-sub);
   transition:
     box-shadow var(--fp-duration-default) var(--fp-ease),
     transform var(--fp-duration-default) var(--fp-ease),
@@ -86,7 +86,7 @@
 .fp-elev:hover,
 .fp-elev:focus-visible,
 .fp-elev:active {
-  box-shadow: 2px 2px 0 var(--fp-shadow-color);
+  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
   transform: translateY(calc((var(--fp-elev-h) - 2px)));
 }
 
@@ -151,8 +151,8 @@
 /* --------------------------------------------------------------------------
    STATIC SHADOWS — no press behaviour. Same contract: down-right, hard.
    -------------------------------------------------------------------------- */
-.fp-shadow-1    { box-shadow: 3px 3px 0 var(--fp-shadow-color); }
-.fp-shadow-2    { box-shadow: 6px 6px 0 var(--fp-shadow-color); }
-.fp-shadow-3    { box-shadow: 9px 9px 0 var(--fp-shadow-color); }
-.fp-shadow-4    { box-shadow: 14px 14px 0 var(--fp-shadow-color); }
+.fp-shadow-1    { box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
+.fp-shadow-2    { box-shadow: 6px 6px 0 var(--fp-shadow-color-sub); }
+.fp-shadow-3    { box-shadow: 9px 9px 0 var(--fp-shadow-color-sub); }
+.fp-shadow-4    { box-shadow: 14px 14px 0 var(--fp-shadow-color-sub); }
 .fp-shadow-none { box-shadow: none; }
