@@ -1,0 +1,324 @@
+/* ==========================================================================
+   FlatPlanet — Base layer
+   Reset, typography, layout primitives, utilities.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Reset
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; padding: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--fp-font-sans);
+  font-size: var(--fp-text-base);
+  line-height: 1.6;
+  color: var(--fp-text);
+  background-color: var(--fp-page-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--fp-duration-slow) var(--fp-ease),
+              color var(--fp-duration-slow) var(--fp-ease);
+}
+
+img, svg, video, canvas, picture { display: block; max-width: 100%; }
+svg { fill: none; }
+
+input, button, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: none; cursor: pointer; }
+
+ul, ol { list-style: none; }
+
+a { color: var(--fp-text-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+
+hr {
+  border: none;
+  border-top: var(--fp-border-width) solid var(--fp-border-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   Focus — visible, consistent, never removed
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: var(--fp-border-width-strong) solid var(--fp-accent);
+  outline-offset: 3px;
+  border-radius: var(--fp-radius-xs);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+::selection {
+  background: var(--fp-blue);
+  color: var(--fp-white);
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbars
+   -------------------------------------------------------------------------- */
+* { scrollbar-width: thin; scrollbar-color: var(--fp-dark-light-ultra-deep) transparent; }
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--fp-dark-light-ultra-deep);
+  border: 3px solid transparent;
+  border-radius: var(--fp-radius-pill);
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--fp-sub-dark); background-clip: content-box; }
+
+/* --------------------------------------------------------------------------
+   Typography
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--fp-text);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fp-text-5xl); }
+h2 { font-size: var(--fp-text-4xl); }
+h3 { font-size: var(--fp-text-3xl); }
+h4 { font-size: var(--fp-text-2xl); }
+h5 { font-size: var(--fp-text-xl); }
+h6 { font-size: var(--fp-text-lg); }
+
+p { text-wrap: pretty; }
+
+code, kbd, samp, pre { font-family: var(--fp-font-mono); font-size: 0.9em; }
+
+strong, b { font-weight: 800; }
+em, i { font-style: italic; }
+
+mark {
+  background: var(--fp-yellow);
+  color: var(--fp-dark-ultra-deep);
+  padding: 0.1em 0.3em;
+  border-radius: var(--fp-radius-xs);
+}
+
+small { font-size: var(--fp-text-sm); }
+
+blockquote {
+  border-left: var(--fp-border-width-strong) solid var(--fp-accent);
+  padding: var(--fp-space-4) var(--fp-space-6);
+  background: var(--fp-surface);
+  border-radius: 0 var(--fp-radius) var(--fp-radius) 0;
+}
+
+hr + * { margin-top: var(--fp-space-6); }
+
+/* --------------------------------------------------------------------------
+   Layout primitives
+   -------------------------------------------------------------------------- */
+.fp-container {
+  width: 100%;
+  max-width: var(--fp-container);
+  margin-inline: auto;
+  padding-inline: var(--fp-space-6);
+}
+.fp-container--wide { max-width: var(--fp-container-wide); }
+.fp-container--narrow { max-width: var(--fp-container-narrow); }
+
+.fp-stack { display: flex; flex-direction: column; gap: var(--fp-space-4); }
+.fp-stack--tight { gap: var(--fp-space-2); }
+.fp-stack--loose { gap: var(--fp-space-8); }
+
+.fp-row {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-4);
+  flex-wrap: wrap;
+}
+.fp-row--tight { gap: var(--fp-space-2); }
+.fp-row--between { justify-content: space-between; }
+.fp-row--center { justify-content: center; }
+.fp-row--end { justify-content: flex-end; }
+.fp-row--top { align-items: flex-start; }
+.fp-row--baseline { align-items: baseline; }
+
+.fp-grid { display: grid; gap: var(--fp-space-6); }
+.fp-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fp-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.fp-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.fp-grid--auto { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.fp-grid--auto-sm { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+
+.fp-divider { height: var(--fp-border-width); background: var(--fp-border-subtle); border: none; }
+.fp-divider--vertical { width: var(--fp-border-width); height: auto; align-self: stretch; }
+
+/* --------------------------------------------------------------------------
+   Text utilities
+   -------------------------------------------------------------------------- */
+.fp-text-xs   { font-size: var(--fp-text-xs); }
+.fp-text-sm   { font-size: var(--fp-text-sm); }
+.fp-text-md   { font-size: var(--fp-text-md); }
+.fp-text-lg   { font-size: var(--fp-text-lg); }
+.fp-text-xl   { font-size: var(--fp-text-xl); }
+.fp-text-2xl  { font-size: var(--fp-text-2xl); }
+.fp-text-3xl  { font-size: var(--fp-text-3xl); }
+.fp-text-muted { color: var(--fp-text-muted); }
+.fp-text-subtle { color: var(--fp-text-subtle); }
+.fp-text-accent { color: var(--fp-text-accent); }
+.fp-text-danger { color: var(--fp-text-danger); }
+.fp-text-success { color: var(--fp-text-success); }
+.fp-text-warning { color: var(--fp-text-warning); }
+.fp-text-inverse { color: var(--fp-text-inverse); }
+.fp-text-center { text-align: center; }
+.fp-text-mono { font-family: var(--fp-font-mono); }
+.fp-text-uppercase { text-transform: uppercase; letter-spacing: 0.08em; }
+.fp-text-nowrap { white-space: nowrap; }
+.fp-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.fp-lead { font-size: var(--fp-text-md); color: var(--fp-text-muted); line-height: 1.7; }
+
+.fp-kicker {
+  font-size: var(--fp-text-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--fp-accent);
+}
+
+/* --------------------------------------------------------------------------
+   Visibility helpers
+   -------------------------------------------------------------------------- */
+.fp-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.fp-hidden { display: none !important; }
+.fp-invisible { visibility: hidden; }
+
+/* --------------------------------------------------------------------------
+   Motion utilities — 0.1s fast / 0.2s default / 0.3s slow
+   -------------------------------------------------------------------------- */
+.fp-dur-fast    { transition-duration: var(--fp-duration-fast); }
+.fp-dur-default { transition-duration: var(--fp-duration-default); }
+.fp-dur-slow    { transition-duration: var(--fp-duration-slow); }
+
+.fp-ease-default { transition-timing-function: var(--fp-ease); }
+.fp-ease-out     { transition-timing-function: var(--fp-ease-out); }
+.fp-ease-in-out  { transition-timing-function: var(--fp-ease-in-out); }
+
+/* Standard transition bundle used by every interactive component */
+.fp-transition {
+  transition:
+    background-color var(--fp-duration-default) var(--fp-ease),
+    color var(--fp-duration-default) var(--fp-ease),
+    border-color var(--fp-duration-default) var(--fp-ease),
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease),
+    opacity var(--fp-duration-default) var(--fp-ease);
+}
+.fp-transition--fast {
+  transition:
+    background-color var(--fp-duration-fast) var(--fp-ease),
+    color var(--fp-duration-fast) var(--fp-ease),
+    border-color var(--fp-duration-fast) var(--fp-ease),
+    box-shadow var(--fp-duration-fast) var(--fp-ease),
+    transform var(--fp-duration-fast) var(--fp-ease),
+    opacity var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-transition--slow {
+  transition:
+    background-color var(--fp-duration-slow) var(--fp-ease),
+    color var(--fp-duration-slow) var(--fp-ease),
+    border-color var(--fp-duration-slow) var(--fp-ease),
+    box-shadow var(--fp-duration-slow) var(--fp-ease),
+    transform var(--fp-duration-slow) var(--fp-ease),
+    opacity var(--fp-duration-slow) var(--fp-ease);
+}
+
+/* --------------------------------------------------------------------------
+   Elevation system
+   --------------------------------------------------------------------------
+   MAIN elements carry a hard shadow. Two custom properties drive everything:
+     --fp-elev-h  : the shadow height (band thickness / offset), e.g. 6px
+     --fp-elev-h-sub : the shadow height used by sub elements, e.g. 3px
+
+   Hover behaviour (the FlatPlanet press):
+     MAIN element  → the visible shadow shrinks to 2px and the element
+                     descends by (--fp-elev-h - 2px).  The shadow's absolute
+                     geometry is preserved, so the element visibly presses into
+                     the surface it was floating on.
+     SUB element   → the element rises by --fp-elev-h-sub and gains a hard
+                     shadow of that same height, so it lifts off the surface.
+   -------------------------------------------------------------------------- */
+.fp-elev {
+  --fp-elev-h: 6px;
+  box-shadow: 0 var(--fp-elev-h) 0 var(--fp-shadow-color);
+  transition:
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease),
+    background-color var(--fp-duration-default) var(--fp-ease),
+    color var(--fp-duration-default) var(--fp-ease),
+    border-color var(--fp-duration-default) var(--fp-ease);
+}
+.fp-elev:hover {
+  box-shadow: 0 2px 0 var(--fp-shadow-color);
+  transform: translateY(calc((var(--fp-elev-h) - 2px)));
+}
+.fp-elev:focus-visible {
+  box-shadow: 0 2px 0 var(--fp-shadow-color);
+  transform: translateY(calc((var(--fp-elev-h) - 2px)));
+}
+.fp-elev:active {
+  box-shadow: 0 2px 0 var(--fp-shadow-color);
+  transform: translateY(calc((var(--fp-elev-h) - 2px)));
+}
+
+.fp-elev--1 { --fp-elev-h: 3px; }
+.fp-elev--2 { --fp-elev-h: 6px; }
+.fp-elev--3 { --fp-elev-h: 9px; }
+.fp-elev--4 { --fp-elev-h: 14px; }
+
+/* Sub element: lifts on hover and gains a hard shadow. */
+.fp-sub {
+  --fp-elev-h-sub: 3px;
+  transition:
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease),
+    background-color var(--fp-duration-default) var(--fp-ease),
+    color var(--fp-duration-default) var(--fp-ease),
+    border-color var(--fp-duration-default) var(--fp-ease);
+}
+.fp-sub:hover {
+  box-shadow: 0 var(--fp-elev-h-sub) 0 var(--fp-shadow-color-sub);
+  transform: translateY(calc(var(--fp-elev-h-sub) * -1));
+}
+.fp-sub--1 { --fp-elev-h-sub: 2px; }
+.fp-sub--2 { --fp-elev-h-sub: 3px; }
+.fp-sub--3 { --fp-elev-h-sub: 5px; }
+
+/* Elevation that never animates (static decoration) */
+.fp-shadow-1    { box-shadow: var(--fp-shadow-1); }
+.fp-shadow-2    { box-shadow: var(--fp-shadow-2); }
+.fp-shadow-3    { box-shadow: var(--fp-shadow-3); }
+.fp-shadow-4    { box-shadow: var(--fp-shadow-4); }
+.fp-shadow-none { box-shadow: none; }
+
+/* --------------------------------------------------------------------------
+   Print
+   -------------------------------------------------------------------------- */
+@media print {
+  .fp-no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+}
