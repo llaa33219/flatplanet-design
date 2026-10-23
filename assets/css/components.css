@@ -14,8 +14,8 @@
    BUTTONS
    ========================================================================== */
 .fp-btn {
-  --fp-btn-bg: var(--fp-surface);
-  --fp-btn-fg: var(--fp-text);
+  --fp-btn-bg: var(--fp-fill);
+  --fp-btn-fg: var(--fp-fill-fg);
   --fp-elev-h: 4px;
   display: inline-flex;
   align-items: center;
@@ -72,14 +72,14 @@
    stays neutral white so the accent keeps its meaning.
    ---------------------------------------------------------------------- */
 .fp-btn--primary {
-  --fp-btn-bg: var(--fp-accent);
-  --fp-btn-fg: var(--fp-white);
+  --fp-btn-bg: var(--fp-accent-fill);
+  --fp-btn-fg: var(--fp-on-accent);
 }
-.fp-btn--primary:hover:not(:disabled) { --fp-btn-bg: var(--fp-accent-hover); }
+.fp-btn--primary:hover:not(:disabled) { --fp-btn-bg: var(--fp-accent-fill-hover); }
 
 .fp-btn--secondary {
-  --fp-btn-bg: var(--fp-surface);
-  --fp-btn-fg: var(--fp-text);
+  --fp-btn-bg: var(--fp-fill);
+  --fp-btn-fg: var(--fp-fill-fg);
 }
 .fp-btn--secondary:hover:not(:disabled) { --fp-btn-bg: var(--fp-bg-gray); }
 
@@ -87,7 +87,7 @@
   --fp-btn-bg: transparent;
   --fp-btn-fg: var(--fp-text);
   box-shadow: none;
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
 }
 /* The button's own hover rule is more specific than the ghost's, so
    the ghost states the same specificity to take the hover state over. */
@@ -101,31 +101,33 @@
 
 .fp-btn--dark {
   --fp-btn-bg: var(--fp-surface-ink);
-  --fp-btn-fg: var(--fp-white);
+  --fp-btn-fg: var(--fp-on-surface-ink);
 }
-.fp-btn--dark:hover:not(:disabled) { --fp-btn-bg: var(--fp-dark-deep); }
+.fp-btn--dark:hover:not(:disabled) { --fp-btn-bg: var(--fp-surface-ink-hover); }
 
 .fp-btn--danger {
   --fp-btn-bg: var(--fp-danger);
-  --fp-btn-fg: var(--fp-white);
+  --fp-btn-fg: var(--fp-on-danger);
 }
 .fp-btn--danger:hover:not(:disabled) { --fp-btn-bg: var(--fp-danger-hover); }
 
 .fp-btn--success {
   --fp-btn-bg: var(--fp-success);
-  --fp-btn-fg: var(--fp-white);
+  /* The bright green (#00d620) is far too light to carry white text —
+     it is only 1.96:1 — so it carries the palette's darkest. */
+  --fp-btn-fg: var(--fp-on-success);
 }
 .fp-btn--success:hover:not(:disabled) { --fp-btn-bg: var(--fp-success-hover); }
 
 .fp-btn--warning {
   --fp-btn-bg: var(--fp-warning);
-  --fp-btn-fg: var(--fp-dark-ultra-deep);
+  --fp-btn-fg: var(--fp-on-warning);
 }
 .fp-btn--warning:hover:not(:disabled) { --fp-btn-bg: var(--fp-warning-hover); }
 
 .fp-btn--light {
-  --fp-btn-bg: var(--fp-white);
-  --fp-btn-fg: var(--fp-text);
+  --fp-btn-bg: var(--fp-fill);
+  --fp-btn-fg: var(--fp-fill-fg);
 }
 .fp-btn--light:hover:not(:disabled) { --fp-btn-bg: var(--fp-bg-gray); }
 
@@ -133,8 +135,8 @@
    Radii shrink only where a short height forces it (per the 36px rule).
    ---------------------------------------------------------------------- */
 .fp-btn--lg { min-height: 60px; padding: var(--fp-space-4) var(--fp-space-8); font-size: var(--fp-text-md); --fp-elev-h: 5px; }
-.fp-btn--sm { min-height: 36px; padding: var(--fp-space-2) var(--fp-space-4); font-size: var(--fp-text-sm); border-radius: var(--fp-radius-sm); --fp-elev-h: 3px; border-width: var(--fp-border-width-sm); }
-.fp-btn--xs { min-height: 28px; padding: var(--fp-space-1) var(--fp-space-3); font-size: var(--fp-text-xs); border-radius: var(--fp-radius-xs); --fp-elev-h: 2px; border-width: var(--fp-border-width-sm); }
+.fp-btn--sm { min-height: 36px; padding: var(--fp-space-2) var(--fp-space-4); font-size: var(--fp-text-sm); border-radius: var(--fp-radius-sm); --fp-elev-h: 3px; border-width: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)); }
+.fp-btn--xs { min-height: 28px; padding: var(--fp-space-1) var(--fp-space-3); font-size: var(--fp-text-xs); border-radius: var(--fp-radius-xs); --fp-elev-h: 2px; border-width: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)); }
 
 .fp-btn--block { display: flex; width: 100%; }
 .fp-btn--pill { border-radius: var(--fp-radius-pill); }
@@ -178,7 +180,12 @@
   align-items: center;
   gap: var(--fp-space-2);
 }
-.fp-field__required { color: var(--fp-danger); font-weight: 800; }
+.fp-field__required {
+  /* The required marker is TEXT, so it takes the danger text step — the
+     pure red is only 3.95:1 against white. */
+  color: var(--fp-text-danger);
+  font-weight: 800;
+}
 .fp-field__hint { font-size: var(--fp-text-xs); color: var(--fp-text-muted); }
 .fp-field__error { font-size: var(--fp-text-xs); color: var(--fp-text-danger); font-weight: 600; }
 .fp-field__success { font-size: var(--fp-text-xs); color: var(--fp-text-success); font-weight: 600; }
@@ -186,14 +193,26 @@
 .fp-input,
 .fp-select,
 .fp-textarea {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   --fp-elev-h-input: 3px;
   width: 100%;
   min-height: 48px;
   padding: var(--fp-space-3) var(--fp-space-5);
   font-size: var(--fp-text-base);
-  color: var(--fp-text);
-  background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-md);
   transition:
     box-shadow var(--fp-duration-default) var(--fp-ease),
@@ -214,7 +233,7 @@
 .fp-select:focus,
 .fp-textarea:focus {
   outline: none;
-  border-color: var(--fp-ink);
+  border-color: var(--fp-line-strong);
   transform: translateY(calc(var(--fp-elev-h-input) * -1));
   box-shadow: var(--fp-elev-h-input) var(--fp-elev-h-input) 0 var(--fp-shadow-color-sub);
 }
@@ -235,26 +254,26 @@
 
 /* Each control states its own border, so the outline never depends on
    which rule happens to win the cascade. */
-.fp-input { border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong)); }
+.fp-input { border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong)); }
 
 .fp-textarea {
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   min-height: 120px;
   resize: vertical;
   line-height: 1.6;
 }
 
 .fp-select {
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   padding-right: var(--fp-space-12);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300193d' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: var(--fp-select-arrow);
   background-repeat: no-repeat;
   background-position: right var(--fp-space-5) center;
   background-size: 18px;
 }
 
 .fp-input--sm,
-.fp-select--sm { min-height: 36px; padding: var(--fp-space-2) var(--fp-space-4); font-size: var(--fp-text-sm); border-radius: var(--fp-radius-sm); border-width: var(--fp-border-width-sm); }
+.fp-select--sm { min-height: 36px; padding: var(--fp-space-2) var(--fp-space-4); font-size: var(--fp-text-sm); border-radius: var(--fp-radius-sm); border-width: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)); }
 .fp-input--lg,
 .fp-select--lg { min-height: 60px; padding: var(--fp-space-4) var(--fp-space-6); font-size: var(--fp-text-md); }
 
@@ -270,7 +289,7 @@
   font-weight: 700;
   color: var(--fp-text-muted);
   background: var(--fp-surface-sunken);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   white-space: nowrap;
 }
 .fp-input-group__addon:first-child { border-right: none; border-radius: var(--fp-radius) 0 0 var(--fp-radius); }
@@ -302,14 +321,26 @@
 }
 .fp-check input { position: absolute; opacity: 0; width: 0; height: 0; }
 .fp-check__box {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   flex: 0 0 auto;
   width: 26px;
   height: 26px;
   margin-top: 2px;
   display: grid;
   place-items: center;
-  background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-xs);
   transition:
     background-color var(--fp-duration-fast) var(--fp-ease),
@@ -326,8 +357,8 @@
   content: "";
   width: 12px;
   height: 6px;
-  border-left: 3px solid var(--fp-surface);
-  border-bottom: 3px solid var(--fp-surface);
+  border-left: 3px solid var(--fp-on-ink);
+  border-bottom: 3px solid var(--fp-on-ink);
   transform: rotate(-45deg) translate(1px, -2px);
 }
 .fp-check input:focus-visible + .fp-check__box {
@@ -343,13 +374,57 @@
   width: 10px;
   height: 10px;
   border-radius: var(--fp-radius-circle);
-  background: var(--fp-surface);
+  background: var(--fp-on-ink);
   transform: none;
 }
 
+/* --------------------------------------------------------------------------
+   THE ACCENT VARIANT — `.fp-check--accent`
+
+   The DEFAULT checked state fills with the ink, because a checked box is
+   a statement about the state of the form, not an emphasis. Sometimes one
+   control has to be pointed at instead — a settings row that is the
+   subject of the screen, say — and then the accent does the pointing.
+
+   The OFF state is untouched: white surface, ink border, no accent
+   anywhere. An accent variant that coloured the unchecked box would be
+   shouting at a control that is doing nothing.
+
+   The tick stays white in both cases, so the mark reads as a mark and
+   not as part of the fill. */
+.fp-check--accent input:checked + .fp-check__box { background: var(--fp-accent-fill); }
+.fp-check--accent input:checked + .fp-check__box::after {
+  border-left-color: var(--fp-on-accent);
+  border-bottom-color: var(--fp-on-accent);
+}
+/* The radio's dot is a fill rather than a stroke, so it takes the
+   on-accent colour the same way the tick does. */
+.fp-check--accent.fp-check--radio input:checked + .fp-check__box::after {
+  background: var(--fp-on-accent);
+}
+
 .fp-check--card {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   padding: var(--fp-space-4) var(--fp-space-5);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius);
   background: var(--fp-surface);
   transition:
@@ -357,18 +432,30 @@
     background-color var(--fp-duration-default) var(--fp-ease);
 }
 .fp-check--card:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
-.fp-check--card:has(input:checked) { background: var(--fp-bg-gray); border-color: var(--fp-sub-border-color, var(--fp-ink)); }
+.fp-check--card:has(input:checked) { background: var(--fp-bg-gray); border-color: var(--fp-sub-border-color, var(--fp-line-strong)); }
 
 /* Switch */
 .fp-switch { display: inline-flex; align-items: center; gap: var(--fp-space-3); cursor: pointer; user-select: none; }
 .fp-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
 .fp-switch__track {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   position: relative;
   width: 58px;
   height: 34px;
   flex: 0 0 auto;
-  background: var(--fp-bg-gray);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  background: var(--fp-track);
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -381,50 +468,190 @@
   left: 3px;
   width: 24px;
   height: 24px;
-  background: var(--fp-surface);
+  background: var(--fp-switch-thumb-off);
   border-radius: var(--fp-radius-circle);
   box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
   transition: transform var(--fp-duration-default) var(--fp-ease);
 }
 .fp-switch input:checked + .fp-switch__track { background: var(--fp-ink); }
-.fp-switch input:checked + .fp-switch__track .fp-switch__thumb { transform: translateX(24px); }
+.fp-switch input:checked + .fp-switch__track .fp-switch__thumb {
+  transform: translateX(24px);
+  background: var(--fp-switch-thumb-on);
+}
+
+/* --------------------------------------------------------------------------
+   THE ACCENT VARIANT — `.fp-switch--accent`
+
+   Same rule as the checkbox: the OFF track is a neutral sunken surface
+   with an ink border, and the accent only appears once the switch is
+   actually ON. An off switch that glowed blue would be a lie about its
+   own state.
+
+   The thumb takes the ON colour of its own token because the lit track
+   and the unlit track have opposite polarities — there is no single
+   thumb colour that reads on both. */
+.fp-switch--accent input:checked + .fp-switch__track { background: var(--fp-accent-fill); }
+.fp-switch--accent input:checked + .fp-switch__track .fp-switch__thumb {
+  background: var(--fp-on-accent);
+}
 .fp-switch:hover .fp-switch__track { transform: translateY(-2px); box-shadow: 2px 2px 0 var(--fp-shadow-color-sub); }
 .fp-switch input:focus-visible + .fp-switch__track {
   outline: var(--fp-border-width-sm) solid var(--fp-accent);
   outline-offset: 3px;
 }
 
-/* Range slider */
-.fp-range { width: 100%; height: 24px; appearance: none; background: transparent; cursor: pointer; }
+/* --------------------------------------------------------------------------
+   RANGE SLIDER
+
+   THE THUMB IS A RECTANGLE THAT SITS INSIDE THE TRACK
+   ---------------------------------------------------
+   The thumb used to be a circle that rode ON TOP of the track: 28px tall
+   on a 14px rail, so it overflowed the track by 7px above and 7px
+   below. A handle that hangs over both edges of the rail reads as a
+   separate object sitting on the slider, not as a handle IN the slider.
+
+   THE GEOMETRY (measured in Chromium and Firefox)
+   -----------------------------------------------
+     track height        18px   the whole rail, border included
+     thumb height        10px   the whole handle, border included
+     thumb width         28px   clearly wider than it is tall
+     margin-top           2px   Chromium only — see below
+
+   `box-sizing: border-box` is declared on both, because the browser
+   pseudo-elements are NOT matched by the global `*` reset and would
+   otherwise be content-box, where the declared height and the rendered
+   height differ by the border.
+
+   A native range thumb is positioned by its TOP EDGE, so `margin-top` is
+   the vertical correction in Chromium: the thumb's centre must land on
+   the track's centre line. The obvious arithmetic is wrong by exactly
+   the track's border width, because Chromium aligns the thumb against
+   the INNER edge of the track and that 2px border is inside the track's
+   18px box — the thumb already starts 2px below the track's top edge:
+
+       margin-top = (track height - thumb height) / 2 - track border
+                  = (18 - 10) / 2 - 2
+                  = 2px
+
+   Measured by painting the track and the thumb in flat probe colours
+   and scanning the rendered pixels: at 2px the thumb's centre lands
+   exactly on the track's centre line, with 4px of clearance above and
+   below and no overflow on either side.
+
+   Firefox centres a `::-moz-range-thumb` on the track by itself and
+   ignores `margin-top` entirely, so the same 2px is a no-op there and
+   the handle lands in exactly the same place in both engines.
+
+   With a 10px handle on an 18px rail the thumb never touches the top or
+   the bottom edge of the track, in either direction, in either browser.
+
+   THE PROGRESS FILL
+   -----------------
+   The filled portion of the track is drawn with a background gradient on
+   the track itself, driven by `--fp-range-progress` (a percentage).
+
+   The CSS-ONLY fallback is `0%`: with no JavaScript the bar is simply
+   empty, which is honest — the control still works, it just does not
+   claim to know the value. The JavaScript in `flatplanet.js` keeps the
+   custom property in step with the input, and the fill is a plain
+   gradient with NO transition, so dragging stays smooth.
+
+   Firefox paints its own progress element on top of the track, so that
+   one is made transparent — otherwise Firefox would show a second,
+   differently-coloured fill on top of the gradient.
+
+   The fill is the INK, not the accent: the accent is spent on one
+   element per view, and a slider that is being dragged is not the most
+   important thing on the screen.
+   -------------------------------------------------------------------------- */
+.fp-range {
+  --fp-range-progress: 0%;
+  --fp-range-track-h: 18px;
+  --fp-range-thumb-h: 10px;
+  --fp-range-thumb-w: 28px;
+  width: 100%;
+  height: 24px;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
 .fp-range::-webkit-slider-runnable-track {
-  height: 14px;
-  background: var(--fp-surface-sunken);
+  box-sizing: border-box;
+  height: var(--fp-range-track-h);
+  /* The gradient paints the ink from the left edge to the progress
+     point, and the track colour from there to the right. It is a hard
+     stop, not a fade — the system has no gradients. */
+  background:
+    linear-gradient(to right,
+      var(--fp-ink) 0,
+      var(--fp-ink) var(--fp-range-progress),
+      var(--fp-track) var(--fp-range-progress),
+      var(--fp-track) 100%);
   border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
 }
 .fp-range::-webkit-slider-thumb {
   appearance: none;
-  width: 28px;
-  height: 28px;
-  margin-top: -9px;
-  background: var(--fp-surface);
+  box-sizing: border-box;
+  width: var(--fp-range-thumb-w);
+  height: var(--fp-range-thumb-h);
+  /* The vertical correction for Chromium — see the geometry note above.
+     Firefox ignores it and centres the thumb itself.
+
+     The value is 2px, NOT the (18 - 10) / 2 = 4px that the arithmetic
+     suggests. Chromium positions a native thumb by its top edge against
+     the INNER edge of the track, and the track's 2px border is part of
+     its 18px box, so the thumb already starts 2px below the track's top
+     edge. The correction is therefore the remainder:
+
+         margin-top = (track height - thumb height) / 2 - track border
+                    = (18 - 10) / 2 - 2
+                    = 2px
+
+     Measured in Chromium at deviceScaleFactor 2: the thumb's centre lands
+     exactly on the track's centre line, with 4px of clearance above and
+     below. */
+  margin-top: 2px;
+  background: var(--fp-fill);
   border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
-  border-radius: var(--fp-radius-circle);
+  /* A small radius: enough to belong to the system's soft-cornered
+     family, not enough to make the handle read as a pill. */
+  border-radius: var(--fp-radius-xs);
   transition: transform var(--fp-duration-fast) var(--fp-ease);
 }
-.fp-range::-webkit-slider-thumb:hover { transform: translateY(-2px); box-shadow: 2px 2px 0 var(--fp-shadow-color-sub); }
+/* The hover lift is a SUB behaviour: the thumb rises and its shadow
+   appears. The shadow never shrinks while the thumb is rising. */
+.fp-range::-webkit-slider-thumb:hover {
+  transform: translateY(-2px);
+  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
+}
 .fp-range::-moz-range-track {
-  height: 14px;
-  background: var(--fp-surface-sunken);
+  box-sizing: border-box;
+  height: var(--fp-range-track-h);
+  background:
+    linear-gradient(to right,
+      var(--fp-ink) 0,
+      var(--fp-ink) var(--fp-range-progress),
+      var(--fp-track) var(--fp-range-progress),
+      var(--fp-track) 100%);
   border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
 }
+/* Firefox paints its own progress bar over the track. It is made
+   transparent so that the gradient above is the ONLY fill, in every
+   engine. */
+.fp-range::-moz-range-progress {
+  background: transparent;
+  border: none;
+  border-radius: var(--fp-radius-pill);
+}
 .fp-range::-moz-range-thumb {
-  width: 26px;
-  height: 26px;
-  background: var(--fp-surface);
+  box-sizing: border-box;
+  width: var(--fp-range-thumb-w);
+  height: var(--fp-range-thumb-h);
+  background: var(--fp-fill);
   border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
-  border-radius: var(--fp-radius-circle);
+  border-radius: var(--fp-radius-xs);
   transition: transform var(--fp-duration-fast) var(--fp-ease);
 }
 .fp-range::-moz-range-thumb:hover {
@@ -436,6 +663,18 @@
    BADGES · TAGS · CHIPS · PILLS — sub elements: 4px border.
    ========================================================================== */
 .fp-badge {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   display: inline-flex;
   align-items: center;
   gap: var(--fp-space-2);
@@ -445,19 +684,21 @@
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0.02em;
-  color: var(--fp-text);
-  background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-xs);
   white-space: nowrap;
 }
-.fp-badge--accent   { background: var(--fp-accent); color: var(--fp-white); border-color: transparent; }
-.fp-badge--success  { background: var(--fp-success); color: var(--fp-white); border-color: transparent; }
-.fp-badge--danger   { background: var(--fp-danger); color: var(--fp-white); border-color: transparent; }
-.fp-badge--warning  { background: var(--fp-warning); color: var(--fp-dark-ultra-deep); border-color: transparent; }
+.fp-badge--accent   { background: var(--fp-accent-fill); color: var(--fp-on-accent); border-color: transparent; }
+.fp-badge--success  { background: var(--fp-success); color: var(--fp-on-success); border-color: transparent; }
+.fp-badge--danger   { background: var(--fp-danger); color: var(--fp-on-danger); border-color: transparent; }
+.fp-badge--warning  { background: var(--fp-warning); color: var(--fp-on-warning); border-color: transparent; }
 .fp-badge--info     { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); border-color: transparent; }
 .fp-badge--neutral  { background: var(--fp-bg-gray); color: var(--fp-text); }
-.fp-badge--outline  { background: transparent; }
+/* The outline variant is transparent, so the surface shows through it —
+   its text therefore matches the surface, not the fill. */
+.fp-badge--outline  { background: transparent; color: var(--fp-text-surface); }
 .fp-badge--soft     { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); border-color: transparent; }
 .fp-badge--dot::before {
   content: "";
@@ -471,6 +712,18 @@
 
 /* Tag — removable */
 .fp-tag {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   display: inline-flex;
   align-items: center;
   gap: var(--fp-space-2);
@@ -478,9 +731,9 @@
   min-height: 34px;
   font-size: var(--fp-text-sm);
   font-weight: 700;
-  color: var(--fp-text);
-  background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -502,10 +755,22 @@
   color: var(--fp-text-muted);
   transition: background-color var(--fp-duration-fast) var(--fp-ease), color var(--fp-duration-fast) var(--fp-ease);
 }
-.fp-tag__remove:hover { background: var(--fp-danger); color: var(--fp-white); }
+.fp-tag__remove:hover { background: var(--fp-danger); color: var(--fp-on-danger); }
 
 /* Chip — selectable */
 .fp-chip {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   display: inline-flex;
   align-items: center;
   gap: var(--fp-space-2);
@@ -513,9 +778,9 @@
   min-height: 38px;
   font-size: var(--fp-text-sm);
   font-weight: 700;
-  color: var(--fp-text);
-  background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
   cursor: pointer;
   user-select: none;
@@ -533,11 +798,23 @@
 .fp-chip[aria-pressed="true"],
 .fp-chip.is-active {
   background: var(--fp-ink);
-  color: var(--fp-surface);
+  color: var(--fp-on-ink);
 }
 
 /* Avatar */
 .fp-avatar {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   display: inline-grid;
   place-items: center;
   width: 48px;
@@ -545,9 +822,9 @@
   flex: 0 0 auto;
   font-size: var(--fp-text-base);
   font-weight: 800;
-  color: var(--fp-ink);
+  color: var(--fp-text);
   background: var(--fp-bg-gray);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-circle);
   overflow: hidden;
   user-select: none;
@@ -555,16 +832,16 @@
 }
 .fp-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .fp-avatar:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
-.fp-avatar--sm { width: 32px; height: 32px; font-size: var(--fp-text-xs); border-width: var(--fp-border-width-sm); }
+.fp-avatar--sm { width: 32px; height: 32px; font-size: var(--fp-text-xs); border-width: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)); }
 .fp-avatar--lg { width: 64px; height: 64px; font-size: var(--fp-text-lg); }
 .fp-avatar--xl { width: 96px; height: 96px; font-size: var(--fp-text-2xl); }
 .fp-avatar--square { border-radius: var(--fp-radius); }
-.fp-avatar--accent { background: var(--fp-accent); color: var(--fp-white); }
+.fp-avatar--accent { background: var(--fp-accent-fill); color: var(--fp-on-accent); }
 .fp-avatar--red { background: var(--fp-red-light); }
 .fp-avatar--yellow { background: var(--fp-yellow-light); }
 .fp-avatar--green { background: var(--fp-green-light); }
 .fp-avatar--purple { background: var(--fp-purple-light); }
-.fp-avatar--dark { background: var(--fp-dark-ultra-deep); color: var(--fp-white); }
+.fp-avatar--dark { background: var(--fp-ink); color: var(--fp-on-ink); }
 
 .fp-avatar-group { display: inline-flex; align-items: center; }
 .fp-avatar-group .fp-avatar { margin-left: -12px; }
@@ -583,7 +860,7 @@
   width: 56px;
   height: 56px;
   flex: 0 0 auto;
-  color: var(--fp-ink);
+  color: var(--fp-text);
   background: var(--fp-bg-gray);
   border: none;
   border-radius: var(--fp-radius);
@@ -593,12 +870,12 @@
 .fp-icon-tile:hover { transform: translateY(1px); box-shadow: 2px 2px 0 var(--fp-shadow-color-sub); }
 .fp-icon-tile--lg { width: 72px; height: 72px; }
 .fp-icon-tile--sm { width: 40px; height: 40px; border-radius: var(--fp-radius-sm); }
-.fp-icon-tile--accent { background: var(--fp-accent); color: var(--fp-white); }
+.fp-icon-tile--accent { background: var(--fp-accent-fill); color: var(--fp-on-accent); }
 .fp-icon-tile--red { background: var(--fp-red-light); }
 .fp-icon-tile--yellow { background: var(--fp-yellow-light); }
 .fp-icon-tile--green { background: var(--fp-green-light); }
 .fp-icon-tile--purple { background: var(--fp-purple-light); }
-.fp-icon-tile--dark { background: var(--fp-dark-ultra-deep); color: var(--fp-white); }
+.fp-icon-tile--dark { background: var(--fp-ink); color: var(--fp-on-ink); }
 .fp-icon-tile--light { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); }
 
 /* ==========================================================================
@@ -606,6 +883,25 @@
    ========================================================================== */
 .fp-card {
   --fp-elev-h: 5px;
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -627,7 +923,7 @@
 .fp-card--interactive { cursor: pointer; }
 .fp-card--outlined {
   box-shadow: none;
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
 }
 .fp-card--outlined:hover {
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
@@ -650,6 +946,16 @@
 .fp-card__body { padding: var(--fp-space-6); flex: 1; }
 .fp-card__body--tight { padding: var(--fp-space-4); }
 .fp-card__footer {
+  /* A sunken surface is a NEUTRAL fill: it is a mid tone in either
+     theme, so the text on it takes the neutral polarity. */
+  --fp-text: var(--fp-text-neutral);
+  --fp-text-muted: var(--fp-text-neutral-muted);
+  --fp-text-subtle: var(--fp-text-neutral-subtle);
+  --fp-text-accent: var(--fp-text-neutral-accent);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  color: var(--fp-text);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -677,12 +983,24 @@
    ========================================================================== */
 .fp-list { display: flex; flex-direction: column; gap: var(--fp-space-3); }
 .fp-list__item {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   display: flex;
   align-items: center;
   gap: var(--fp-space-4);
   padding: var(--fp-space-4) var(--fp-space-5);
-  background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius);
   transition:
     transform var(--fp-duration-default) var(--fp-ease),
@@ -711,6 +1029,13 @@
 }
 .fp-tabs--pill { background: transparent; padding: 0; }
 .fp-tab {
+  /* A neutral fill has its own text polarity: it is a mid tone in
+     either theme, so the text on it is chosen for that fill rather than
+     inherited from the surface around it. */
+  --fp-text: var(--fp-text-neutral);
+  --fp-text-muted: var(--fp-text-neutral-muted);
+  --fp-text-accent: var(--fp-text-neutral-accent);
+  color: var(--fp-text);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -721,7 +1046,7 @@
   font-weight: 700;
   color: var(--fp-text-muted);
   white-space: nowrap;
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, transparent);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, transparent);
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -732,25 +1057,37 @@
 .fp-tab:hover { color: var(--fp-text); transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
 .fp-tab[aria-selected="true"],
 .fp-tab.is-active {
-  background: var(--fp-surface);
-  color: var(--fp-text);
+  background: var(--fp-fill);
+  color: var(--fp-fill-fg);
   border-color: var(--fp-sub-border-color, var(--fp-line-strong));
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
 }
-.fp-tabs--pill .fp-tab[aria-selected="true"] { background: var(--fp-ink); color: var(--fp-surface); border-color: transparent; box-shadow: none; }
+.fp-tabs--pill .fp-tab[aria-selected="true"] { background: var(--fp-ink); color: var(--fp-on-ink); border-color: transparent; box-shadow: none; }
 
 /* Underline tabs */
 .fp-tabs--underline { background: transparent; border-bottom: var(--fp-border-width-sm) solid var(--fp-line); border-radius: 0; padding: 0; gap: var(--fp-space-6); }
 .fp-tabs--underline .fp-tab { border-radius: 0; padding-inline: 0; min-height: 48px; border-color: transparent; border-bottom-width: var(--fp-border-width-sm); }
-.fp-tabs--underline .fp-tab[aria-selected="true"] { background: transparent; box-shadow: none; border-bottom: var(--fp-border-width-sm) solid var(--fp-ink); }
+.fp-tabs--underline .fp-tab[aria-selected="true"] { background: transparent; box-shadow: none; border-bottom: var(--fp-border-width-sm) solid var(--fp-line-strong); }
 
 /* ==========================================================================
    ACCORDION
    ========================================================================== */
 .fp-accordion { display: flex; flex-direction: column; gap: var(--fp-space-3); }
 .fp-accordion__item {
-  background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius);
   overflow: hidden;
   transition: box-shadow var(--fp-duration-default) var(--fp-ease), transform var(--fp-duration-default) var(--fp-ease);
@@ -781,13 +1118,13 @@
   width: 32px;
   height: 32px;
   flex: 0 0 auto;
-  background: var(--fp-surface);
-  color: var(--fp-ink);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  background: var(--fp-fill);
+  color: var(--fp-text);
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-circle);
   transition: transform var(--fp-duration-default) var(--fp-ease), background-color var(--fp-duration-default) var(--fp-ease);
 }
-.fp-accordion__item[open] .fp-accordion__icon { transform: rotate(45deg); background: var(--fp-ink); color: var(--fp-surface); }
+.fp-accordion__item[open] .fp-accordion__icon { transform: rotate(45deg); background: var(--fp-ink); color: var(--fp-on-ink); }
 .fp-accordion__panel {
   padding: 0 var(--fp-space-6) var(--fp-space-5);
   color: var(--fp-text-muted);
@@ -799,6 +1136,25 @@
    TABLE
    ========================================================================== */
 .fp-table-wrap {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   overflow-x: auto;
   background: var(--fp-surface);
   border: none;
@@ -807,6 +1163,13 @@
 }
 .fp-table { width: 100%; font-size: var(--fp-text-sm); }
 .fp-table thead th {
+  /* A neutral fill has its own text polarity: it is a mid tone in
+     either theme, so the text on it is chosen for that fill rather than
+     inherited from the surface around it. */
+  --fp-text: var(--fp-text-neutral);
+  --fp-text-muted: var(--fp-text-neutral-muted);
+  --fp-text-accent: var(--fp-text-neutral-accent);
+  color: var(--fp-text);
   padding: var(--fp-space-4) var(--fp-space-5);
   text-align: left;
   font-size: var(--fp-text-xs);
@@ -836,8 +1199,8 @@
 .fp-progress {
   width: 100%;
   height: 18px;
-  background: var(--fp-surface-sunken);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  background: var(--fp-track);
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-pill);
   overflow: hidden;
 }
@@ -849,18 +1212,25 @@
 }
 .fp-progress--lg { height: 26px; }
 .fp-progress--sm { height: 12px; }
-.fp-progress__bar--accent { background: var(--fp-accent); }
+.fp-progress__bar--accent { background: var(--fp-accent-fill); }
 .fp-progress__bar--success { background: var(--fp-success); }
 .fp-progress__bar--danger { background: var(--fp-danger); }
 .fp-progress__bar--warning { background: var(--fp-warning); }
 
 .fp-meter { display: flex; flex-direction: column; gap: var(--fp-space-2); }
-.fp-meter__head { display: flex; justify-content: space-between; font-size: var(--fp-text-sm); font-weight: 700; }
+.fp-meter__head {
+  /* The meter head sits on whatever the meter sits on, so it follows
+     that context rather than declaring one. */
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fp-text-sm);
+  font-weight: 700;
+}
 
 /* Circular progress */
 .fp-ring { display: grid; place-items: center; position: relative; }
 .fp-ring svg { transform: rotate(-90deg); }
-.fp-ring__track { stroke: var(--fp-surface-sunken); }
+.fp-ring__track { stroke: var(--fp-track); }
 .fp-ring__fill { stroke: var(--fp-ink); stroke-linecap: round; transition: stroke-dashoffset var(--fp-duration-slow) var(--fp-ease-out); }
 .fp-ring__label {
   position: absolute;
@@ -873,12 +1243,31 @@
    ALERT / CALL OUT
    ========================================================================== */
 .fp-alert {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   display: flex;
   align-items: flex-start;
   gap: var(--fp-space-4);
   padding: var(--fp-space-5);
   background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-left-width: 6px;
   border-radius: var(--fp-radius);
   font-size: var(--fp-text-base);
@@ -898,6 +1287,25 @@
    STAT
    ========================================================================== */
 .fp-stat {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   display: flex;
   flex-direction: column;
   gap: var(--fp-space-2);
@@ -935,6 +1343,18 @@
    ========================================================================== */
 .fp-pagination { display: flex; align-items: center; gap: var(--fp-space-2); flex-wrap: wrap; }
 .fp-pagination__item {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   display: grid;
   place-items: center;
   min-width: 42px;
@@ -942,9 +1362,9 @@
   padding: 0 var(--fp-space-2);
   font-size: var(--fp-text-sm);
   font-weight: 700;
-  color: var(--fp-text);
-  background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-xs);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -955,7 +1375,7 @@
 .fp-pagination__item:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
 .fp-pagination__item.is-active {
   background: var(--fp-ink);
-  color: var(--fp-surface);
+  color: var(--fp-on-ink);
   border-color: transparent;
   box-shadow: none;
 }
@@ -973,12 +1393,19 @@
   border-radius: var(--fp-radius);
 }
 .fp-segment__item {
+  /* A neutral fill has its own text polarity: it is a mid tone in
+     either theme, so the text on it is chosen for that fill rather than
+     inherited from the surface around it. */
+  --fp-text: var(--fp-text-neutral);
+  --fp-text-muted: var(--fp-text-neutral-muted);
+  --fp-text-accent: var(--fp-text-neutral-accent);
+  color: var(--fp-text);
   padding: var(--fp-space-2) var(--fp-space-5);
   min-height: 40px;
   font-size: var(--fp-text-sm);
   font-weight: 700;
   color: var(--fp-text-muted);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, transparent);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, transparent);
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -988,8 +1415,8 @@
 }
 .fp-segment__item:hover { color: var(--fp-text); transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
 .fp-segment__item[aria-pressed="true"], .fp-segment__item.is-active {
-  background: var(--fp-surface);
-  color: var(--fp-text);
+  background: var(--fp-fill);
+  color: var(--fp-fill-fg);
   border-color: var(--fp-sub-border-color, var(--fp-line-strong));
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
 }
@@ -1010,7 +1437,7 @@
   font-size: var(--fp-text-xs);
   font-weight: 700;
   white-space: nowrap;
-  color: var(--fp-surface);
+  color: var(--fp-on-ink);
   background: var(--fp-ink);
   border-radius: var(--fp-radius-xs);
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
@@ -1057,9 +1484,9 @@
   width: 40px;
   height: 40px;
   flex: 0 0 auto;
-  background: var(--fp-surface);
-  color: var(--fp-ink);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  background: var(--fp-fill);
+  color: var(--fp-text);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-circle);
   transition: box-shadow var(--fp-duration-default) var(--fp-ease), transform var(--fp-duration-default) var(--fp-ease);
 }
@@ -1078,17 +1505,18 @@
   padding: var(--fp-space-1) var(--fp-space-3);
   font-family: var(--fp-font-mono);
   font-size: var(--fp-text-sm);
-  color: var(--fp-tint-info-fg);
+  color: var(--fp-on-blue-light);
   background: var(--fp-tint-info);
   border-radius: var(--fp-radius-xs);
 }
 .fp-code-block {
+  --fp-text: var(--fp-code-fg);
   padding: var(--fp-space-5);
   font-family: var(--fp-font-mono);
   font-size: var(--fp-text-sm);
   line-height: 1.7;
-  color: var(--fp-dark-light);
-  background: var(--fp-dark-ultra-deep);
+  color: var(--fp-code-fg);
+  background: var(--fp-code-bg);
   border: none;
   border-radius: var(--fp-radius);
   overflow-x: auto;

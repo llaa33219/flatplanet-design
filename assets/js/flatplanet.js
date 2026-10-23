@@ -286,6 +286,35 @@
   }
 
   /* --------------------------------------------------------------------
+     Range slider — the filled portion of the track
+
+     The progress is drawn by a CSS gradient on the track, driven by the
+     `--fp-range-progress` custom property. Without JavaScript the
+     property is unset, the gradient falls back to 0%, and the bar is
+     simply empty — the control still works, it just does not pretend to
+     know its own value.
+
+     The property is written on the INPUT, so the gradient on the track
+     pseudo-element inherits it.
+     ------------------------------------------------------------------ */
+  function syncRange(range) {
+    var min = parseFloat(range.min);
+    var max = parseFloat(range.max);
+    if (isNaN(min) || isNaN(max) || max === min) return;
+    var pct = ((parseFloat(range.value) - min) / (max - min)) * 100;
+    if (isNaN(pct)) return;
+    pct = Math.max(0, Math.min(100, pct));
+    range.style.setProperty('--fp-range-progress', pct + '%');
+  }
+
+  function initRanges(scope) {
+    (scope || document).querySelectorAll('input[type="range"]').forEach(function (range) {
+      syncRange(range);
+      range.addEventListener('input', function () { syncRange(range); });
+    });
+  }
+
+  /* --------------------------------------------------------------------
      Scroll spy for the docs TOC (if present)
      ------------------------------------------------------------------ */
   function initScrollSpy() {
@@ -313,5 +342,6 @@
      ------------------------------------------------------------------ */
   initTabs();
   initSegments();
+  initRanges();
   initScrollSpy();
 })();

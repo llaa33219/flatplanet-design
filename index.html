@@ -154,7 +154,7 @@
   <div class="fp-grid fp-grid--3">
     <div class="fp-panel fp-stack">
       <span class="fp-kicker">Main · the one direction</span>
-      <div class="fp-elev fp-elev--3" style="height: 96px; background: var(--fp-surface); border-radius: var(--fp-radius); display: grid; place-items: center; font-weight: 800;">
+      <div class="fp-elev fp-elev--3 fp-elev--surface" style="height: 96px; background: var(--fp-surface); border-radius: var(--fp-radius); display: grid; place-items: center; font-weight: 800;">
         Floats
       </div>
       <p class="fp-text-sm fp-text-muted">No border. A hard shadow in ink, offset equally on both axes, so it always falls to the bottom-right. On hover the shadow collapses to 2px and the element presses down into the surface.</p>
@@ -163,10 +163,10 @@
     <div class="fp-panel fp-stack">
       <span class="fp-kicker">Main · one size per tier</span>
       <div class="fp-row" style="align-items: flex-end;">
-        <div class="fp-elev fp-elev--1" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">3</div>
-        <div class="fp-elev fp-elev--2" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">6</div>
-        <div class="fp-elev fp-elev--3" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">9</div>
-        <div class="fp-elev fp-elev--4" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">14</div>
+        <div class="fp-elev fp-elev--1 fp-elev--surface" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">3</div>
+        <div class="fp-elev fp-elev--2 fp-elev--surface" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">6</div>
+        <div class="fp-elev fp-elev--3 fp-elev--surface" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">9</div>
+        <div class="fp-elev fp-elev--4 fp-elev--surface" style="width: 56px; height: 56px; background: var(--fp-surface); border-radius: var(--fp-radius-sm); display: grid; place-items: center; font-weight: 800; font-size: var(--fp-text-sm);">14</div>
       </div>
       <p class="fp-text-sm fp-text-muted">A hard shadow has exactly one direction. The only way to vary it is its <strong>size</strong> — 3px, 6px, 9px, 14px. There is no upward shadow, no leftward shadow, and no band on all four sides: a band is a border, not a shadow.</p>
     </div>
@@ -185,10 +185,10 @@
   <div class="fp-panel" style="margin-top: var(--fp-space-8)">
     <h3 class="fp-text-lg" style="margin-bottom: var(--fp-space-5)">Shadow heights</h3>
     <div class="fp-row">
-      <div class="fp-elev fp-elev--1" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">3px</div>
-      <div class="fp-elev fp-elev--2" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">6px</div>
-      <div class="fp-elev fp-elev--3" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">9px</div>
-      <div class="fp-elev fp-elev--4" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">14px</div>
+      <div class="fp-elev fp-elev--1 fp-elev--surface" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">3px</div>
+      <div class="fp-elev fp-elev--2 fp-elev--surface" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">6px</div>
+      <div class="fp-elev fp-elev--3 fp-elev--surface" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">9px</div>
+      <div class="fp-elev fp-elev--4 fp-elev--surface" style="padding: var(--fp-space-4) var(--fp-space-6); background: var(--fp-surface); border-radius: var(--fp-radius); font-weight: 800;">14px</div>
     </div>
   </div>
 
@@ -376,6 +376,20 @@
       </div>
 
       <div class="fp-field">
+        <span class="fp-field__label">Checkbox — accent variant</span>
+        <label class="fp-check fp-check--accent">
+          <input type="checkbox" checked>
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Remember this device</span>
+        </label>
+        <label class="fp-check fp-check--accent">
+          <input type="checkbox">
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Subscribe to the newsletter</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
         <span class="fp-field__label">Radio</span>
         <label class="fp-check fp-check--radio">
           <input type="radio" name="plan-rad" checked>
@@ -390,17 +404,51 @@
       </div>
 
       <div class="fp-field">
+        <span class="fp-field__label">Radio — accent variant</span>
+        <label class="fp-check fp-check--radio fp-check--accent">
+          <input type="radio" name="plan-rad-accent" checked>
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Monthly billing</span>
+        </label>
+        <label class="fp-check fp-check--radio fp-check--accent">
+          <input type="radio" name="plan-rad-accent">
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Annual billing</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
         <span class="fp-field__label">Switch</span>
         <label class="fp-switch">
           <input type="checkbox" checked>
           <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
           <span>Enable notifications</span>
         </label>
+        <label class="fp-switch">
+          <input type="checkbox">
+          <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
+          <span>Enable beta features</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">Switch — accent variant</span>
+        <label class="fp-switch fp-switch--accent">
+          <input type="checkbox" checked>
+          <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
+          <span>Enable notifications</span>
+        </label>
+        <label class="fp-switch fp-switch--accent">
+          <input type="checkbox">
+          <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
+          <span>Enable beta features</span>
+        </label>
       </div>
 
       <div class="fp-field">
         <span class="fp-field__label">Range</span>
         <input class="fp-range" type="range" min="0" max="100" value="65">
+        <span class="fp-field__hint">The thumb is a rectangle that sits inside the track. The filled portion follows the value.</span>
       </div>
     </div>
   </div>
@@ -578,6 +626,47 @@
           <span class="fp-breadcrumb__item">FlatPlanet</span>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE QUIETEST SUB ELEMENT ================= -->
+<section class="fp-section fp-container" id="quiet-sub">
+  <div class="fp-section__head">
+    <span class="fp-kicker">07 — Elevation</span>
+    <h2 class="fp-section__title">The Borderless Sub Element</h2>
+    <p class="fp-section__desc">A sub element with no border at all. It is still a sub element in every other respect — flat at rest, and on hover it lifts and its shadow appears. It is the tier to reach for when something should be present without competing for attention.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">With a border</h3>
+      <p class="fp-text-sm fp-text-muted">The default sub element: a real 4px inline border, flat at rest, lifting on hover.</p>
+      <div class="fp-row fp-row--tight">
+        <a class="fp-btn fp-btn--ghost fp-btn--sm" href="#quiet-sub">Foundations</a>
+        <a class="fp-btn fp-btn--ghost fp-btn--sm" href="#quiet-sub">Components</a>
+        <a class="fp-btn fp-btn--ghost fp-btn--sm" href="#quiet-sub">Usage</a>
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Borderless</h3>
+      <p class="fp-text-sm fp-text-muted">The same element with <code class="fp-code">fp-sub--borderless</code>. No border, no resting shadow — but the lift and the shadow on hover are unchanged.</p>
+      <div class="fp-row fp-row--tight">
+        <a class="fp-btn fp-btn--ghost fp-btn--sm fp-sub--borderless" href="#quiet-sub">Foundations</a>
+        <a class="fp-btn fp-btn--ghost fp-btn--sm fp-sub--borderless" href="#quiet-sub">Components</a>
+        <a class="fp-btn fp-btn--ghost fp-btn--sm fp-sub--borderless" href="#quiet-sub">Usage</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="fp-panel fp-stack" style="margin-top: var(--fp-space-8)">
+    <h3 class="fp-text-lg">As a navbar link</h3>
+    <p class="fp-text-sm fp-text-muted">The navbar links are the reason this tier exists. A row of bordered links reads as a row of boxes; a row of borderless links reads as a list of places.</p>
+    <div class="fp-row fp-row--tight">
+      <a class="fp-navbar__link fp-sub--borderless" href="#quiet-sub">Foundations</a>
+      <a class="fp-navbar__link fp-sub--borderless" href="#quiet-sub">Components</a>
+      <a class="fp-navbar__link fp-sub--borderless" href="#quiet-sub">Usage</a>
     </div>
   </div>
 </section>
@@ -858,7 +947,7 @@
         </span>
         FlatPlanet
       </div>
-      <p class="fp-text-sm" style="max-width: 320px; color: var(--fp-dark-light-ultra-deep);">A hard-shadow, zero-gradient design system on the BLP palette. Built to be looked at, not just read.</p>
+      <p class="fp-text-sm" style="max-width: 320px; color: var(--fp-text-inverse-muted);">A hard-shadow, zero-gradient design system on the BLP palette. Built to be looked at, not just read.</p>
     </div>
     <div>
       <h4 class="fp-footer__title">Components</h4>
@@ -883,9 +972,42 @@
     <span>© 2026 FlatPlanet. Built on the BLP palette.</span>
     <span>Made with flat colours and hard shadows.</span>
   </div>
+  <!-- The island nav is fixed to the bottom of the viewport, so the page
+       has to reserve room for it — otherwise the last row of content is
+       trapped underneath it. -->
+  <div class="fp-island-nav-spacer" aria-hidden="true"></div>
 </footer>
 
 </main>
+
+<!-- ================= ISLAND NAV =================
+     A navigation bar that floats at the bottom of the viewport as a
+     detached pill. The container is a MAIN element (no border, a hard
+     shadow); the items inside it are SUB elements (flat at rest, lifting
+     on hover). It is fixed to the bottom, so the page needs room for it —
+     see the spacer at the end of the footer. -->
+<nav class="fp-island-nav fp-no-print" aria-label="Island navigation">
+  <a class="fp-island-nav__item is-active" href="#top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+    Home
+  </a>
+  <a class="fp-island-nav__item" href="#foundations">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 10h16M10 4v16"/></svg>
+    Foundations
+  </a>
+  <a class="fp-island-nav__item" href="#components">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    Components
+  </a>
+  <a class="fp-island-nav__item" href="#forms">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+    Forms
+  </a>
+  <a class="fp-island-nav__item" href="#feedback">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Feedback
+  </a>
+</nav>
 
 <!-- ================= MODAL ================= -->
 <div class="fp-modal-backdrop" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle">

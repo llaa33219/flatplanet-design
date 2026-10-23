@@ -158,30 +158,94 @@ single component file.
 
 | Token | Light | Dark | Use |
 |-------|-------|------|-----|
-| `--fp-surface` | `#fefeff` | `#1e2b3d` | The main surface. Cards, panels, menus, inputs. |
-| `--fp-surface-raised` | `#fefeff` | `#27384f` | A surface above another surface. |
-| `--fp-surface-sunken` | `#f5f5f5` | `#14202f` | Wells, tracks, table headers, sunken rows. |
+| `--fp-surface` | `#fefeff` | `#fefeff` | The main surface. Cards, panels, menus, inputs. |
+| `--fp-surface-raised` | `#fefeff` | `#fafcff` | A surface above another surface. |
+| `--fp-surface-sunken` | `#f5f5f5` | `#1e2b3d` | Wells, table headers, sunken rows. |
 | `--fp-page-bg` | `#f5f5f5` | `#000309` | The page canvas behind everything. |
-| `--fp-surface-inverse` | `#000309` | `#fefeff` | Inverted surfaces such as the footer. |
+| `--fp-surface-inverse` | `#000309` | `#000309` | Inverted surfaces such as the footer. |
+| `--fp-track` | `#f5f5f5` | `#1e2b3d` | The empty part of a track, under a fill. |
+| `--fp-fill` | `#fefeff` | `#1e2b3d` | A widget that sits on a surface: an input, a badge, a chip. |
+| `--fp-fill-fg` | `#000309` | `#fefeff` | The text on a `--fp-fill`. |
+
+The light and dark columns are **not** a lighter/darker pair — they are an
+**inversion**. In the light theme the surface is the lightest colour and
+the canvas is a light grey; in the dark theme the surface is *still* the
+lightest colour in the palette and the canvas becomes the darkest. The
+surface does not change; the canvas swaps to the other end of the scale.
+See [8. The dark theme is an inversion](#8-the-dark-theme-is-an-inversion).
 
 **Ink**
 
 | Token | Light | Dark | Use |
 |-------|-------|------|-----|
-| `--fp-ink` | `#00193d` | `#d4dce8` | The depth colour. Shadows, sub-element borders, inverted fills. |
+| `--fp-ink` | `#00193d` | `#d4dce8` | The depth colour. Inverted fills — the footer, the banner, an active item. |
 | `--fp-ink-soft` | `#3e4d5f` | `#c7cbd1` | Secondary ink, muted text. |
 | `--fp-ink-muted` | `#94989e` | `#94989e` | Hairline borders, disabled text. |
-| `--fp-ink-faint` | `#c7cbd1` | `#2a3a52` | The lightest ink, used for rules and dividers. |
+| `--fp-ink-faint` | `#c7cbd1` | `#000a19` | The lightest ink, used for rules and dividers. |
+| `--fp-ink-border` | `#3e4d5f` | `#94989e` | The sub element's border. An alias of `--fp-line-sub`. |
+
+`--fp-ink` is the colour that **fills** an inverted surface, and it is
+the one colour the dark theme swaps with the surface. The shadow is a
+separate token and does *not* invert.
 
 **Text**
 
-| Token | Value | Use |
-|-------|-------|-----|
-| `--fp-text` | `#000309` | Body and heading text. |
-| `--fp-text-muted` | `#3e4d5f` | Supporting copy, descriptions. |
-| `--fp-text-subtle` | `#94989e` | Placeholders, hints, disabled text. |
-| `--fp-text-inverse` | `#fefeff` | Text on ink fills. |
-| `--fp-text-accent` | `#007bff` | Links. |
+| Token | Light | Dark | Use |
+|-------|-------|------|-----|
+| `--fp-text` | `#000309` | `#fefeff` | Body and heading text. Follows its context. |
+| `--fp-text-muted` | `#3e4d5f` | `#c7cbd1` | Supporting copy, descriptions. |
+| `--fp-text-subtle` | `#94989e` | `#94989e` | Placeholders, hints, disabled text. |
+| `--fp-text-inverse` | `#fefeff` | `#000309` | Text on an inverted surface (the footer). |
+| `--fp-text-inverse-muted` | `#c7cbd1` | `#3e4d5f` | Muted text on an inverted surface. |
+| `--fp-text-accent` | `#007bff` | `#007bff` | Links. |
+
+**Text has two contexts.** In the inverted theme the page has two
+polarities at once: the canvas is the palette's darkest and the surface
+is its lightest. Text on the canvas therefore has to be light, and text
+on a card has to be dark — they cannot share a colour.
+
+| Context | Token pair | Light | Dark |
+|---------|-----------|-------|------|
+| On the canvas | `--fp-text-page` | `#000309` | `#fefeff` |
+| On the canvas, muted | `--fp-text-page-muted` | `#3e4d5f` | `#c7cbd1` |
+| On a surface | `--fp-text-surface` | `#000309` | `#000309` |
+| On a surface, muted | `--fp-text-surface-muted` | `#3e4d5f` | `#3e4d5f` |
+
+`--fp-text`, `--fp-text-muted` and `--fp-text-subtle` follow the
+**context** rather than the theme: they point at the page values by
+default, and every surface in the library re-points them at the surface
+values. A component therefore never has to know which theme it is in.
+
+There are four contexts, because the inverted theme has four kinds of
+ground on the page:
+
+| Context | Ground | Light text | Dark text |
+|---------|--------|-----------|-----------|
+| **Page** | the canvas | `#000309` | `#fefeff` |
+| **Surface** | a card, a panel, a modal | `#000309` | `#000309` |
+| **Fill** | a widget: an input, a badge, a chip | `#000309` | `#fefeff` |
+| **Neutral** | a sunken well, a track, a grey badge | `#000309` | `#fefeff` |
+
+The surface and the fill are opposites: a card is light and carries dark
+text, and an input on that card is dark and carries light text.
+
+```css
+.fp-card {
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
+}
+```
+
+**The `color` declaration is not optional.** `color` inherits as a
+*computed value*, so re-pointing `--fp-text` on a descendant changes
+nothing that was already inherited. Every context block therefore states
+`color: var(--fp-text)` as well as re-pointing the variables.
 
 **Tints**
 
@@ -204,11 +268,51 @@ foreground, so contrast holds in both directions.
 
 | Token | Value | Use |
 |-------|-------|-----|
-| `--fp-accent` | `#007bff` | Accent fills. One per view. |
-| `--fp-accent-hover` | `#005bdd` | Accent fill on hover |
-| `--fp-accent-active` | `#0026a3` | Accent fill, pressed |
+| `--fp-accent` | `#007bff` | The accent itself. Lines, focus rings, accent borders. |
+| `--fp-accent-hover` | `#005bdd` | The accent on hover |
+| `--fp-accent-active` | `#0026a3` | The accent, pressed |
 | `--fp-accent-border` | `#007bff` | The accent as a **sub-element border** |
+| `--fp-accent-fill` | `#005bdd` | The accent as a **fill** — a background that carries text |
+| `--fp-accent-fill-hover` | `#0026a3` | The accent fill on hover |
 | `--fp-accent-ink` | `#0026a3` | Accent-coloured text that is not a link |
+| `--fp-on-accent` | `#fefeff` | Text and marks **on** an accent fill |
+
+**The accent, the accent fill and the accent border are three decisions.**
+`--fp-accent` is the brand blue (`#007bff`) and it is what the accent
+IS: a focus ring, an accent border, an accent-coloured line. A fill is
+a different decision, because a fill has to carry white text and white
+on `#007bff` is only 3.95:1 — below the 4.5:1 that body text needs. So
+`--fp-accent-fill` is the accent's deep step (`#005bdd`), which carries
+white at 5.88:1. All of them are still the accent: the same hue family,
+the only blue in the system, spent on one element per view.
+
+The accent **as text** is a third step again: `#0026a3` on a light
+surface (roughly 11:1) and `#7fbcff` on the dark canvas (roughly 10:1).
+
+### Lines
+
+| Token | Light | Dark | Use |
+|-------|-------|------|-----|
+| `--fp-line` | `#c7cbd1` | `#000a19` | Hairline rules and dividers. |
+| `--fp-line-sub` | `#3e4d5f` | `#94989e` | **The sub element's border.** |
+| `--fp-line-strong` | `#3e4d5f` | `#94989e` | An alias of `--fp-line-sub`. |
+| `--fp-line-inverse` | `#000a19` | `#fefeff` | A rule on an inverted surface. |
+
+**The sub element's border is `--fp-line-sub`, not the ink.** It used to
+be `--fp-ink` (`#00193d`), which is so close to black that every sub
+element wore a hard black outline and shouted for attention — and the
+shadow, which is the system's real depth device, had nothing left to do.
+
+The replacement is **BLP SUB DARK (`#3e4d5f`)**. At roughly 8:1 against
+white it is unmistakably a border: a sub element keeps its outline and
+never dissolves into the card it sits in. The lighter alternative, BLP
+LIGHT ULTRA DEEP DARK (`#94989e`), was considered and rejected — at about
+2.9:1 a 4px line in that colour stops being an outline and starts being
+a smudge, which would leave sub elements defined by nothing at all.
+
+`--fp-line-strong` keeps its name and now points at `--fp-line-sub`, so
+every component that already read it picked the softer border up for
+free.
 
 `--fp-accent-border` exists because the accent has a second sanctioned
 use: as the border colour of a sub element that needs emphasising. It is
@@ -251,18 +355,18 @@ are visually identical anyway.
 
 ## 3. Elevation
 
-### 3.1 The two element types
+### 3.1 The element types
 
-The system distinguishes two kinds of element, and the kind decides both
+The system distinguishes three kinds of element, and the kind decides both
 its border and its shadow.
 
-| | **Main element** | **Sub element** |
-|---|---|---|
-| **Examples** | Cards, panels, buttons, modals, hero, stat tiles | List items, tabs, chips, tags, inputs, badges |
-| **Border** | **None** | **4px** (`--fp-border-width`), 2px under 40px tall |
-| **Shadow** | The system's one shadow ink, offset equally and positively | **None at rest** — it appears on hover |
-| **On hover** | Presses **down**, shadow shrinks | **Lifts up**, shadow appears |
-| **Purpose** | Floats above the page | Sits inside a main element |
+| | **Main element** | **Sub element** | **Borderless sub** |
+|---|---|---|---|
+| **Examples** | Cards, panels, buttons, modals, hero, stat tiles, the island nav | List items, tabs, chips, tags, inputs, badges | Navbar links, quiet toolbars |
+| **Border** | **None** | **4px** (`--fp-border-width`), 2px under 40px tall | **None** |
+| **Shadow** | The system's one shadow ink, offset equally and positively | **None at rest** — it appears on hover | **None at rest** — it appears on hover |
+| **On hover** | Presses **down**, shadow shrinks | **Lifts up**, shadow appears | **Lifts up**, shadow appears |
+| **Purpose** | Floats above the page | Sits inside a main element | Sits inside a main element without competing for attention |
 
 The rule is simple: a main element's shadow *is* its outline. Adding a
 border on top of the shadow would double the outline and make the element
@@ -270,6 +374,20 @@ look heavier than it should. A sub element has no room to cast a full
 shadow, so it gets a border instead — and its resting state is **flat**.
 The border alone carries the outline until the pointer arrives, at which
 point the element lifts and the shadow appears with it.
+
+**The borderless sub element is the third tier, not a fourth kind.** It
+is a sub element with the border removed and *nothing else changed*: no
+resting shadow, and on hover it still lifts and its shadow still appears.
+It is the tier to reach for when a sub element should be present but
+should not compete for attention — a row of navigation links, a toolbar
+of quiet controls — where a 4px border on every item would turn a quiet
+list into a set of boxes.
+
+```html
+<a class="fp-navbar__link fp-sub--borderless" href="#">Foundations</a>
+```
+
+See [3.9 The borderless sub element](#39-the-borderless-sub-element).
 
 ### 3.2 The shadow contract
 
@@ -439,6 +557,54 @@ specificity fight with the component's own border rule.
 **Two — as a block of colour behind emphasised text.** See
 [5. Typography](#5-typography) for the `fp-highlight` treatment.
 
+### 3.9 The borderless sub element
+
+`.fp-sub--borderless` removes the border from a sub element and changes
+nothing else. The element is still a sub element: flat at rest, and on
+hover it lifts and its shadow appears.
+
+```html
+<a class="fp-navbar__link fp-sub--borderless" href="#">Foundations</a>
+```
+
+It is written as a custom property rather than a `border` declaration:
+
+```css
+.fp-sub--borderless {
+  --fp-sub-border-width: 0;
+  --fp-sub-border-width-sm: 0;
+}
+```
+
+Every sub element in the library reads its border width from
+`--fp-sub-border-width` (or `--fp-sub-border-width-sm` for micro
+elements), exactly the way it already read its border *colour* from
+`--fp-sub-border-color`. That is what makes the modifier work on any
+sub element without a specificity fight and without depending on the
+order the stylesheets are loaded in.
+
+**Why not `border: none`?** Two reasons, and the second is the
+important one.
+
+*First*, `border: none` would not be enough on its own: the component's
+own `border:` rule lives in `components.css`, which is loaded *after*
+`elevation.css`, so a plain `border: none` would lose the cascade.
+
+*Second* — and this is the real trap — a component such as
+`.fp-navbar__link` declares its border as
+`border: 4px solid transparent`, not `border: none`. That is
+deliberate: a transparent border still **occupies space**, so when the
+link becomes active and takes a real border colour, nothing around it
+moves. A component that declared `border: none` and then gained a border
+would grow by 4px on every side the moment it was activated.
+
+Setting the *width* to zero removes the border while keeping the box
+exactly the size it was, so no neighbour ever moves. The colour property
+is deliberately left alone: it is meaningless at width zero, and a later
+`.fp-sub--accent` on the same element must still be able to set it.
+
+---
+
 ---
 
 ### Why the ink changed to `#00193d`
@@ -450,9 +616,16 @@ rather than as depth. `#00193d` is a deep navy that still belongs to the
 palette but sits closer to the surface colours, so the band reads as
 depth.
 
-In the dark theme the ink inverts: `#d4dce8` (BLP LIGHT DARK) for borders
-and inverted fills, while the shadow itself stays `#000309` so it reads as
-shadow against the `#1e2b3d` surface.
+**The ink no longer draws the sub element's border.** It used to: a 4px
+`#00193d` outline on every sub element was so close to black that it
+shouted. The border is now `--fp-line-sub` (`#3e4d5f`), which keeps the
+outline but drops the volume — see [Lines](#lines). The ink keeps the
+job it is good at: filling an inverted surface, and being the colour the
+dark theme swaps with the surface.
+
+In the dark theme the ink inverts to `#d4dce8` (BLP LIGHT DARK), so an
+inverted surface becomes a light shape on a dark page, while the shadow
+itself stays `#000309` so it reads as depth rather than as a glow.
 
 ### Why there is no four-sided band
 
@@ -558,9 +731,9 @@ is a **rectangular block of accent colour** behind bold text:
 | Rule | Value | Why |
 |------|-------|-----|
 | Weight | `800` | The words must read as emphasised even without colour. |
-| Background | `--fp-accent` (`#007bff`) | The accent itself. |
+| Background | `--fp-accent-fill` (`#005bdd`) | The accent as a fill. |
 | Shape | A plain rectangle, `border-radius: 0` | A pill would soften the accent into a shape the system does not use. |
-| Text colour | `--fp-white` | `#007bff` is a mid-dark blue; white is the readable colour on top of it. |
+| Text colour | `--fp-white` | `#005bdd` is a mid-dark blue; white is the readable colour on top of it (5.88:1). |
 
 The class works on `<strong>` and on `<mark>` alike.
 
@@ -609,3 +782,101 @@ The responsive grid collapses in three steps: 4 columns → 2 at 768px →
 | `1024px` | Footer grid becomes 2 columns; feature panels stack and centre |
 | `768px` | 4- and 3-column grids become 2 columns; sidebar goes full width; toasts go full width |
 | `560px` | All grids become 1 column; headings step down a size |
+
+---
+
+## 8. The dark theme is an inversion
+
+The dark theme is a **true inversion** of the light theme. The rule is
+one sentence:
+
+> Swap the black and the white of the light theme and you get the dark
+> theme. Every colour is the light theme's colour inverted — *except the
+> shadow colour*.
+
+There is no hand-picked second palette. Every value below is the light
+theme's value, inverted.
+
+### The mapping
+
+| Token | Light | Dark | What inverted |
+|-------|-------|------|---------------|
+| `--fp-page-bg` | `#f5f5f5` | `#000309` | The canvas becomes the palette's **darkest** |
+| `--fp-surface` | `#fefeff` | `#fefeff` | The main surface is the palette's **lightest** |
+| `--fp-surface-raised` | `#fefeff` | `#fafcff` | The surface keeps its lightness |
+| `--fp-surface-sunken` | `#f5f5f5` | `#1e2b3d` | Insets go dark |
+| `--fp-track` | `#f5f5f5` | `#1e2b3d` | A track under a fill goes dark |
+| `--fp-fill` | `#fefeff` | `#1e2b3d` | A widget on a surface goes dark |
+| `--fp-fill-fg` | `#000309` | `#fefeff` | …so its text goes light |
+| `--fp-text-page` | `#000309` | `#fefeff` | Text on the canvas inverts |
+| `--fp-text-page-muted` | `#3e4d5f` | `#c7cbd1` | Muted canvas text inverts |
+| `--fp-text-surface` | `#000309` | `#000309` | Text on a card does **not** invert |
+| `--fp-text-surface-muted` | `#3e4d5f` | `#3e4d5f` | …and neither does its muted form |
+| `--fp-text-fill` | `#000309` | `#fefeff` | Text on a widget inverts — the widget is dark |
+| `--fp-text-neutral` | `#000309` | `#fefeff` | Text on a sunken well inverts |
+| `--fp-text-inverse` | `#fefeff` | `#000309` | Text on an inverted surface inverts |
+| `--fp-ink` | `#00193d` | `#d4dce8` | The ink is the fill of an inverted surface |
+| `--fp-ink-faint` | `#c7cbd1` | `#000a19` | The faintest ink swaps ends |
+| `--fp-line` | `#c7cbd1` | `#000a19` | Hairlines invert |
+| `--fp-line-sub` | `#3e4d5f` | `#94989e` | The sub border inverts to a quiet light tone |
+| `--fp-line-inverse` | `#000a19` | `#fefeff` | A rule on an inverted surface inverts |
+| `--fp-surface-ink` | `#000309` | `#fefeff` | The dark button becomes a light button |
+| `--fp-on-ink` | `#fefeff` | `#000309` | The mark on an ink fill inverts |
+| `--fp-on-accent` | `#fefeff` | `#fefeff` | White on blue, in both themes |
+| `--fp-accent` | `#007bff` | `#007bff` | The accent itself — the brand blue in both themes |
+| `--fp-accent-fill` | `#005bdd` | `#005bdd` | The accent **fill** — the same in both themes |
+| `--fp-accent-border` | `#007bff` | `#007bff` | The accent **border** — the bright blue |
+| `--fp-text-accent` | `#0026a3` | `#7fbcff` | The accent as text, by context |
+| `--fp-danger` | `#db0000` | `#db0000` | The danger fill — the same in both themes |
+| `--fp-code-bg` | `#000309` | `#fefeff` | The code block was dark; now it is light |
+| `--fp-code-fg` | `#d4dce8` | `#000309` | …and its text inverts with it |
+| `--fp-skeleton-sheen` | `rgba(255,255,255,.6)` | `rgba(0,3,9,.45)` | The shimmer inverts with its placeholder |
+| `--fp-select-arrow` | ink chevron | light chevron | The arrow follows the field's ink |
+| `--fp-switch-thumb-on` | `#fefeff` | `#000309` | The lit thumb contrasts with the lit track |
+| **`--fp-shadow-color-sub`** | `rgba(0,25,61,.22)` | **`#000309`** | **The one exception — the shadow does not invert** |
+
+### What does *not* invert
+
+- **The shadow.** `rgba(0, 25, 61, 0.22)` in the light theme, `#000309` in
+  the dark theme. A light shadow on a dark surface reads as a **glow**
+  rather than as depth, and the hard-shadow character of the system
+  would be lost. The shadow stays dark, one step darker than the canvas
+  it falls on, so it reads as a hole behind a light card rather than as
+  a halo around it.
+- **The accent.** `#007bff` is a brand colour, not a surface.
+  Inverting it would turn the accent into a different accent. It is also
+  bright enough to carry white text on its own fill in either theme.
+- **The status colours.** Red is still red, green is still green. Only
+  the tint *surfaces* invert, because a status colour is a signal.
+- **The radius, the motion and the type scale.** They are not colours.
+
+### Why a light card still reads as raised
+
+In the light theme a card is white and the page is grey, so the card
+reads as raised by **colour**, and the shadow adds the depth. In the
+inverted theme the page is the palette's darkest and the card is its
+lightest — the same relationship with the polarity swapped. The card
+still reads as raised, because it is the lightest thing on the darkest
+page, and the hard dark shadow behind it separates it from the canvas.
+
+`--fp-surface-sunken` is the tool for inset areas: a sunken region on a
+light card is a dark grey well, which is the inverted equivalent of the
+light grey well of the light theme.
+
+### The tints invert as a pair
+
+Every tint is a background plus a matching foreground, and both halves
+invert together so the pair stays legible in both directions.
+
+| Tint | Light (bg / fg) | Dark (bg / fg) |
+|------|-----------------|----------------|
+| Info | `#dbedff` / `#0026a3` | `#0026a3` / `#dbedff` |
+| Success | `#eaf7ef` / `#007512` | `#007512` / `#ccffd4` |
+| Warning | `#fff9bd` / `#b2a400` | `#b2a400` / `#fff9bd` |
+| Danger | `#ffdbdb` / `#a30000` | `#a30000` / `#ffdbdb` |
+
+The backgrounds become the palette's deep steps and the foregrounds
+become the light steps — the same two colours, the same pair, with the
+roles swapped.
+
+---

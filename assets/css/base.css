@@ -60,7 +60,7 @@ hr {
 
 ::selection {
   background: var(--fp-blue);
-  color: var(--fp-white);
+  color: var(--fp-on-accent);
 }
 
 /* --------------------------------------------------------------------------
@@ -135,14 +135,14 @@ mark {
    surface, and a pill would soften it into something the system does not
    use. */
 .fp-highlight {
-  background: var(--fp-accent);
+  background: var(--fp-accent-fill);
   color: var(--fp-white);
 }
 
 small { font-size: var(--fp-text-sm); }
 
 blockquote {
-  border-left: var(--fp-border-width) solid var(--fp-ink);
+  border-left: var(--fp-border-width) solid var(--fp-line-strong);
   padding: var(--fp-space-4) var(--fp-space-6);
   background: var(--fp-surface);
   border-radius: 0 var(--fp-radius) var(--fp-radius) 0;
@@ -220,7 +220,11 @@ hr + * { margin-top: var(--fp-space-6); }
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--fp-accent);
+  /* The accent TEXT step, not the accent fill step: a 12px label needs
+     the contrast, and the fill step is only 3.5:1 on the dark canvas.
+     `--fp-text-accent` follows its context, so a kicker on a card takes
+     the surface's accent step automatically. */
+  color: var(--fp-text-accent);
 }
 
 /* --------------------------------------------------------------------------

@@ -42,6 +42,11 @@ place and its flat resting state.
 | Resting shadow | Still none. The accent border is not a shadow |
 | Hover | Unchanged: the element lifts and its shadow appears |
 
+The accent **border** is the bright blue (`#007bff`) and the accent
+**fill** is the deep step (`#005bdd`). They are two decisions: a border
+is a line and has to be seen; a fill carries white text, and white on
+`#007bff` is only 3.95:1 while white on `#005bdd` is 5.88:1.
+
 One modifier, applied to any sub element:
 
 ```html
@@ -62,6 +67,46 @@ Do not put an accent border on everything. The accent border is a
 pointer, not a decoration; more than one per view and it stops pointing
 at anything.
 
+### The accent fill on a control — `.fp-check--accent` and `.fp-switch--accent`
+
+A checked checkbox and an ON switch fill with the **ink** by default,
+because a checked control is a statement about the state of a form, not
+an emphasis. Sometimes exactly one control has to be pointed at instead —
+the settings row that is the subject of the screen, say — and then the
+accent does the pointing.
+
+```html
+<label class="fp-check fp-check--accent">
+  <input type="checkbox" checked>
+  <span class="fp-check__box"></span>
+  <span class="fp-check__label">Remember this device</span>
+</label>
+
+<label class="fp-switch fp-switch--accent">
+  <input type="checkbox" checked>
+  <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
+  <span>Enable notifications</span>
+</label>
+```
+
+| Rule | Value |
+|------|-------|
+| Checked / ON fill | `--fp-accent-fill` (`#005bdd`) |
+| Tick mark and radio dot | `--fp-on-accent` (`#fefeff`) — always white |
+| Unchecked / OFF | **Unchanged.** White surface, ink border, no accent anywhere |
+| Resting shadow | None — a control is a sub element |
+| Hover | Unchanged: the control lifts and its shadow appears |
+
+The radio takes the same modifier: `fp-check--radio fp-check--accent`.
+
+**The OFF state stays neutral in both variants.** A control that is off
+should not shout: an accent-coloured unchecked box would be a claim
+about a state that has not happened. The accent appears only once the
+control is actually on.
+
+The tick stays white in both variants, so the mark reads as a mark and
+not as part of the fill.
+
 ### The highlight — `.fp-highlight`
 
 When the accent emphasises *words* rather than an element, the treatment
@@ -74,7 +119,7 @@ is bold text on a plain rectangle of accent colour.
 | Rule | Value |
 |------|-------|
 | Font weight | `800` — bold |
-| Background | `--fp-accent` (`#007bff`) |
+| Background | `--fp-accent-fill` (`#005bdd`) |
 | Border radius | `0` — a plain rectangle, not a pill |
 | Text colour | `--fp-white` |
 | Works on | `<strong>`, `<mark>`, `<span>`, any inline element |
@@ -87,7 +132,106 @@ takes the accent treatment.
 
 ---
 
-## 1. Buttons
+## 1. The quietest sub element
+
+### The borderless sub element — `.fp-sub--borderless`
+
+A sub element with **no border at all**. It is still a sub element in
+every other respect: flat at rest, and on hover it lifts and its shadow
+appears.
+
+```html
+<a class="fp-navbar__link fp-sub--borderless" href="#">Foundations</a>
+```
+
+This is the **third tier** of the element model, and it is the one to
+reach for when a sub element should be *present* but should not compete
+for attention.
+
+| Tier | Border | Resting shadow | Hover |
+|------|--------|----------------|-------|
+| Main element | none | hard shadow | presses down, shadow shrinks |
+| Sub element | 4px | none | lifts, shadow appears |
+| **Borderless sub** | **none** | **none** | **lifts, shadow appears** |
+
+A row of bordered navbar links reads as a row of boxes. A row of
+borderless links reads as a list of places.
+
+**Why the modifier is a custom property.** It is written as
+
+```css
+.fp-sub--borderless {
+  --fp-sub-border-width: 0;
+  --fp-sub-border-width-sm: 0;
+}
+```
+
+rather than as `border: none`, for two reasons.
+
+*First*, `border: none` would lose the cascade: the component's own
+`border:` rule lives in `components.css`, which is loaded after
+`elevation.css`.
+
+*Second* — and this is the important one — a component such as
+`.fp-navbar__link` declares its border as
+`border: 4px solid transparent`, not `border: none`. The transparent
+border still **occupies space**, so when the link becomes active and
+takes a real border colour, nothing around it moves. Setting the *width*
+to zero removes the border while keeping the box exactly the size it was,
+so **no neighbour ever moves**.
+
+Every sub element in the library reads its border width from
+`--fp-sub-border-width`, in the same way it already read its border
+colour from `--fp-sub-border-color`. The modifier therefore works on any
+sub element, with no specificity fight and no dependence on stylesheet
+order.
+
+The border *colour* is deliberately left alone: it is meaningless at
+width zero, and a later `.fp-sub--accent` on the same element must still
+be able to set it.
+
+### The island nav — `.fp-island-nav`
+
+A navigation bar that floats at the bottom of the viewport as a
+detached, pill-shaped island.
+
+```html
+<nav class="fp-island-nav" aria-label="Island navigation">
+  <a class="fp-island-nav__item is-active" href="#">Home</a>
+  <a class="fp-island-nav__item" href="#">Foundations</a>
+  <a class="fp-island-nav__item" href="#">Components</a>
+</nav>
+
+<!-- The room the island needs, so the last content is never trapped. -->
+<div class="fp-island-nav-spacer" aria-hidden="true"></div>
+```
+
+| Part | Kind | Treatment |
+|------|------|-----------|
+| `.fp-island-nav` | **Main** | Fixed to the bottom, centred, 36px radius, **no border**, a 6px hard shadow |
+| `.fp-island-nav__item` | **Sub** | No resting shadow; lifts 2px on hover and its shadow appears |
+| `.fp-island-nav__item.is-active` | Sub | Fills with the ink and inverts its text |
+| `.fp-island-nav-spacer` | Utility | Reserves the room the fixed island occupies |
+
+**The container is a main element.** An island is *detached*: it floats
+above the page rather than sitting inside it, so the shadow is what
+makes it read as an object hovering over the content. That is why it
+carries the main treatment — no border, a hard down-right shadow — and
+why it presses **down** on hover, like every other main element.
+
+The items inside it are **sub elements**: flat at rest, lifting on hover.
+
+**It must not trap the content.** A fixed island sits on top of the page,
+so without help the last row of a table or the final card ends up
+underneath it. The `.fp-island-nav-spacer` utility reserves that room;
+put it at the end of the page, after the last piece of content.
+
+**Reduced motion** is respected: the global `prefers-reduced-motion`
+block neutralises the island's press, keeping the centring translate.
+
+---
+
+## 2. Buttons
 
 Main elements. The shadow is their outline, so they carry no border.
 
@@ -155,7 +299,7 @@ opacity to 40%. The button does not press on hover.
 
 ---
 
-## 2. Form controls
+## 3. Form controls
 
 Sub elements. All carry a 4px border and lift by 2px on hover.
 
@@ -237,7 +381,9 @@ its outer corners.
 The native input is visually hidden but stays in the tab order. The box
 is a 2px-bordered square (circle for radio) that lifts on hover. The
 checked state fills with ink, not accent — a checked box is a fact about
-the state, not an emphasis.
+the state, not an emphasis — unless the control carries
+[`fp-check--accent`](#the-accent-fill-on-a-control--fp-check--accent-and-fp-switch--accent),
+which fills it with the accent instead and keeps the tick white.
 
 `fp-check--card` wraps the whole control in a bordered card that highlights
 when checked.
@@ -252,17 +398,95 @@ when checked.
 </label>
 ```
 
+The OFF track is a neutral sunken surface with an ink border; the ON
+track fills with the ink. `fp-switch--accent` fills the ON track with the
+accent instead — and leaves the OFF track exactly as it was.
+
 ### Range
 
 ```html
 <input class="fp-range" type="range" min="0" max="100" value="65">
 ```
 
-The thumb is a white disc with a 3px ink ring.
+**The thumb is a horizontal rectangle that sits inside the track.** It is
+not a disc riding on top of the rail: a handle that hangs over both edges
+of the track reads as a separate object sitting on the slider rather
+than as a handle *in* it.
+
+| Part | Size |
+|------|------|
+| Track | 18px tall, 2px border, 36px radius |
+| Thumb | 10px tall × 28px wide, 2px border, 12px radius |
+| `margin-top` | 2px (Chromium correction) |
+
+The geometry is exact, and it was measured in Chromium and Firefox:
+
+| | Value |
+|---|---|
+| Track (rendered) | 18px tall |
+| Thumb (rendered) | 10px tall × 28px wide |
+| Thumb centre vs track centre | **delta 0** — exactly centred in both engines |
+| Thumb inside the track | **yes** — 4px of clearance above and below |
+| Thumb width vs height | 28px wide, 10px tall — clearly a rectangle |
+
+The `margin-top` is the vertical correction for Chromium, where a native
+thumb is positioned by its top edge. The obvious arithmetic is wrong by
+exactly the track's border width:
+
+```
+margin-top = (track height - thumb height) / 2 = (18 - 10) / 2 = 4px   WRONG
+```
+
+Chromium aligns the thumb's top edge against the INNER edge of the
+track, and the track's 2px border is inside its 18px box — so the thumb
+already starts 2px below the track's top edge. The correction is the
+remainder, not the whole:
+
+```
+margin-top = (track height - thumb height) / 2 - track border width
+           = (18 - 10) / 2 - 2
+           = 2px
+```
+
+Measured by painting the track and the thumb in flat probe colours and
+scanning the rendered pixels, at `deviceScaleFactor: 2`:
+
+| `margin-top` | Chromium thumb centre vs track centre |
+|---|---|
+| 0px | −2px |
+| 1px | −1px |
+| **2px** | **0 — centred** |
+| 3px | +1px |
+| 4px | +2px |
+
+Firefox centres a `::-moz-range-thumb` on the track by itself and ignores
+`margin-top` entirely — measured at 0px, 2px and 4px the thumb lands
+within a pixel of the track centre every time — so the same 2px is a
+no-op there and the handle lands in the identical place in both
+engines. `box-sizing: border-box` is declared on both pseudo-elements,
+because browser pseudo-elements are not matched by the global `*` reset
+and would otherwise be content-box.
+
+**The progress fill.** The filled portion of the track is a gradient on
+the track itself, driven by the `--fp-range-progress` custom property.
+The JavaScript in `flatplanet.js` keeps that property in step with the
+input.
+
+Without JavaScript the property is unset, the gradient falls back to
+`0%`, and the bar is simply **empty**. That is the honest degradation:
+the control still works, it just does not claim to know its own value.
+
+The fill is the **ink**, not the accent. The accent is budgeted to one
+element per view, and a slider that is being dragged is not the most
+important thing on the screen.
+
+The hover behaviour is unchanged: the thumb lifts 2px and its hard
+shadow appears — it is a sub element, and a rising element never loses
+its shadow.
 
 ---
 
-## 3. Badges, tags and chips
+## 4. Badges, tags and chips
 
 ### Badge
 
@@ -348,7 +572,7 @@ contracts from 3px to 2px.
 
 ---
 
-## 4. Cards
+## 5. Cards
 
 Main elements. No border — the shadow is the outline.
 
@@ -386,7 +610,7 @@ inner card's job is to organise content, not to cast a second shadow.
 
 ---
 
-## 5. Lists
+## 6. Lists
 
 ```html
 <div class="fp-list">
@@ -405,7 +629,7 @@ Items are sub elements: 4px border, lift on hover.
 
 ---
 
-## 6. Tabs
+## 7. Tabs
 
 ```html
 <div class="fp-tabs" role="tablist">
@@ -425,7 +649,7 @@ sunken container. The JavaScript manages `aria-selected`.
 
 ---
 
-## 7. Accordion
+## 8. Accordion
 
 Built on native `<details>` so keyboard behaviour comes for free.
 
@@ -457,7 +681,7 @@ information:
 
 ---
 
-## 8. Tables
+## 9. Tables
 
 ```html
 <div class="fp-table-wrap">
@@ -481,7 +705,7 @@ and switches to a monospace, tabular-numeral face.
 
 ---
 
-## 9. Progress and meters
+## 10. Progress and meters
 
 ```html
 <div class="fp-meter">
@@ -515,7 +739,7 @@ Sizes: `fp-progress--sm` (12px), default (18px), `fp-progress--lg` (26px).
 
 ---
 
-## 10. Alerts
+## 11. Alerts
 
 ```html
 <div class="fp-alert fp-alert--warning">
@@ -544,7 +768,7 @@ sub element.
 
 ---
 
-## 11. Stat tiles
+## 12. Stat tiles
 
 ```html
 <div class="fp-stat">
@@ -560,7 +784,7 @@ uses.
 
 ---
 
-## 12. Breadcrumbs
+## 13. Breadcrumbs
 
 ```html
 <nav class="fp-breadcrumb">
@@ -574,7 +798,7 @@ uses.
 
 ---
 
-## 13. Pagination
+## 14. Pagination
 
 ```html
 <nav class="fp-pagination">
@@ -589,7 +813,7 @@ The active page fills with ink. Disabled pages use `is-disabled`.
 
 ---
 
-## 14. Segmented control
+## 15. Segmented control
 
 ```html
 <div class="fp-segment">
@@ -604,7 +828,7 @@ container.
 
 ---
 
-## 15. Tooltip
+## 16. Tooltip
 
 CSS only, no JavaScript.
 
@@ -621,7 +845,7 @@ reference as well.
 
 ---
 
-## 16. Timeline
+## 17. Timeline
 
 ```html
 <div class="fp-timeline">
@@ -641,7 +865,7 @@ is hidden on the last item.
 
 ---
 
-## 17. Pricing cards
+## 18. Pricing cards
 
 ```html
 <div class="fp-price-card fp-price-card--featured">
@@ -667,7 +891,7 @@ reads as the primary button.
 
 ---
 
-## 18. Overlays
+## 19. Overlays
 
 ### Modal
 
@@ -733,7 +957,7 @@ announcements are read out.
 
 ---
 
-## 19. Navigation
+## 20. Navigation
 
 ### Navbar
 
@@ -749,6 +973,20 @@ announcements are read out.
   <div class="fp-navbar__actions">…</div>
 </nav>
 ```
+
+### Island nav
+
+```html
+<nav class="fp-island-nav" aria-label="Island navigation">
+  <a class="fp-island-nav__item is-active" href="#">Home</a>
+  <a class="fp-island-nav__item" href="#">Foundations</a>
+</nav>
+<div class="fp-island-nav-spacer" aria-hidden="true"></div>
+```
+
+A floating bar at the bottom of the viewport. See
+[1. The quietest sub element](#1-the-quietest-sub-element) for the full
+description of its geometry and its main/sub split.
 
 ### Sidebar
 
@@ -791,7 +1029,7 @@ edge of the trigger.
 
 ---
 
-## 20. Layout shells
+## 21. Layout shells
 
 ### Hero
 
@@ -848,7 +1086,7 @@ the zero-gradient rule because it is a motion affordance signalling
 
 ---
 
-## 21. Colour swatches
+## 22. Colour swatches
 
 ```html
 <div class="fp-swatch">
@@ -866,7 +1104,7 @@ mirrors the token definitions.
 
 ---
 
-## 22. Utilities
+## 23. Utilities
 
 | Class | Effect |
 |-------|--------|
@@ -888,6 +1126,9 @@ mirrors the token definitions.
 | `fp-shadow-1` … `fp-shadow-4` | Static hard shadows, `3px` … `14px` on both axes |
 | `fp-shadow-none` | No shadow |
 | `fp-sub--accent` | The accent as a sub element's border colour |
+| `fp-sub--borderless` | A sub element with no border — the quietest tier |
+| `fp-island-nav` / `__item` | A floating island navigation bar |
+| `fp-island-nav-spacer` | The room a fixed island nav needs |
 | `fp-highlight` | Bold text on a rectangular block of accent colour |
 | `fp-code` / `fp-code-block` | Inline and block code |
 | `fp-kbd` | Keyboard key |

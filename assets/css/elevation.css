@@ -69,6 +69,17 @@
    -------------------------------------------------------------------------- */
 .fp-elev {
   --fp-elev-h: 6px;
+  /* `.fp-elev` has no background of its own — it sits directly on the
+     page, so its text belongs to the PAGE context, not to a surface.
+     Saying so explicitly keeps it correct in both themes. */
+  --fp-text: var(--fp-text-page);
+  --fp-text-muted: var(--fp-text-page-muted);
+  --fp-text-subtle: var(--fp-text-page-subtle);
+  --fp-text-accent: var(--fp-text-accent-page);
+  --fp-text-danger: var(--fp-text-danger-page);
+  --fp-text-success: var(--fp-text-success-page);
+  --fp-text-warning: var(--fp-text-warning-page);
+  color: var(--fp-text);
   position: relative;
   /* A main element carries no border: the shadow is its outline. */
   border: none;
@@ -98,6 +109,19 @@
    from this one (noise).
    ---------------------------------------------------------------------- */
 /* --- Height scale ---------------------------------------------------- */
+/* `.fp-elev--surface` is for the demos that draw a SURFACE — a light
+   panel floating over the page. Its text belongs to that surface, not to
+   the page it floats on. */
+.fp-elev--surface {
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  color: var(--fp-text);
+}
 .fp-elev--1 { --fp-elev-h: 3px; }
 .fp-elev--2 { --fp-elev-h: 6px; }
 .fp-elev--3 { --fp-elev-h: 9px; }
@@ -114,7 +138,7 @@
    -------------------------------------------------------------------------- */
 .fp-sub {
   --fp-elev-h-sub: 3px;
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   transition:
     box-shadow var(--fp-duration-default) var(--fp-ease),
     transform var(--fp-duration-default) var(--fp-ease),
@@ -130,6 +154,57 @@
 .fp-sub--1 { --fp-elev-h-sub: 2px; }
 .fp-sub--2 { --fp-elev-h-sub: 3px; }
 .fp-sub--3 { --fp-elev-h-sub: 5px; }
+
+/* --------------------------------------------------------------------------
+   THE BORDERLESS SUB ELEMENT — `.fp-sub--borderless`
+
+   The QUIETEST tier of the sub element. A sub element normally carries
+   a real inline border; this modifier removes it and changes nothing
+   else. The element is still a sub element in every respect:
+
+     * no resting shadow
+     * on hover it lifts UP and the shadow APPEARS
+
+   It exists for the case where a sub element should be PRESENT but
+   should not compete for attention — a row of navigation links, a
+   toolbar of quiet controls — where a 4px border on every item would
+   turn a quiet list into a set of boxes.
+
+       <a class="fp-navbar__link fp-sub--borderless" href="#">Foundations</a>
+
+   THE LAYOUT-SHIFT TRAP
+   ---------------------
+   A component such as `.fp-navbar__link` declares its border as
+   `border: 4px solid transparent`, not `border: none`. That is
+   deliberate: a transparent border still OCCUPIES space, so when the
+   link becomes active and takes a real border colour, nothing around
+   it moves. A component that declared `border: none` and then gained a
+   border would grow by 4px on every side the moment it was activated.
+
+   So this modifier must NOT be written as `border: none`. That would
+   (a) remove the reserved space and cause a layout shift the moment the
+   element changed state, and (b) lose the specificity fight with the
+   component's own `border:` rule, because `elevation.css` is loaded
+   BEFORE `components.css`.
+
+   Instead it sets the border WIDTH to zero through the same custom
+   property the components read their border width from:
+
+       --fp-sub-border-width: 0;
+
+   The box keeps its exact size in every state — the border is simply
+   not drawn — so nothing reflows, and the modifier wins the cascade
+   without any specificity fight, because it never declares a `border`
+   at all.
+
+   The colour property is left alone: it is meaningless at width zero,
+   and a later `.fp-sub--accent` on the same element must still be able
+   to set it.
+   -------------------------------------------------------------------------- */
+.fp-sub--borderless {
+  --fp-sub-border-width: 0;
+  --fp-sub-border-width-sm: 0;
+}
 
 /* --------------------------------------------------------------------------
    THE ACCENT BORDER — the sanctioned way to emphasise a sub element.

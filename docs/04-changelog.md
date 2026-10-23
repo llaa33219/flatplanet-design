@@ -1,6 +1,115 @@
 # 04 — Changelog
 
-## 1.1.0 — Current
+## 1.2.0 — Current
+
+Control variants, a rectangular range thumb, the borderless sub element,
+a floating island nav and a dark theme that is a true inversion.
+
+### Added
+
+**Accent variants for the form controls**
+- `--fp-accent-fill` (`#005bdd`) is a new token: the accent as a
+  *background*. `--fp-accent` stays the brand blue (`#007bff`) and is
+  what the accent IS — a focus ring, an accent border, an accent line.
+  The split is a contrast decision: white on `#007bff` is 3.95:1, below
+  the 4.5:1 that body text needs, so anything that carries white text
+  on an accent background takes the deep step instead (5.88:1).
+- `.fp-check--accent` — a checked checkbox or radio fills with the accent
+  instead of the ink. The tick mark stays white.
+- `.fp-switch--accent` — an ON switch fills with the accent instead of
+  the ink.
+- The UNCHECKED / OFF state is untouched in both variants: white surface,
+  ink border, no accent anywhere. A control that is off does not shout.
+
+**The borderless sub element — `.fp-sub--borderless`**
+- The quietest tier of the element model. A sub element with no border,
+  which is still a sub element in every other respect: flat at rest, and
+  on hover it lifts and its shadow appears.
+- Written as a custom property (`--fp-sub-border-width: 0`) rather than
+  as `border: none`, because a component such as `.fp-navbar__link`
+  reserves its border space with `border: 4px solid transparent`. Setting
+  the *width* to zero keeps the box the same size, so no neighbour ever
+  moves — a `border: none` would have caused a layout shift.
+
+**The island nav**
+- `.fp-island-nav` — a navigation bar that floats at the bottom of the
+  viewport as a detached, 36px-radius pill. The container is a MAIN
+  element (no border, a hard shadow, it presses down on hover); the items
+  inside are SUB elements (flat at rest, lifting on hover). The active
+  item fills with the ink and inverts its text.
+- `.fp-island-nav-spacer` — reserves the room the fixed island occupies,
+  so the last content is never trapped underneath it.
+
+**The range progress fill**
+- The filled portion of the range track is drawn by a CSS gradient on the
+  track itself, driven by the `--fp-range-progress` custom property.
+- Without JavaScript the gradient falls back to `0%` and the bar is
+  simply empty: the control still works, it just does not claim to know
+  its own value.
+
+### Changed
+
+**The range thumb is now a rectangle that sits inside the track**
+- It was a 28px disc on a 14px rail, so it overflowed the track by 7px
+  above and 7px below — a handle hanging over both edges of the rail
+  rather than a handle in it.
+- It is now a 28×10px rectangle with a 12px radius, inside an 18px
+  track, with 4px of clearance above and below. The geometry was
+  measured in both Chromium and Firefox: the thumb's centre lands exactly
+  on the track's centre line (delta 0) and never touches either edge.
+- `margin-top: 2px` is the vertical correction for Chromium, where a
+  native thumb is positioned by its top edge against the track's INNER
+  edge — so the correction is `(18 − 10) / 2 − 2` (the track's 2px border
+  is already accounted for), not `(18 − 10) / 2`. Firefox centres a
+  `::-moz-range-thumb` by itself and ignores the property, so the handle
+  lands identically in both engines.
+- `box-sizing: border-box` is declared on the pseudo-elements, because
+  browser pseudo-elements are not matched by the global `*` reset.
+- The hover behaviour is unchanged: the thumb lifts 2px and its hard
+  shadow appears.
+
+**The sub element's border is no longer black**
+- It was `--fp-line-strong` (`--fp-ink`, `#00193d`) — so close to black
+  that every sub element wore a hard black outline and shouted, leaving
+  the shadow with nothing to do.
+- It is now `--fp-line-sub` (`#3e4d5f`, BLP SUB DARK): unmistakably a
+  border at roughly 8:1 against white, but with tone in it.
+- `--fp-line-strong` keeps its name and now points at `--fp-line-sub`,
+  so every component that already read it picked the softer border up
+  for free. The `--fp-sub-border-color` mechanism is untouched.
+
+**The dark theme is now a true inversion**
+- It used to be hand-picked colours (`#1e2b3d` surfaces, `#0b1524`
+  canvas), which is not an inversion of anything.
+- Now every colour is the light theme's colour inverted: the canvas
+  becomes the palette's darkest (`#000309`), the main surface stays the
+  palette's lightest (`#fefeff`), and text, fills, tracks, tints and
+  code blocks all swap with it.
+- **The shadow is the one exception.** It stays dark (`#000309`), because
+  a light shadow on a dark surface reads as a glow rather than as depth.
+- The accent and the status colours do not invert — they are signals,
+  not surfaces.
+
+**Text follows its context**
+- The inverted theme has two polarities on the page at once, so text on
+  the canvas and text on a card cannot share a colour.
+- `--fp-text` now follows its **context**: it is the page value by
+  default, and every surface re-points it at the surface value. A
+  component never has to know which theme it is in.
+
+### Fixed
+
+- The footer in the dark theme was unreadable: its text token did not
+  invert with the surface it sat on. The inverse-surface text tokens
+  now invert with the inverse surface.
+- The code block, which was dark in the light theme, is now light in the
+  inverted theme.
+- The select chevron, the switch thumb and the skeleton shimmer all
+  follow the polarity of the surface they sit on.
+
+---
+
+## 1.1.0
 
 The elevation system, finalised. The shadow geometry, the hover contract
 and the main/sub distinction are now the way the library is built.

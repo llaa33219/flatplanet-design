@@ -319,6 +319,7 @@ MAIN_MARKERS = [
     ".fp-modal", ".fp-price-card", ".fp-table-wrap", ".fp-btn",
     ".fp-dropdown__menu", ".fp-sidebar", ".fp-empty", ".fp-code-block",
     ".fp-icon-tile", ".fp-swatch", ".fp-spec", ".fp-elev",
+    ".fp-island-nav",
 ]
 
 SUB_MARKERS = [
@@ -326,6 +327,7 @@ SUB_MARKERS = [
     ".fp-chip", ".fp-avatar", ".fp-accordion__item", ".fp-pagination__item",
     ".fp-badge", ".fp-check__box", ".fp-switch__track", ".fp-timeline__dot",
     ".fp-check--card", ".fp-input-group__addon", ".fp-sub",
+    ".fp-island-nav__item",
 ]
 
 

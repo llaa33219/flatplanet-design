@@ -9,21 +9,42 @@ system's rules.
 
 ### Main and sub elements nest, and they do different things
 
-The system has exactly two kinds of element, and the difference is
-visible:
+The system has three kinds of element, and the difference is visible:
 
-| | Main element | Sub element |
-|---|---|---|
-| Border | None | 4px |
-| Shadow | Full ink | Soft ink |
-| On hover | Presses down | Lifts up |
-| Example | Card | List item inside it |
+| | Main element | Sub element | Borderless sub |
+|---|---|---|---|
+| Border | None | 4px | None |
+| Shadow | Full ink | None at rest | None at rest |
+| On hover | Presses down | Lifts up | Lifts up |
+| Example | Card | List item inside it | Navbar link |
 
 When a sub element sits inside a main element, the main element's hover
 state does not automatically propagate. Each reacts to the pointer on its
 own, and the two states together produce the system's characteristic
 depth: the parent presses into the page while the child lifts off the
 parent.
+
+### Choosing between the two sub tiers
+
+Both sub tiers lift on hover and gain their shadow. The only difference
+is the border, and that difference is about **attention**.
+
+| Use | Tier |
+|-----|------|
+| The control needs to be found — a list item, a chip, a tab | Sub element, with its border |
+| The control should be there but must not compete — a navbar link, a quiet toolbar | `.fp-sub--borderless` |
+
+```html
+<!-- A sub element: the border is what makes it findable. -->
+<a class="fp-btn fp-btn--ghost fp-btn--sm" href="#">Foundations</a>
+
+<!-- The borderless sub: present, but it does not shout. -->
+<a class="fp-navbar__link fp-sub--borderless" href="#">Foundations</a>
+```
+
+Do not use the borderless tier to hide a control that people are meant
+to use. It is for the rows of controls that are *navigation*, not the
+rows of controls that are *actions*.
 
 ### Depth stacks
 
@@ -70,6 +91,18 @@ theme. That is intentional: both are "not the main surface". The white
 of a card reads as raised because of the ink shadow around it, not
 because of a colour difference.
 
+**In the dark theme the canvas changes and the main surface does not.**
+The canvas becomes the palette's darkest colour (`#000309`) and the
+surface stays the palette's lightest (`#fefeff`), so the main colour is
+still the main colour — it is the *background* that swapped ends. A card
+reads as raised in both themes, because it is the lightest thing on the
+page in one and the lightest thing on the page in the other, and the
+hard shadow is behind it either way.
+
+This is why components reference `--fp-surface` and never a raw white:
+the token is what carries the relationship, and the relationship is what
+survives the inversion.
+
 ---
 
 ## 3. The accent discipline
@@ -108,6 +141,8 @@ for the same "main action" slot:
 - opt-in modifiers: `fp-card--accent`, `fp-badge--accent`,
   `fp-progress__bar--accent`
 - the kicker label above a section heading
+- the accent variant of a checked control: `fp-check--accent`,
+  `fp-switch--accent`
 
 ### The two sanctioned accent treatments
 
@@ -235,7 +270,30 @@ comfortably clear WCAG AA at every text size.
 
 Tinted surfaces are always paired with a dedicated foreground token, so
 the pair stays legible in both themes rather than relying on the tint to
-carry the contrast.
+carry the contrast. The pairs invert together in the dark theme — a
+deep background with a light foreground — so the ratio is preserved in
+both directions.
+
+**The inverted theme has two text contexts, and both are checked.**
+Text on the canvas is `#fefeff` on `#000309` (roughly 19:1); text on a
+surface is `#000309` on `#fefeff` (roughly 18:1). Neither polarity is
+left to chance.
+
+**The sub element's border is a real border.** `#3e4d5f` against white
+is roughly 8:1, so a sub element keeps a clear outline. The lighter
+`#94989e` was rejected for the light theme's border for exactly this
+reason: at about 2.9:1 a 4px line in that colour stops reading as an
+outline at all.
+
+**The accent and the accent fill are two decisions.** `--fp-accent` is
+the brand blue (`#007bff`) and it is what the accent IS — a focus ring,
+an accent border, an accent-coloured line. `--fp-accent-fill` is the
+accent's deep step (`#005bdd`) and it is what carries white text:
+white on `#007bff` is 3.95:1, which is below the 4.5:1 that body text
+needs, while white on `#005bdd` is 5.88:1.
+
+So: the accent is for lines, the accent fill is for surfaces, and the
+accent is never used for body copy.
 
 ---
 
@@ -256,26 +314,51 @@ choice in `localStorage` under `flatplanet-theme`.
 
 ### How the dark theme is built
 
-The canvas becomes `#000309` — the darkest colour in the palette.
-Surfaces become `#1e2b3d` (BLP Soft Dark), one step above the canvas, so
-the standard "elevated = lighter" hierarchy survives the inversion.
+**The dark theme is a true inversion of the light theme.** The rule is
+one sentence:
 
-Shadows stay dark in the dark theme (`#000309` against the `#1e2b3d`
-surface). A light shadow on a dark surface would read as a glow rather
-than as a shadow, and the hard-shadow character of the system would be
-lost.
+> Swap the black and the white of the light theme and you get the dark
+> theme. Every colour is the light theme's colour inverted — *except the
+> shadow colour*.
 
-The ink inverts to `#d4dce8` (BLP Light Dark) so that borders and
-inverted fills still work.
+So:
 
-Tints are remapped to deep backgrounds with light foregrounds:
+- the page canvas becomes the palette's **darkest** colour, `#000309`
+- the main surface stays the palette's **lightest** colour, `#fefeff`
+- text on that surface becomes the palette's darkest, `#000309`
+- anything that was white-filled is now dark-filled, and vice versa
 
-| | Light | Dark |
+**The shadow is the one exception.** It is `rgba(0, 25, 61, 0.22)` in the
+light theme and stays `#000309` in the dark theme. A light shadow on a
+dark surface reads as a *glow* rather than as depth, and the hard-shadow
+character of the system would be lost. It is one step darker than the
+canvas it falls on, so it reads as a hole behind a light card.
+
+**The accent does not invert.** `#007bff` is a brand colour, not a
+surface; inverting it would turn the accent into a different accent.
+The accent *fill* (`#005bdd`) does not invert either — it is the same
+fill in both themes, because it is the same surface with the same white
+text on it in either one.
+
+**The status colours do not invert.** Red is still red. Only the tint
+*surfaces* invert, and each tint inverts as a **pair** so the
+background and the foreground stay matched:
+
+| | Light (bg / fg) | Dark (bg / fg) |
 |---|---|---|
-| Info | `#dbedff` / `#0026a3` | `#16293f` / `#9fd0ff` |
-| Success | `#eaf7ef` / `#007512` | `#12301f` / `#8fe0a4` |
-| Warning | `#fff9bd` / `#b2a400` | `#3a3213` / `#ffe98a` |
-| Danger | `#ffdbdb` / `#a30000` | `#3a1a1c` / `#ff9ea5` |
+| Info | `#dbedff` / `#0026a3` | `#0026a3` / `#dbedff` |
+| Success | `#eaf7ef` / `#007512` | `#007512` / `#ccffd4` |
+| Warning | `#fff9bd` / `#b2a400` | `#b2a400` / `#fff9bd` |
+| Danger | `#ffdbdb` / `#a30000` | `#a30000` / `#ffdbdb` |
+
+**Text has two contexts.** The inverted theme has two polarities on the
+page at once, so text on the canvas and text on a card cannot share a
+colour. `--fp-text` follows its **context**: it is the page value by
+default, and every surface re-points it at the surface value. A
+component never has to know which theme it is in.
+
+The full mapping is in
+[01-foundations.md](./01-foundations.md#8-the-dark-theme-is-an-inversion).
 
 ### Adding your own theme
 
@@ -322,6 +405,7 @@ Override the semantic tokens. Never override a raw palette token.
 <div class="fp-elev fp-elev--3">The one direction, at a larger size.</div>
 <div class="fp-sub">A sub element that lifts on hover.</div>
 <div class="fp-sub fp-sub--accent">A sub element the accent points at.</div>
+<div class="fp-sub fp-sub--borderless">A sub element with no border.</div>
 ```
 
 A main element's shadow is offset **equally and positively** on both
@@ -330,11 +414,48 @@ bottom-right. There is no upward shadow, no leftward shadow and no
 four-sided band: the shadow's only variable is its size.
 
 A sub element has no shadow at rest — the border is its outline, and the
-shadow appears as it lifts. Add `.fp-sub--accent` to point at it.
+shadow appears as it lifts. Add `.fp-sub--accent` to point at it, or
+`.fp-sub--borderless` to remove the border and leave only the lift.
+
+`.fp-sub--borderless` keeps the element's box exactly the same size in
+every state, so applying it never shifts the layout.
 
 ---
 
-## 8. JavaScript
+## 8. A floating navigation island
+
+An island nav is a navigation bar that floats at the bottom of the
+viewport as a detached pill.
+
+```html
+<nav class="fp-island-nav" aria-label="Island navigation">
+  <a class="fp-island-nav__item is-active" href="#">Home</a>
+  <a class="fp-island-nav__item" href="#">Foundations</a>
+</nav>
+
+<!-- At the very end of the page. -->
+<div class="fp-island-nav-spacer" aria-hidden="true"></div>
+```
+
+Two rules make it work:
+
+1. **The container is a main element.** It carries no border and a hard
+   shadow, and it presses down on hover. Without the shadow the pill
+   would read as a strip of white stuck to the window rather than as an
+   object floating over the page.
+
+2. **The page reserves room for it.** A fixed island sits on top of the
+   content, so the last row of the page would be trapped underneath it.
+   The `.fp-island-nav-spacer` utility reserves that space; put it after
+   the last piece of content.
+
+The items are sub elements: flat at rest, lifting on hover. The active
+item fills with the ink and inverts its text, the same treatment the
+sidebar and the menu bar use.
+
+---
+
+## 9. JavaScript
 
 `assets/js/flatplanet.js` is a small, dependency-free file providing
 behaviour the CSS cannot:
@@ -350,13 +471,21 @@ behaviour the CSS cannot:
 | Toast | `FlatPlanet.toast(message, type, title)` |
 | Scroll spy | `.fp-toc__item[href^="#"]` |
 | Palette swatches | `#swatches` |
+| Range progress | `input[type="range"]` — the `--fp-range-progress` custom property |
 
 Everything degrades gracefully. A modal without JavaScript will not open,
 but a tab list without JavaScript still renders as a row of tabs.
 
+**The range slider is the clearest example of that rule.** Its progress
+fill is drawn by a CSS gradient driven by the `--fp-range-progress`
+custom property. The JavaScript keeps that property in step with the
+input; without it the gradient falls back to `0%` and the bar is simply
+**empty**. The control still works — it just does not pretend to know
+its own value.
+
 ---
 
-## 9. Performance
+## 10. Performance
 
 - No CSS framework, no build step, no runtime dependency.
 - The whole system is about 60KB of CSS and 12KB of JavaScript, unminified.

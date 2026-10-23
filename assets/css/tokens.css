@@ -113,47 +113,227 @@
   /* --- Surfaces ------------------------------------------------------- */
   --fp-surface:                 var(--fp-white);        /* MAIN colour    */
   --fp-surface-raised:          var(--fp-white);        /* elevated       */
-  --fp-surface-sunken:          var(--fp-bg-gray);      /* wells, tracks  */
+  --fp-surface-sunken:          var(--fp-bg-gray);      /* wells, insets  */
   --fp-surface-inverse:         var(--fp-dark-ultra-deep);
   --fp-surface-inverse-soft:    var(--fp-dark-soft);
   --fp-page-bg:                 var(--fp-bg-gray);      /* canvas         */
   --fp-overlay-scrim:           rgba(0, 25, 61, 0.45);
+  /* A TRACK — the empty part of a progress bar, a range track, a switch
+     track. A track always sits UNDER a fill, so it has to stay legible
+     against whatever colour that fill takes. It is its own token
+     because the fill inverts between the themes and the track has to
+     invert with it. */
+  --fp-track:                   var(--fp-bg-gray);
+  /* The FILL of a nested element that used to be white on white: an
+     input, a badge, a chip. In the light theme it is white, like
+     everything else; in the inverted theme it turns dark, because a
+     white widget on a white card is invisible. */
+  --fp-fill:                    var(--fp-white);
+  --fp-fill-fg:                 var(--fp-text-surface);
+  --fp-fill-fg-muted:           var(--fp-text-surface-muted);
 
-  /* --- Ink (the single depth colour) --------------------------------- */
+  /* --- Ink (the single depth colour) ---------------------------------
+     `--fp-ink` is the DEPTH colour of the light theme: it fills inverted
+     surfaces (footer, banner, active items) and it is the colour the
+     dark theme swaps with the surface. */
   --fp-ink:                     #00193d;                /* BLP DARK       */
   --fp-ink-soft:                #3e4d5f;                /* BLP SUB DARK   */
   --fp-ink-muted:               #94989e;                /* LIGHT ULTRA    */
   --fp-ink-faint:               #c7cbd1;                /* LIGHT DEEP     */
-  --fp-ink-border:              #00193d;                /* sub borders    */
+  --fp-ink-border:              var(--fp-line-sub);     /* sub borders    */
   --fp-surface-ink:             #000309;                /* inverted fills */
+  --fp-surface-ink-hover:       var(--fp-dark-deep);
 
-  /* --- Text ----------------------------------------------------------- */
-  --fp-text:                    var(--fp-dark-ultra-deep); /* #000309      */
-  --fp-text-muted:              var(--fp-ink-soft);        /* #3e4d5f      */
-  --fp-text-subtle:             var(--fp-ink-muted);
+  /* --- Text -----------------------------------------------------------
+     There are TWO text contexts, because the inverted theme has two
+     polarities on the page at once: the CANVAS is the darkest colour
+     and the SURFACE is the lightest, so text on the canvas and text on
+     a card cannot share a colour.
+
+     PAGE text sits directly on the canvas. SURFACE text sits inside a
+     card, a panel, a modal — a light surface in the inverted theme.
+
+     In the light theme both are dark, because the canvas and the
+     surface are both light. In the inverted theme the canvas flips, so
+     the page text flips with it while the surface text stays dark on
+     the light card.
+
+     `--fp-text` and its two siblings follow the CONTEXT: they are the
+     page values by default, and every surface in the library re-points
+     them at the surface values. A component therefore never has to know
+     which theme it is in. */
+  --fp-text-page:               var(--fp-dark-ultra-deep); /* #000309 */
+  --fp-text-page-muted:         var(--fp-ink-soft);        /* #3e4d5f */
+  --fp-text-page-subtle:        var(--fp-ink-muted);       /* #94989e */
+  --fp-text-page-accent:        var(--fp-blue-ultra-deep); /* #0026a3 */
+  --fp-text-surface:            var(--fp-dark-ultra-deep); /* #000309 */
+  --fp-text-surface-muted:      var(--fp-ink-soft);        /* #3e4d5f */
+  /* Subtle text on a SURFACE. The muted grey (#94989e) is only 2.88:1
+     against white, which is fine for a decorative caption but not for
+     text anybody has to read, so the surface's subtle step is a
+     half-step darker (#6b737b, roughly 4.8:1). */
+  --fp-text-surface-subtle:     #6b737b;
+  --fp-text-surface-accent:     var(--fp-blue-ultra-deep); /* #0026a3 */
+  /* Text on a NEUTRAL fill — a sunken well, a track, a grey badge. The
+     fill is a mid grey, so the text is the palette's darkest and the
+     accent is its deepest step. */
+  /* Text on a `--fp-fill`. In the light theme the fill is white, so it
+     is the same as the surface text. */
+  --fp-text-fill:               var(--fp-text-surface);
+  --fp-text-fill-muted:         var(--fp-text-surface-muted);
+  --fp-text-fill-accent:        var(--fp-text-accent-surface);
+  --fp-text-fill-danger:        var(--fp-text-danger-surface);
+  --fp-text-fill-success:       var(--fp-text-success-surface);
+  --fp-text-fill-warning:       var(--fp-text-warning-surface);
+  --fp-text-neutral:            var(--fp-dark-ultra-deep); /* #000309 */
+  --fp-text-neutral-muted:      var(--fp-ink-soft);        /* #3e4d5f */
+  --fp-text-neutral-subtle:     var(--fp-ink-soft);        /* #3e4d5f */
+  --fp-text-neutral-accent:     var(--fp-blue-ultra-deep); /* #0026a3 */
+  --fp-text:                    var(--fp-text-page);
+  --fp-text-muted:              var(--fp-text-page-muted);
+  --fp-text-subtle:             var(--fp-text-page-subtle);
+  --fp-text-accent:             var(--fp-text-page-accent);
+  /* Text on an INVERSE surface (the footer, the banner). The inverse
+     surface has the OPPOSITE polarity to the page, so its text does
+     too — which is why these are separate tokens and not `--fp-text`. */
   --fp-text-inverse:            var(--fp-white);
-  --fp-text-accent:             var(--fp-blue);            /* use sparingly */
-  --fp-text-danger:             var(--fp-red-deep);
-  --fp-text-success:            var(--fp-green-deep);
-  --fp-text-warning:            var(--fp-yellow-ultra-deep);
+  --fp-text-inverse-muted:      var(--fp-dark-light-deep);
+  /* The thumb of a switch. The OFF track is sunken and the ON track is
+     ink, and those two have OPPOSITE polarities, so the thumb cannot
+     be one colour that suits both: it takes a colour of its own for
+     the ON state. */
+  --fp-switch-thumb-on:         var(--fp-surface);
+  --fp-switch-thumb-off:        var(--fp-surface);
+  /* The chevron of a select, drawn as a data URI. It is a token because
+     a data URI cannot read a custom property, and the arrow has to
+     change colour when the field it sits in inverts. */
+  --fp-select-arrow:            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300193d' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  /* The accent on an inverse surface: light blue on the dark footer in
+     the light theme, deep blue on the light footer in the dark theme. */
+  --fp-on-inverse-accent:       var(--fp-blue-soft);
+  /* The accent as TEXT. The plain accent (#007bff) is only 3.95:1 on
+     white, which is not enough for body copy, so the text step is the
+     accent's DEEPER shade (#0026a3, roughly 11:1). It is a token of its
+     own because the accent FILL keeps the bright one.
 
-  /* --- Lines ---------------------------------------------------------- */
+     Like `--fp-text`, it follows its context: the accent text on the
+     canvas and the accent text on a surface are separate values, because
+     the two surfaces have opposite polarities. */
+  --fp-text-accent-page:        var(--fp-blue-ultra-deep); /* #0026a3 */
+  /* The small accent labels — the kicker above a heading — use the
+     accent TEXT step, never the accent FILL step. */
+  --fp-text-accent-label:       var(--fp-blue-ultra-deep); /* #0026a3 */
+  --fp-text-accent-surface:     var(--fp-blue-ultra-deep); /* #0026a3 */
+  --fp-text-accent:             var(--fp-text-accent-page);
+  /* Status as TEXT. Like the accent, a status colour is chosen for the
+     surface it sits on: the pure red (#ff0505) and the pure green
+     (#00d620) are too light to be read as text on white, so the text
+     steps are the deeper shades. */
+  --fp-text-danger:             var(--fp-red-deep);        /* #db0000 */
+  --fp-text-success:            var(--fp-green-ultra-deep);/* #007512 */
+  --fp-text-warning:            var(--fp-yellow-ultra-deep);/* #b2a400 */
+  --fp-text-danger-page:        var(--fp-red-deep);
+  --fp-text-success-page:       var(--fp-green-ultra-deep);
+  --fp-text-warning-page:       var(--fp-yellow-ultra-deep);
+  --fp-text-danger-surface:     var(--fp-red-deep);
+  --fp-text-success-surface:    var(--fp-green-ultra-deep);
+  /* The warning text on a light surface. The palette's yellow is
+     inherently light — even its deepest step (#b2a400) is only 2.54:1
+     against white — so the warning TEXT on a surface takes a step
+     further down (#7d6a00, roughly 5.3:1). The yellow still carries the
+     identity in the tint background and in the icon. */
+  --fp-text-warning-surface:    #7d6a00;
+
+  /* --- Lines ----------------------------------------------------------
+     The SUB-ELEMENT BORDER is `--fp-line-sub`. It used to be the ink
+     (#00193d), which is so close to black that every sub element wore a
+     hard black outline and shouted for attention — the shadow was
+     supposed to carry the depth, not the border.
+
+     BLP SUB DARK (#3e4d5f) is the quiet replacement, and it is the right
+     one of the two candidates: at roughly 8:1 against white it is still
+     unmistakably a border, so a sub element keeps its outline and never
+     dissolves into the card it sits in. The lighter BLP LIGHT ULTRA
+     DEEP DARK (#94989e) was the other option and was rejected: at about
+     2.9:1 a 4px line in that colour stops being an outline and starts
+     being a smudge, which would leave sub elements defined by nothing
+     at all.
+
+     `--fp-line-strong` keeps its name and now points here, so every
+     component that reads it picks the softer border up for free. */
   --fp-line:                    var(--fp-ink-faint);   /* hairline rules  */
-  --fp-line-strong:             var(--fp-ink);         /* 4px sub border  */
+  --fp-line-sub:                var(--fp-ink-soft);    /* 4px sub border  */
+  --fp-line-strong:             var(--fp-line-sub);    /* = --fp-line-sub */
+  /* The hairline on an INVERSE surface (the footer). It has its own
+     token because the inverse surface has the opposite polarity in the
+     two themes, so its hairline does too. */
+  --fp-line-inverse:            var(--fp-dark-deep);
 
-  /* --- Accent (use sparingly) ----------------------------------------- */
+  /* --- The skeleton sheen ----------------------------------------------
+     The shimmer sweep is a highlight travelling across a placeholder. It
+     has to be LIGHTER than the placeholder in the light theme and
+     LIGHTER-THAN-NOTHING in the inverted theme — but the placeholder
+     itself inverts, so the sweep has to invert with it or it would be
+     invisible against a dark block. */
+  --fp-skeleton-sheen:          rgba(255, 255, 255, 0.6);
+
+  /* --- The code block --------------------------------------------------
+     A code block was DARK in the light theme, so in the inverted theme
+     it becomes LIGHT. It has its own pair of tokens because it is the one
+     surface whose polarity is deliberately the opposite of the page. */
+  --fp-code-bg:                 var(--fp-dark-ultra-deep);
+  --fp-code-fg:                 var(--fp-dark-light);
+
+  /* --- Accent (use sparingly) -----------------------------------------
+     `--fp-accent` is THE accent of the system and it is the brand blue,
+     #007bff, exactly as the rules say. It is what a focus ring, an
+     accent border and an accent-coloured line are drawn in, and it is
+     the colour the accent IS.
+
+     The FILL is a separate decision, because a fill has to carry white
+     text and white on #007bff is only 3.95:1 — below the 4.5:1 that
+     body text needs. `--fp-accent-fill` is the accent's DEEP step
+     (#005bdd), which carries white at 5.88:1. So the accent is used
+     for lines and the accent fill is used for surfaces.
+
+     The accent is still the accent: it is the same hue family, still
+     the only blue in the system, still spent on one element per view. */
   --fp-accent:                  var(--fp-blue);        /* #007bff */
-  --fp-accent-hover:            var(--fp-blue-deep);
+  --fp-accent-hover:            var(--fp-blue-deep);   /* #005bdd */
   --fp-accent-active:           var(--fp-blue-ultra-deep);
   --fp-accent-ink:              var(--fp-blue-ultra-deep);
+  /* The accent as a FILL — a background that carries text or a mark. */
+  --fp-accent-fill:             var(--fp-blue-deep);   /* #005bdd */
+  --fp-accent-fill-hover:       var(--fp-blue-ultra-deep);
   /* The accent as a SUB-ELEMENT BORDER. This is the one sanctioned way
      to emphasise a sub element: it recolours the border that is already
      there, without making the element bigger or moving it. */
   --fp-accent-border:           var(--fp-blue);        /* #007bff */
+  /* Text and marks that sit ON an accent fill. The accent is a mid-dark
+     blue, so the readable colour on top of it is white — in both themes.
+     It is a token of its own so that the tick on an accent-filled
+     checkbox never changes colour with the theme. */
+  --fp-on-accent:               var(--fp-white);
+  /* Text and marks ON an ink fill. The ink inverts between the themes,
+     so the colour that sits on top of it inverts with it: a white tick
+     on the near-black ink of the light theme, a near-black tick on the
+     light ink of the inverted theme. */
+  --fp-on-ink:                  var(--fp-white);
+  /* The same idea for the `--fp-surface-ink` fill (the dark button). */
+  --fp-on-surface-ink:          var(--fp-white);
 
-  /* --- Status --------------------------------------------------------- */
-  --fp-danger:                  var(--fp-red);
-  --fp-danger-hover:            var(--fp-red-deep);
+  /* --- Status ---------------------------------------------------------
+     A status colour is a FILL. The text that sits on it is a separate
+     token, because a fill and its foreground are two decisions: the
+     bright green (#00d620) and the bright red (#ff0505) are both far
+     too light to carry white text, so they carry the palette's darkest
+     instead. */
+  /* The danger FILL. The pure red (#ff0505) carries white text at only
+     3.95:1, so the fill takes the deep red (#db0000, 5.19:1). The
+     brighter red is still the danger BORDER, where a line has to be
+     seen rather than read. */
+  --fp-danger:                  var(--fp-red-deep);
+  --fp-danger-hover:            var(--fp-red-ultra-deep);
   --fp-success:                 var(--fp-green);
   --fp-success-hover:           var(--fp-green-deep);
   --fp-warning:                 var(--fp-yellow);
@@ -162,14 +342,23 @@
   --fp-info-hover:              var(--fp-blue-deep);
   --fp-neutral:                 var(--fp-ink-muted);
   --fp-neutral-hover:           var(--fp-ink-faint);
+  /* The text ON a status fill. */
+  --fp-on-danger:               var(--fp-on-accent);
+  --fp-on-success:              var(--fp-dark-ultra-deep);
+  --fp-on-warning:              var(--fp-dark-ultra-deep);
 
   /* --- Tints (background + matching foreground) ---------------------- */
   --fp-tint-info:               var(--fp-blue-light);
   --fp-tint-info-fg:            var(--fp-blue-ultra-deep);
   --fp-tint-success:            var(--fp-green-paper);
   --fp-tint-success-fg:         var(--fp-green-ultra-deep);
+  /* The warning tint's foreground is the palette's darkest, not the
+     yellow's own ultra-deep step: #b2a400 on #fff9bd is only 2.38:1,
+     which is unreadable. There is no yellow in the palette dark enough
+     to be legible on a yellow ground, so the darkest colour does the
+     work. The background still carries the yellow identity. */
   --fp-tint-warning:            var(--fp-yellow-light);
-  --fp-tint-warning-fg:         var(--fp-yellow-ultra-deep);
+  --fp-tint-warning-fg:         var(--fp-dark-ultra-deep);
   --fp-tint-danger:             var(--fp-red-light);
   --fp-tint-danger-fg:          var(--fp-red-ultra-deep);
   --fp-tint-neutral:            var(--fp-bg-gray);
@@ -254,80 +443,275 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. DARK THEME — token overrides only, no component changes required.
+   3. DARK THEME — a TRUE INVERSION of the light theme.
 
-   The canvas is deliberately a step above pure black so the hard ink
-   shadow band stays legible against it. Surfaces sit one step above the
-   canvas, keeping the "elevated = lighter" hierarchy intact.
+   THE RULE
+   --------
+   Swap the black and the white of the light theme and you get the dark
+   theme. Every colour below is the light theme's colour inverted:
+
+     * the page canvas becomes the palette's DARKEST (#000309)
+     * the main surface becomes the palette's LIGHTEST (#fefeff)
+     * text on that surface becomes the palette's darkest (#000309)
+     * anything that was white-filled is now dark-filled, and vice versa
+
+   THE ONE EXCEPTION — THE SHADOW
+   ------------------------------
+   The shadow colour does NOT invert. A shadow on a light surface is
+   `rgba(0, 25, 61, 0.22)`; on a dark surface it stays dark (#000309).
+   A light shadow would read as a GLOW rather than as depth, and the hard
+   shadow character of the system would be lost.
+
+   The shadow is one step darker than the canvas it falls on, so the band
+   is visible rather than invisible against a background of the same
+   colour.
+
+   RAISED SURFACES
+   ---------------
+   In the light theme a card is white and the page is grey, so the card
+   reads as raised by COLOUR and the shadow adds the depth. In the
+   inverted theme the page is the darkest colour in the palette and the
+   card is the lightest — the same relationship, with the polarity
+   swapped. The shadow is still what separates them, and because it stays
+   dark it reads as a hole behind a light card rather than as a halo.
    -------------------------------------------------------------------------- */
 [data-theme="dark"] {
-  /* --- Surfaces ------------------------------------------------------- */
-  --fp-surface:            var(--fp-dark-soft);   /* #1e2b3d BLP SOFT DARK */
-  --fp-surface-raised:     #27384f;
-  --fp-surface-sunken:     #14202f;
-  --fp-surface-inverse:    var(--fp-white);
+  /* --- Surfaces -------------------------------------------------------
+     Light theme: canvas #f5f5f5, surface #fefeff.
+     Inverted:    canvas #000309 (the darkest), surface #fefeff (the
+     lightest). The RELATIONSHIP is identical — the surface is lighter
+     than the canvas in one theme and darker than the canvas in the
+     other, because in both cases the canvas is the one that recedes. */
+  --fp-surface:            var(--fp-white);        /* #fefeff — the lightest */
+  --fp-surface-raised:     var(--fp-white-deep);   /* #fafcff */
+  --fp-surface-sunken:     var(--fp-bg-gray);      /* wells, insets — darker */
+  --fp-surface-inverse:    var(--fp-dark-ultra-deep);
   --fp-surface-inverse-soft: var(--fp-dark-soft);
-  --fp-page-bg:            #0b1524;   /* lifted off black so the shadow band reads */
+  --fp-page-bg:            var(--fp-dark-ultra-deep); /* #000309 — the darkest */
   --fp-overlay-scrim:      rgba(0, 3, 9, 0.7);
+  /* The track inverts with the fill that sits on it. */
+  --fp-track:              var(--fp-dark-soft);    /* #1e2b3d */
+  /* A widget that was white on white in the light theme has to turn
+     dark here, or it would be invisible on a white card. */
+  --fp-fill:               var(--fp-dark-soft);    /* #1e2b3d */
+  --fp-fill-fg:            var(--fp-white);
+  --fp-fill-fg-muted:      var(--fp-dark-light-deep);
 
   /* --- Ink ------------------------------------------------------------
-     The ink inverts for fills (an inverted surface needs light ink), but
-     the SUB-ELEMENT BORDER does not: a light border on a dark surface
-     screams for attention and destroys the quiet outline a sub element
-     is supposed to have. The border keeps a dim ink instead, only a
-     step above the surface it sits on. */
-  --fp-ink:                #d4dce8;   /* BLP LIGHT DARK — for inverted fills */
+     The ink inverts with everything else: it is the colour that FILLS
+     an inverted surface. In the light theme that fill is near-black; in
+     the inverted theme it is near-white, so an "inverted" surface (the
+     footer, the banner, an active nav item) becomes a dark shape on a
+     light page. */
+  --fp-ink:                var(--fp-dark-light);   /* #d4dce8 — inverted fills */
   --fp-ink-soft:           var(--fp-dark-light-deep);
   --fp-ink-muted:          var(--fp-dark-light-ultra-deep);
-  --fp-ink-faint:          #2a3a52;
-  --fp-ink-border:         #3d5170;   /* dim ink for sub-element borders    */
+  --fp-ink-faint:          var(--fp-dark-deep);    /* #000a19 — the lightest ink */
+  --fp-ink-border:         var(--fp-line-sub);     /* sub borders, see below */
 
-  /* --- Text ----------------------------------------------------------- */
-  --fp-text:               var(--fp-white);
-  --fp-text-muted:         var(--fp-dark-light-deep);
-  --fp-text-subtle:        var(--fp-dark-light-ultra-deep);
+  /* --- Text -----------------------------------------------------------
+     The canvas inverted to the palette's darkest colour, so the text
+     that sits directly on it has to invert too — a near-black heading
+     on a near-black page would be invisible.
+
+     The SURFACE did not invert: it is the palette's lightest, so the
+     text on a card stays the palette's darkest. */
+  --fp-text-page:          var(--fp-white);           /* #fefeff */
+  /* Status as TEXT, by context. On the DARK canvas the bright steps are
+     the readable ones; on the LIGHT surface they are the deep ones.
+     The pair swaps, the same way the accent text does. */
+  --fp-text-danger:         var(--fp-red);            /* #ff0505 */
+  --fp-text-success:        var(--fp-green);          /* #00d620 */
+  --fp-text-warning:        var(--fp-yellow);         /* #ffea00 */
+  --fp-text-danger-page:    var(--fp-red-soft);       /* #ff7f7f */
+  --fp-text-success-page:   var(--fp-green-soft);     /* #6bd67b */
+  --fp-text-warning-page:   var(--fp-yellow);
+  /* The SURFACE is the palette's lightest in this theme, exactly as in
+     the light theme, so the status text ON it does not invert. These are
+     the same values the light theme uses. */
+  --fp-text-danger-surface: var(--fp-red-deep);       /* #db0000 */
+  --fp-text-success-surface: var(--fp-green-ultra-deep); /* #007512 */
+  --fp-text-warning-surface: #7d6a00;                  /* see the light theme */
+  --fp-text-page-muted:    var(--fp-dark-light-deep); /* #c7cbd1 */
+  --fp-text-page-subtle:   var(--fp-dark-light-ultra-deep); /* #94989e */
+  --fp-text-page-accent:   var(--fp-blue-soft);       /* #7fbcff */
+  --fp-text-surface:       var(--fp-dark-ultra-deep); /* #000309 */
+  --fp-text-surface-accent: var(--fp-blue-ultra-deep); /* #0026a3 */
+  /* Text on a NEUTRAL fill. The neutral fill is the palette's SOFT DARK
+     in the inverted theme, so its text is the palette's lightest. */
+  /* Text on a `--fp-fill`. In the inverted theme the fill is DARK, so
+     its text is LIGHT — the opposite of the surface it sits on. This is
+     the difference between a surface and a widget: a card is light and
+     carries dark text, and an input on that card is dark and carries
+     light text. */
+  --fp-text-fill:            var(--fp-white);           /* #fefeff */
+  --fp-text-fill-muted:      var(--fp-dark-light-deep); /* #c7cbd1 */
+  --fp-text-fill-accent:     var(--fp-blue-soft);       /* #7fbcff */
+  --fp-text-fill-danger:     var(--fp-red-soft);       /* #ff7f7f */
+  --fp-text-fill-success:    var(--fp-green);          /* #00d620 */
+  --fp-text-fill-warning:    var(--fp-yellow);         /* #ffea00 */
+  --fp-text-neutral:         var(--fp-white);           /* #fefeff */
+  --fp-text-neutral-muted:   var(--fp-dark-light-deep); /* #c7cbd1 */
+  --fp-text-neutral-accent:  var(--fp-blue-soft);       /* #7fbcff */
+  /* The neutral fill's SUBTLE text: #94989e on the soft-dark fill is
+     4.93:1, which clears the 4.5 bar for body text. */
+  --fp-text-neutral-subtle:  var(--fp-dark-light-ultra-deep); /* #94989e */
+  /* Muted text ON A SURFACE. The surface is the palette's LIGHTEST in
+     both themes, so its muted text does NOT invert: it stays the dark
+     SUB DARK, exactly as in the light theme. Inverting it would put a
+     mid-dark grey on a white card and lose the text entirely.
+
+     This is the one muted value that does not swap, and it is right: a
+     light surface needs dark text in either theme. */
+  --fp-text-surface-muted: var(--fp-sub-dark);        /* #3e4d5f */
+  /* The surface's subtle step. The surface is the palette's LIGHTEST
+     in this theme, so its subtle text must be the dark half-step —
+     exactly as in the light theme. A light grey here would be
+     unreadable on a white card. */
+  --fp-text-surface-subtle: #6b737b;      /* the same step as the light theme */
+  --fp-text:               var(--fp-text-page);
+  --fp-text-muted:         var(--fp-text-page-muted);
+  --fp-text-subtle:        var(--fp-text-page-subtle);
+  /* The inverse surface inverted with everything else: the footer was a
+     dark band on a light page, and is now a LIGHT band on a dark page.
+     Its text therefore has to invert too — white text on a light footer
+     would be invisible.
+
+     The muted tone is the RAW palette's SUB DARK (#3e4d5f) rather than
+     `--fp-ink-soft`, because that token inverts with the theme and is
+     therefore LIGHT here — which would be light text on a light band. */
   --fp-text-inverse:       var(--fp-dark-ultra-deep);
+  --fp-text-inverse-muted: var(--fp-sub-dark);   /* #3e4d5f */
+  --fp-on-inverse-accent:  var(--fp-blue-ultra-deep);
 
-  /* --- Lines ---------------------------------------------------------- */
-  --fp-line:               #2a3a52;
-  --fp-line-strong:        var(--fp-ink-border);
+  /* --- Lines ----------------------------------------------------------
+     The sub-element border inverts too: the quiet SUB DARK (#3e4d5f) of
+     the light theme becomes a quiet LIGHT tone here, so a sub element
+     still reads as an outline and not as a hole. */
+  --fp-line:               var(--fp-ink-faint);   /* hairline rules */
+  --fp-line-sub:           var(--fp-dark-light-ultra-deep); /* #94989e */
+  --fp-line-strong:        var(--fp-line-sub);
+  /* The rule on the inverse surface. In the light theme it is one step
+     DARKER than the band; inverted, it is one step LIGHTER. */
+  --fp-line-inverse:       var(--fp-white);
 
-  /* --- Shadows
-     The shadow stays dark. A light shadow on a dark surface reads as a
-     glow, not as depth, and the hard-shadow character of the system
-     would be lost.
+  /* --- Shadows — THE ONE EXCEPTION ------------------------------------
+     The shadow does NOT invert. It stays dark (#000309), one step darker
+     than the canvas it falls on, so it reads as depth and not as a
+     glow. */
+  --fp-shadow-color-sub:   var(--fp-dark-ultra-deep); /* #000309 */
 
-     The shadow is one step darker than the canvas, not the same colour
-     as it. A shadow that matches the canvas exactly is invisible: the
-     eye reads the element as a flat shape rather than as a block
-     floating above the page. The canvas is therefore lifted to #0b1524
-     and the shadow stays at the palette's darkest #000309. */
-  --fp-shadow-color-sub:   #000309;   /* darker than the canvas, so the band is visible */
+  /* --- The inverted fill ----------------------------------------------
+     The light theme's `--fp-surface-ink` is the near-black used by the
+     dark button. Inverted, it is the near-white used by the same
+     button — a light button on the dark canvas. */
+  --fp-surface-ink:        var(--fp-white);
+  --fp-surface-ink-hover:  var(--fp-dark-light);
 
-  /* --- Dark button fill: the canvas colour would vanish into the page,
-     so it takes a lifted ink instead. */
-  --fp-surface-ink:        #24344a;
+  /* --- Neutral fills that would otherwise stay light ------------------
+     The light theme's grey (#f5f5f5) becomes a deep grey in the
+     inverted theme, because a grey fill is always a step away from the
+     surface it sits on. */
+  --fp-bg-gray:            var(--fp-dark-soft);    /* #1e2b3d */
+  --fp-bg-orange:          var(--fp-dark-deep);
+  --fp-bg-brown:           var(--fp-dark-deep);
 
-  /* --- Neutral fills that would otherwise stay light ------------------ */
-  --fp-bg-gray:            #14202f;
-  --fp-bg-orange:          #2a2118;
-  --fp-bg-brown:           #4a3527;
+  /* --- Accent ---------------------------------------------------------
+     The accent blue is NOT inverted: it is a brand colour, not a
+     surface, and inverting it would turn the accent into a different
+     accent. It is also bright enough to carry white text on its own
+     fill in either theme (contrast ~3.7:1 for the white, and the
+     accent is never used as body text). */
+  /* The accent is the brand blue in both themes — the brand does not
+     change when the theme does. */
+  --fp-accent:             var(--fp-blue);        /* #007bff */
+  --fp-accent-hover:       var(--fp-blue-deep);   /* #005bdd */
+  --fp-accent-active:      var(--fp-blue-ultra-deep);
+  /* The accent FILL is the same in both themes — it carries white text
+     in either one, and the deep step is the one that carries it. */
+  --fp-accent-fill:        var(--fp-blue-deep);   /* #005bdd */
+  --fp-accent-fill-hover:  var(--fp-blue-ultra-deep);
+  /* The accent BORDER is the bright blue in both themes: it is a line,
+     and a line has to be seen. */
+  --fp-accent-border:      var(--fp-blue);
+  --fp-accent-ink:         var(--fp-blue-soft);
+  /* The accent as TEXT, by context. On the DARK canvas the accent text
+     needs the LIGHT step (#7fbcff, roughly 10:1). On the LIGHT surface
+     it needs the DEEP step again (#0026a3, roughly 11:1) — the accent
+     fill is the same in both themes, but the surface it sits on has
+     swapped ends, so its text must swap with it. */
+  --fp-text-accent-page:    var(--fp-blue-soft);       /* #7fbcff */
+  /* The kicker and other small accent labels use the accent TEXT step,
+     never the accent FILL step: #005bdd on the dark canvas is only
+     3.48:1, while #7fbcff is 10.36:1. */
+  --fp-text-accent-label:   var(--fp-blue-soft);       /* #7fbcff */
+  --fp-text-accent-surface: var(--fp-blue-ultra-deep); /* #0026a3 */
+  --fp-text-accent:         var(--fp-text-accent-page);
+  --fp-on-accent:          var(--fp-white);
+  /* The colour ON an ink fill. The ink is light in this theme, so the
+     colour on top of it is the palette's darkest. */
+  --fp-on-ink:             var(--fp-dark-ultra-deep);
+  --fp-on-surface-ink:     var(--fp-dark-ultra-deep);
 
-  /* --- Accent border --------------------------------------------------
-     The accent blue is bright enough to read as a border on the dark
-     surface, so it is not remapped. */
-  --fp-accent-border:           var(--fp-blue);
+  /* --- Status ---------------------------------------------------------
+     The status colours keep their identity: red is still red, green is
+     still green. Only their FILL surfaces invert, because a status
+     colour is a signal, not a surface. */
+  /* The danger FILL is the same colour in both themes — the brand does
+     not change when the theme does. */
+  --fp-danger:             var(--fp-red-deep);
+  --fp-danger-hover:       var(--fp-red-ultra-deep);
+  --fp-success:            var(--fp-green);
+  --fp-success-hover:      var(--fp-green-deep);
+  --fp-warning:            var(--fp-yellow);
+  --fp-warning-hover:      var(--fp-yellow-deep);
+  --fp-info:               var(--fp-blue);
+  --fp-info-hover:         var(--fp-blue-deep);
+  --fp-neutral:            var(--fp-ink-muted);
+  --fp-neutral-hover:      var(--fp-ink-faint);
+  /* The text ON a status fill. */
+  --fp-on-danger:           var(--fp-on-accent);
+  --fp-on-success:          var(--fp-dark-ultra-deep);
+  --fp-on-warning:          var(--fp-dark-ultra-deep);
 
-  /* --- Tints re-mapped for dark mode ---------------------------------- */
-  --fp-tint-info:          #16293f;
-  --fp-tint-info-fg:       #9fd0ff;
-  --fp-tint-success:       #12301f;
-  --fp-tint-success-fg:    #8fe0a4;
-  --fp-tint-warning:       #3a3213;
-  --fp-tint-warning-fg:    #ffe98a;
-  --fp-tint-danger:        #3a1a1c;
-  --fp-tint-danger-fg:     #ff9ea5;
-  --fp-tint-neutral:       #14202f;
+  /* --- Tints (background + matching foreground) -----------------------
+     Each tint inverts as a PAIR: a pale background in the light theme
+     becomes a deep background here, and its foreground flips with it so
+     the pair stays legible in both directions. */
+  --fp-tint-info:          var(--fp-blue-ultra-deep); /* #0026a3 */
+  --fp-tint-info-fg:       var(--fp-blue-light);       /* #dbedff */
+  --fp-tint-success:       var(--fp-green-ultra-deep); /* #007512 */
+  --fp-tint-success-fg:    var(--fp-green-light);      /* #ccffd4 */
+  /* The ONE tint whose foreground does not invert. A strict inversion
+     would put #fff9bd on #b2a400, which is only 2.38:1 — unreadable.
+     The palette has no yellow dark enough to be legible on a yellow
+     ground, so the foreground stays the palette's darkest in both
+     themes and only the BACKGROUND inverts. The pair still reads as a
+     warning in either theme. */
+  --fp-tint-warning:       var(--fp-yellow-ultra-deep); /* #b2a400 */
+  --fp-tint-warning-fg:    var(--fp-dark-ultra-deep);  /* #000309 */
+  --fp-tint-danger:        var(--fp-red-ultra-deep);   /* #a30000 */
+  --fp-tint-danger-fg:     var(--fp-red-light);        /* #ffdbdb */
+  --fp-tint-neutral:       var(--fp-bg-gray);
   --fp-tint-neutral-fg:    var(--fp-text);
-  --fp-on-blue-light:      #9fd0ff;
+  --fp-on-blue-light:      var(--fp-blue-light);
+
+  /* The code block was dark on a light page; inverted, it is light on a
+     dark page. */
+  --fp-code-bg:            var(--fp-white);
+  --fp-code-fg:            var(--fp-dark-ultra-deep);
+
+  /* The skeleton placeholder is a sunken surface, so the sweep runs
+     across it as a dark highlight rather than a light one. */
+  --fp-skeleton-sheen:     rgba(0, 3, 9, 0.45);
+
+  /* The switch thumb ON the lit track: the lit track is the light ink,
+     so the thumb takes the darkest colour in the palette to stay a
+     visible, grabbable handle on top of it. */
+  --fp-switch-thumb-on:    var(--fp-dark-ultra-deep);
+  --fp-switch-thumb-off:   var(--fp-white);
+
+  /* The select chevron, redrawn for the dark ink that the inverted
+     field now uses. */
+  --fp-select-arrow:       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fefeff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }

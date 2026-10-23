@@ -8,6 +8,25 @@
    ========================================================================== */
 .fp-dropdown { position: relative; display: inline-flex; }
 .fp-dropdown__menu {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   position: absolute;
   top: calc(100% + 12px);
   left: 0;
@@ -79,6 +98,25 @@
 }
 .fp-modal-backdrop.is-open { opacity: 1; visibility: visible; }
 .fp-modal {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   width: 100%;
   max-width: 520px;
   max-height: calc(100vh - var(--fp-space-12));
@@ -106,6 +144,16 @@
 .fp-modal__title { font-size: var(--fp-text-xl); font-weight: 800; }
 .fp-modal__body { padding: var(--fp-space-6); overflow-y: auto; flex: 1; }
 .fp-modal__footer {
+  /* A sunken surface is a NEUTRAL fill: it is a mid tone in either
+     theme, so the text on it takes the neutral polarity. */
+  --fp-text: var(--fp-text-neutral);
+  --fp-text-muted: var(--fp-text-neutral-muted);
+  --fp-text-subtle: var(--fp-text-neutral-subtle);
+  --fp-text-accent: var(--fp-text-neutral-accent);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  color: var(--fp-text);
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -129,6 +177,25 @@
 }
 .fp-drawer-backdrop.is-open { opacity: 1; visibility: visible; }
 .fp-drawer {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   position: fixed;
   top: 0;
   right: 0;
@@ -158,6 +225,16 @@
 }
 .fp-drawer__body { flex: 1; padding: var(--fp-space-6); overflow-y: auto; }
 .fp-drawer__footer {
+  /* A sunken surface is a NEUTRAL fill: it is a mid tone in either
+     theme, so the text on it takes the neutral polarity. */
+  --fp-text: var(--fp-text-neutral);
+  --fp-text-muted: var(--fp-text-neutral-muted);
+  --fp-text-subtle: var(--fp-text-neutral-subtle);
+  --fp-text-accent: var(--fp-text-neutral-accent);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  color: var(--fp-text);
   display: flex;
   gap: var(--fp-space-3);
   padding: var(--fp-space-5) var(--fp-space-6);
@@ -180,12 +257,31 @@
   pointer-events: none;
 }
 .fp-toast {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   display: flex;
   align-items: flex-start;
   gap: var(--fp-space-3);
   padding: var(--fp-space-4) var(--fp-space-5);
   background: var(--fp-surface);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-left-width: 6px;
   border-radius: var(--fp-radius);
   font-size: var(--fp-text-sm);
@@ -226,20 +322,43 @@
    BANNER / HERO / FEATURE PANELS
    ========================================================================== */
 .fp-banner {
+  /* The banner is an inverse surface, like the footer. */
+  --fp-text: var(--fp-text-inverse);
+  --fp-text-muted: var(--fp-text-inverse-muted);
+  --fp-text-accent: var(--fp-on-inverse-accent);
   display: flex;
   align-items: center;
   gap: var(--fp-space-4);
   padding: var(--fp-space-4) var(--fp-space-6);
   background: var(--fp-ink);
-  color: var(--fp-white);
+  color: var(--fp-on-ink);
   font-size: var(--fp-text-sm);
   font-weight: 600;
 }
-.fp-banner a { color: var(--fp-blue-soft); font-weight: 800; }
-.fp-banner__close { margin-left: auto; color: var(--fp-white); opacity: 0.7; }
+.fp-banner a { color: var(--fp-on-inverse-accent); font-weight: 800; }
+.fp-banner__close { margin-left: auto; color: var(--fp-on-ink); opacity: 0.7; }
 .fp-banner__close:hover { opacity: 1; }
 
 .fp-hero {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   position: relative;
   padding: var(--fp-space-24) var(--fp-space-6);
   text-align: center;
@@ -255,6 +374,25 @@
 
 /* Feature panel with a decorative side block */
 .fp-feature {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   display: flex;
   align-items: center;
   gap: var(--fp-space-8);
@@ -280,6 +418,25 @@
    NAVIGATION
    ========================================================================== */
 .fp-navbar {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   position: sticky;
   top: 0;
   z-index: var(--fp-z-header);
@@ -307,7 +464,7 @@
   width: 40px;
   height: 40px;
   background: var(--fp-ink);
-  color: var(--fp-white);
+  color: var(--fp-on-ink);
   border-radius: var(--fp-radius-sm);
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
 }
@@ -320,7 +477,7 @@
   font-size: var(--fp-text-sm);
   font-weight: 700;
   color: var(--fp-text-muted);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, transparent);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, transparent);
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -334,11 +491,36 @@
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
   text-decoration: none;
 }
-.fp-navbar__link.is-active { color: var(--fp-text); background: var(--fp-bg-gray); border-color: var(--fp-sub-border-color, var(--fp-line-strong)); }
+.fp-navbar__link.is-active {
+  /* The active link sits on a neutral fill, so its text takes the
+     neutral polarity. */
+  color: var(--fp-text-neutral);
+  background: var(--fp-bg-gray);
+  border-color: var(--fp-sub-border-color, var(--fp-line-strong));
+}
 .fp-navbar__actions { margin-left: auto; display: flex; align-items: center; gap: var(--fp-space-3); }
 
 /* Sidebar navigation */
 .fp-sidebar {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   width: 260px;
   flex: 0 0 auto;
   display: flex;
@@ -359,6 +541,7 @@
   letter-spacing: 0.12em;
   color: var(--fp-text-subtle);
 }
+
 .fp-sidebar__item {
   display: flex;
   align-items: center;
@@ -367,7 +550,7 @@
   font-size: var(--fp-text-sm);
   font-weight: 700;
   color: var(--fp-text-muted);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, transparent);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, transparent);
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -382,7 +565,127 @@
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
   text-decoration: none;
 }
-.fp-sidebar__item.is-active { color: var(--fp-surface); background: var(--fp-ink); border-color: transparent; box-shadow: 2px 2px 0 var(--fp-shadow-color-sub); }
+.fp-sidebar__item.is-active { color: var(--fp-on-ink); background: var(--fp-ink); border-color: transparent; box-shadow: 2px 2px 0 var(--fp-shadow-color-sub); }
+
+/* ==========================================================================
+   ISLAND NAV — a navigation bar that floats at the bottom of the viewport.
+
+   THE CONTAINER IS A MAIN ELEMENT
+   ------------------------------
+   An island is DETACHED: it floats above the page rather than sitting
+   inside it, so it carries the main-element treatment — no border, a
+   hard down-right shadow. The shadow is the whole point of the shape:
+   without it the pill would read as a rectangle of white stuck to the
+   bottom of the window rather than as an object hovering over the page.
+
+   The items inside are SUB elements: no resting shadow, they lift on
+   hover and their shadow appears.
+
+   The bar is a PILL, not a full-width strip, so it is rounded on ALL
+   four corners at the system's 36px ceiling.
+
+   THE PAGE NEEDS ROOM FOR IT
+   --------------------------
+   A fixed island sits ON TOP of the page, so without help the last
+   content of the document ends up trapped underneath it. The
+   `.fp-island-nav-spacer` utility reserves that room; without it the
+   final row of a table or the last card is unreachable.
+   -------------------------------------------------------------------------- */
+.fp-island-nav {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
+  position: fixed;
+  bottom: var(--fp-space-6);
+  left: 50%;
+  z-index: var(--fp-z-header);
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-2);
+  padding: var(--fp-space-2);
+  /* The centring translate is part of the resting state, so every state
+     rule has to repeat it — a hover rule that sets `transform` without
+     it would throw the island off to the right. */
+  transform: translateX(-50%);
+  background: var(--fp-surface);
+  /* A MAIN element carries NO border: the shadow is its outline. */
+  border: none;
+  border-radius: var(--fp-radius-pill);
+  box-shadow: 6px 6px 0 var(--fp-shadow-color-sub);
+  transition:
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease);
+}
+/* The press, like every main element: the shadow collapses and the
+   island sinks toward the page. */
+.fp-island-nav:hover {
+  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
+  transform: translateX(-50%) translateY(4px);
+}
+
+/* The items are SUB elements. Their border is transparent at rest, so
+   the space it occupies is reserved and the active state can draw a
+   real border without moving anything. */
+.fp-island-nav__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fp-space-2);
+  padding: var(--fp-space-2) var(--fp-space-5);
+  min-height: 44px;
+  font-size: var(--fp-text-sm);
+  font-weight: 700;
+  color: var(--fp-text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  background: transparent;
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, transparent);
+  border-radius: var(--fp-radius-sm);
+  transition:
+    background-color var(--fp-duration-default) var(--fp-ease),
+    color var(--fp-duration-default) var(--fp-ease),
+    border-color var(--fp-duration-default) var(--fp-ease),
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease);
+}
+.fp-island-nav__item:hover {
+  color: var(--fp-text);
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+  text-decoration: none;
+}
+/* The active item fills with the ink and inverts its text, the same
+   treatment the sidebar and the menubar use. It is the one element in
+   the island that says "you are here". */
+.fp-island-nav__item.is-active {
+  color: var(--fp-on-ink);
+  background: var(--fp-ink);
+  border-color: transparent;
+}
+.fp-island-nav__item.is-active:hover { color: var(--fp-on-ink); }
+
+/* The room the island needs at the bottom of the page, so the last
+   piece of content is never trapped underneath it. */
+.fp-island-nav-spacer {
+  height: calc(60px + var(--fp-space-6) * 2);
+  flex: 0 0 auto;
+}
 
 /* ==========================================================================
    MENU BAR
@@ -407,15 +710,25 @@
   transition: background-color var(--fp-duration-fast) var(--fp-ease), color var(--fp-duration-fast) var(--fp-ease);
 }
 .fp-menubar__item:hover { background: var(--fp-surface-raised); color: var(--fp-text); }
-.fp-menubar__item.is-active { background: var(--fp-ink); color: var(--fp-surface); }
+.fp-menubar__item.is-active { background: var(--fp-ink); color: var(--fp-on-ink); }
 
 /* ==========================================================================
    FOOTER
    ========================================================================== */
 .fp-footer {
+  /* The footer is an INVERSE surface: its polarity is the opposite of
+     the page's, so its text follows the inverse tokens and not the
+     page ones. */
+  --fp-text: var(--fp-text-inverse);
+  --fp-text-muted: var(--fp-text-inverse-muted);
+  --fp-text-subtle: var(--fp-text-inverse-muted);
+  --fp-text-accent: var(--fp-on-inverse-accent);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
   padding: var(--fp-space-16) var(--fp-space-6) var(--fp-space-8);
   background: var(--fp-ink);
-  color: var(--fp-dark-light-deep);
+  color: var(--fp-text-inverse-muted);
 }
 .fp-footer__grid {
   display: grid;
@@ -429,13 +742,13 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--fp-white);
+  color: var(--fp-text-inverse);
   margin-bottom: var(--fp-space-4);
 }
 .fp-footer__links { display: flex; flex-direction: column; gap: var(--fp-space-2); }
-.fp-footer__links a { color: var(--fp-dark-light-deep); font-size: var(--fp-text-sm); font-weight: 600; }
-.fp-footer__links a:hover { color: var(--fp-blue-soft); text-decoration: none; }
-.fp-footer__brand { display: flex; align-items: center; gap: var(--fp-space-3); color: var(--fp-white); font-weight: 800; font-size: var(--fp-text-lg); }
+.fp-footer__links a { color: var(--fp-text-inverse-muted); font-size: var(--fp-text-sm); font-weight: 600; }
+.fp-footer__links a:hover { color: var(--fp-on-inverse-accent); text-decoration: none; }
+.fp-footer__brand { display: flex; align-items: center; gap: var(--fp-space-3); color: var(--fp-text-inverse); font-weight: 800; font-size: var(--fp-text-lg); }
 .fp-footer__bottom {
   display: flex;
   align-items: center;
@@ -444,7 +757,7 @@
   max-width: var(--fp-container);
   margin: var(--fp-space-10) auto 0;
   padding-top: var(--fp-space-6);
-  border-top: var(--fp-border-width-sm) solid var(--fp-dark-deep);
+  border-top: var(--fp-border-width-sm) solid var(--fp-line-inverse);
   font-size: var(--fp-text-xs);
 }
 
@@ -452,6 +765,25 @@
    EMPTY STATE
    ========================================================================== */
 .fp-empty {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -493,7 +825,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  background: linear-gradient(90deg, transparent, var(--fp-skeleton-sheen), transparent);
   transform: translateX(-100%);
   animation: fp-shimmer 1.4s infinite;
 }
@@ -507,6 +839,25 @@
    SPOILER / ACCORDION-LIKE PANEL
    ========================================================================== */
 .fp-panel {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   padding: var(--fp-space-6);
   background: var(--fp-surface);
   border: none;
@@ -523,7 +874,7 @@
   gap: var(--fp-space-4);
   padding: var(--fp-space-5);
   background: var(--fp-tint-info);
-  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-blue-soft));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-blue-soft));
   border-radius: var(--fp-radius);
   font-size: var(--fp-text-sm);
   line-height: 1.65;
@@ -541,6 +892,25 @@
    PRICING CARD
    ========================================================================== */
 .fp-price-card {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   display: flex;
   flex-direction: column;
   gap: var(--fp-space-5);
@@ -581,7 +951,7 @@
   transition: color var(--fp-duration-fast) var(--fp-ease), background-color var(--fp-duration-fast) var(--fp-ease);
 }
 .fp-toc__item:hover { color: var(--fp-text); background: var(--fp-bg-gray); text-decoration: none; }
-.fp-toc__item.is-active { color: var(--fp-text); border-left-color: var(--fp-ink); background: var(--fp-bg-gray); }
+.fp-toc__item.is-active { color: var(--fp-text); border-left-color: var(--fp-line-strong); background: var(--fp-bg-gray); }
 .fp-toc__item--sub { padding-left: var(--fp-space-8); font-size: var(--fp-text-xs); }
 
 /* ==========================================================================
@@ -610,7 +980,7 @@
 .fp-article ul { list-style: disc; }
 .fp-article ol { list-style: decimal; }
 .fp-article li { margin-top: var(--fp-space-2); color: var(--fp-text-muted); }
-.fp-article li::marker { color: var(--fp-accent); font-weight: 700; }
+.fp-article li::marker { color: var(--fp-text-accent); font-weight: 700; }
 .fp-article table { width: 100%; margin-top: var(--fp-space-6); font-size: var(--fp-text-sm); }
 .fp-article th, .fp-article td {
   padding: var(--fp-space-3) var(--fp-space-4);
@@ -625,6 +995,25 @@
    TOKEN DISPLAY (colour swatches)
    ========================================================================== */
 .fp-swatch {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   display: flex;
   flex-direction: column;
   border-radius: var(--fp-radius);
@@ -638,7 +1027,31 @@
 .fp-swatch__chip {
   height: 84px;
 }
-.fp-swatch__body { padding: var(--fp-space-3) var(--fp-space-4); display: flex; flex-direction: column; gap: 2px; }
+.fp-swatch__body {
+  /* The swatch body is the surface; only the chip above it carries the
+     colour being demonstrated. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
+  background: var(--fp-surface);
+  padding: var(--fp-space-3) var(--fp-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 .fp-swatch__name { font-size: var(--fp-text-sm); font-weight: 800; }
 .fp-swatch__hex { font-family: var(--fp-font-mono); font-size: var(--fp-text-xs); color: var(--fp-text-muted); text-transform: uppercase; }
 .fp-swatch__token { font-family: var(--fp-font-mono); font-size: var(--fp-text-2xs); color: var(--fp-text-subtle); }
@@ -647,6 +1060,25 @@
    DOSSIER / SPEC CARD (radius, shadow specs)
    ========================================================================== */
 .fp-spec {
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  /* Inside a surface the text belongs to the SURFACE, not to the page.
+     Re-pointing the tokens here means every child inherits the right
+     polarity without knowing anything about themes. */
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  --fp-text-accent-label: var(--fp-text-accent-surface);
+  --fp-text-danger: var(--fp-text-danger-surface);
+  --fp-text-success: var(--fp-text-success-surface);
+  --fp-text-warning: var(--fp-text-warning-surface);
+  /* The `color` must be stated HERE, not just the variables. `color` is
+     inherited as a RESOLVED value, so re-pointing `--fp-text` on a
+     descendant would not change the text it already inherited from the
+     page. Stating it makes the context real. */
+  color: var(--fp-text);
   display: flex;
   flex-direction: column;
   gap: var(--fp-space-2);
@@ -663,7 +1095,20 @@
 /* ==========================================================================
    TOGGLE / DISCLOSURE
    ========================================================================== */
-.fp-disclosure { border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong)); border-radius: var(--fp-radius); overflow: hidden; background: var(--fp-surface); }
+.fp-disclosure {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong)); border-radius: var(--fp-radius); overflow: hidden; background: var(--fp-fill); }
 .fp-disclosure__summary {
   display: flex;
   align-items: center;
@@ -685,6 +1130,18 @@
    KBD
    ========================================================================== */
 .fp-kbd {
+  /* A widget that sits ON a surface: its own fill, its own text
+     polarity. The fill inverts between the themes, so its text does
+     too. */
+  --fp-text: var(--fp-text-fill);
+  --fp-text-muted: var(--fp-text-fill-muted);
+  --fp-text-subtle: var(--fp-text-fill-muted);
+  --fp-text-accent: var(--fp-text-fill-accent);
+  --fp-text-accent-label: var(--fp-text-fill-accent);
+  --fp-text-danger: var(--fp-text-fill-danger);
+  --fp-text-success: var(--fp-text-fill-success);
+  --fp-text-warning: var(--fp-text-fill-warning);
+  color: var(--fp-text);
   display: inline-flex;
   align-items: center;
   padding: var(--fp-space-1) var(--fp-space-2);
@@ -694,9 +1151,9 @@
   font-family: var(--fp-font-mono);
   font-size: var(--fp-text-xs);
   font-weight: 700;
-  color: var(--fp-text);
-  background: var(--fp-surface);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius-xs);
 }
 
@@ -757,5 +1214,6 @@
     scroll-behavior: auto !important;
   }
   .fp-btn:hover, .fp-elev:hover, .fp-card:hover, .fp-stat:hover { transform: none; }
+  .fp-island-nav:hover { transform: translateX(-50%); }
   .fp-skeleton::after { animation: none; }
 }
