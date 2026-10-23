@@ -443,6 +443,25 @@ def main():
         return own.body if own is not None else ""
 
     # ---- 1. every shadow is hard, and square when it has no spread ------
+    # ---- 1b. no gradients on any surface ------------------------------
+    # The system bans gradients outright. A hard-stop gradient is still
+    # a gradient, so "but it does not fade" is not an exemption.
+    # The skeleton shimmer is the single documented exception: it is a
+    # loading affordance, not a surface treatment.
+    GRADIENT_EXEMPT = (".fp-skeleton",)
+    for name, r in all_rules:
+        value = ""
+        for prop in ("background-image", "background"):
+            v = decl(r.body, prop)
+            if v:
+                value += " " + v
+        if "gradient(" not in value:
+            continue
+        if any(e in r.selector for e in GRADIENT_EXEMPT):
+            continue
+        fail(f"{name}: '{r.selector}' uses a gradient — the system bans gradients on every surface")
+
+    # ---- 1c. every shadow is hard --------------------------------------
     for name, r in all_rules:
         if not has_prop(r.body, "box-shadow"):
             continue
