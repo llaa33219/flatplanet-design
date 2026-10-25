@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trees, Commands & Rails — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<link rel="stylesheet" href="../../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/navigation/">&larr; Navigation & Menus</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="structure">
+  <div class="fp-section__head">
+    <span class="fp-kicker">07.4 — Structure</span>
+    <h2 class="fp-section__title">Trees, Commands &amp; Rails</h2>
+    <p class="fp-section__desc">An indented tree, command-palette rows with shortcut keys, and the icon-only side rail.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--3">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Tree</h3>
+      <div class="fp-tree">
+        <a class="fp-tree__row is-open" href="#wayfinding-2"><svg class="fp-tree__caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Components</a>
+        <a class="fp-tree__row fp-tree__row--child is-active" href="#wayfinding-2">Buttons</a>
+        <a class="fp-tree__row fp-tree__row--child" href="#wayfinding-2">Forms</a>
+        <a class="fp-tree__row" href="#wayfinding-2"><svg class="fp-tree__caret" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Foundations</a>
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Command palette rows</h3>
+      <div class="fp-command"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>New project <kbd class="fp-kbd">N</kbd></div>
+      <div class="fp-command is-active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Search files <kbd class="fp-kbd">⌘K</kbd></div>
+      <div class="fp-command"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg>Toggle theme <kbd class="fp-kbd">T</kbd></div>
+    </div>
+
+    <div class="fp-panel fp-stack" style="align-items: flex-start;">
+      <h3 class="fp-text-lg">Side rail</h3>
+      <div class="fp-rail">
+        <button class="fp-rail__item is-active" aria-label="Home"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg></button>
+        <button class="fp-rail__item" aria-label="Library"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+        <button class="fp-rail__item" aria-label="Settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+<script src="../../../assets/js/flatplanet.js"></script>
+</body>
+</html>

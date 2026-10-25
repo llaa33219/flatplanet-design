@@ -128,9 +128,11 @@ most.
 <button class="fp-btn fp-btn--primary">Share</button>
 ```
 
-When a second element needs to be prominent, reach for `fp-btn--dark` —
-the same visual weight, in ink rather than blue. This is what makes the
-single blue button in a view actually draw the eye.
+When a *sub* element needs to be prominent, reach for
+`fp-btn--sub fp-btn--sub--accent` (or `.fp-sub--accent` on any other
+sub element) — the emphasis travels on the border, never on a fill.
+This is what makes the single blue button in a view actually draw the
+eye.
 
 Accent is also acceptable in these places, because none of them compete
 for the same "main action" slot:
@@ -138,7 +140,7 @@ for the same "main action" slot:
 - focus rings
 - text links
 - the `--info` alert's border
-- opt-in modifiers: `fp-card--accent`, `fp-badge--accent`,
+- opt-in modifiers: `fp-badge--accent`,
   `fp-progress__bar--accent`
 - the kicker label above a section heading
 - the accent variant of a checked control: `fp-check--accent`,
@@ -172,7 +174,7 @@ The accent border is a pointer. It never makes the element bigger, never
 moves it, and never gives it a resting shadow — a sub element stays flat
 at rest whatever colour its border is.
 
-**Two — a block of colour behind emphasised words.** `.fp-highlight`
+**Two — the accent colour on emphasised words.** `.fp-highlight`
 puts bold text on a plain rectangle of accent colour:
 
 ```html
@@ -259,7 +261,7 @@ title.
 ### Motion respects the user
 
 `prefers-reduced-motion: reduce` collapses all transitions to 0.01ms and
-disables the skeleton shimmer. Hover transforms are neutralised; colour
+stops the skeleton pulse. Hover transforms are neutralised; colour
 changes are kept so the interface stays legible.
 
 ### Contrast
@@ -285,15 +287,14 @@ is roughly 8:1, so a sub element keeps a clear outline. The lighter
 reason: at about 2.9:1 a 4px line in that colour stops reading as an
 outline at all.
 
-**The accent and the accent fill are two decisions.** `--fp-accent` is
-the brand blue (`#007bff`) and it is what the accent IS — a focus ring,
-an accent border, an accent-coloured line. `--fp-accent-fill` is the
-accent's deep step (`#005bdd`) and it is what carries white text:
-white on `#007bff` is 3.95:1, which is below the 4.5:1 that body text
-needs, while white on `#005bdd` is 5.88:1.
+**The accent and the accent fill are one blue, two uses.** `--fp-accent`
+is the brand blue (`#007bff`) and it is what the accent IS — a focus
+ring, an accent border, an accent-coloured line. `--fp-accent-fill` is
+the same `#007bff` used as a background; it carries the button's large
+bold label at 3.95:1, and deepens to `#005bdd` on hover.
 
-So: the accent is for lines, the accent fill is for surfaces, and the
-accent is never used for body copy.
+So: the accent is for lines and for the one filled element per view,
+and the accent is never used for body copy.
 
 ---
 
@@ -336,7 +337,7 @@ canvas it falls on, so it reads as a hole behind a light card.
 
 **The accent does not invert.** `#007bff` is a brand colour, not a
 surface; inverting it would turn the accent into a different accent.
-The accent *fill* (`#005bdd`) does not invert either — it is the same
+The accent *fill* (`#007bff`) does not invert either — it is the same
 fill in both themes, because it is the same surface with the same white
 text on it in either one.
 
@@ -425,33 +426,31 @@ every state, so applying it never shifts the layout.
 ## 8. A floating navigation island
 
 An island nav is a navigation bar that floats at the bottom of the
-viewport as a detached pill.
+viewport as a detached pill, filled with ordinary sub buttons.
 
 ```html
 <nav class="fp-island-nav" aria-label="Island navigation">
-  <a class="fp-island-nav__item is-active" href="#">Home</a>
-  <a class="fp-island-nav__item" href="#">Foundations</a>
+  <a class="fp-btn fp-btn--sub is-current" href="#" aria-current="page">Home</a>
+  <a class="fp-btn fp-btn--sub" href="#">Library</a>
 </nav>
-
-<!-- At the very end of the page. -->
 <div class="fp-island-nav-spacer" aria-hidden="true"></div>
 ```
 
 Two rules make it work:
 
 1. **The container is a main element.** It carries no border and a hard
-   shadow, and it presses down on hover. Without the shadow the pill
-   would read as a strip of white stuck to the window rather than as an
-   object floating over the page.
+   shadow. Without the shadow the pill would read as a strip of white
+   stuck to the window rather than as an object floating over the page.
+   Being pinned to the viewport, it never travels on hover — the shadow
+   stays put; only the items inside it lift.
 
-2. **The page reserves room for it.** A fixed island sits on top of the
-   content, so the last row of the page would be trapped underneath it.
-   The `.fp-island-nav-spacer` utility reserves that space; put it after
-   the last piece of content.
+2. **The page reserves room for it.** A fixed island floats on top of
+   the content, so `.fp-island-nav-spacer` reserves the room the island
+   occupies; put it after the last piece of content.
 
-The items are sub elements: flat at rest, lifting on hover. The active
-item fills with the ink and inverts its text, the same treatment the
-sidebar and the menu bar use.
+The items are sub buttons: flat at rest, lifting on hover. The current
+destination wears the accent border — the one sanctioned emphasis for a
+sub element.
 
 ---
 
@@ -491,5 +490,5 @@ its own value.
 - The whole system is about 60KB of CSS and 12KB of JavaScript, unminified.
 - Shadows are the only expensive paint operation, and they are static
   zero-blur offsets that browsers cache as simple layers.
-- The skeleton shimmer is the only continuous animation. It respects
+- The skeleton pulse is the only continuous animation. It respects
   `prefers-reduced-motion`.

@@ -21,13 +21,13 @@ A main element with a 6px shadow descends 4px on hover (6 − 2).
 **Question:** is that travel enough to read as a press, or should it be
 larger?
 
-### 3. The island nav's resting shadow
+### 3. The island nav's current destination
 
-The island nav carries a 6px hard shadow, like a card.
+The island nav's items are ordinary `fp-btn--sub` buttons; the current
+destination is marked with the accent border.
 
-**Question:** a floating bar over the page might want to be more
-separated from the content than a card in a grid is. Would a 9px shadow
-read better, or does 6px already lift it off the page?
+**Question:** is the accent border marker enough for "you are here", or
+does the current item want a stronger treatment?
 
 ---
 
@@ -147,9 +147,10 @@ One accent-filled element per view. `#007bff` marks the single most
 important action.
 
 `--fp-accent` is the brand blue and is used for lines: focus rings,
-accent borders, accent-coloured rules. `--fp-accent-fill` (`#005bdd`) is
-the accent used as a background, because white on `#007bff` is 3.95:1
-and white on `#005bdd` is 5.88:1.
+accent borders, accent-coloured rules. `--fp-accent-fill` is the same
+blue (`#007bff`) used as a background; white on it is 3.95:1, which
+clears the 3:1 bar for the large bold text a button or highlight
+carries. Hover deepens the fill to `#005bdd`.
 
 ### BLP White is the main colour
 
@@ -218,4 +219,4 @@ modifier sets a property rather than fighting the component's own
 `mark` keeps its yellow identity — an editorial highlight should not
 spend the accent — while `fp-highlight` is the accent-emphasis
 primitive. The two are consistent in shape: bold, rectangular, no
-radius. A `<mark class="fp-highlight">` takes the accent treatment.
+radius. `fp-highlight` never paints the paper: it is bold text in the accent colour.

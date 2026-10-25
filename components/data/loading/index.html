@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading & Paging — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<link rel="stylesheet" href="../../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/data/">&larr; Tables & Display</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="more-data">
+  <div class="fp-section__head">
+    <span class="fp-kicker">09.2 — Loading &amp; Paging</span>
+    <h2 class="fp-section__title">Pagination, Rating, Ring &amp; Skeleton</h2>
+    <p class="fp-section__desc">Paging through pages, a star rating, a circular progress ring, and the loading skeleton.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Pagination &amp; rating</h3>
+      <nav class="fp-pagination" aria-label="Pages">
+        <a class="fp-pagination__item is-disabled" href="#more-data" aria-disabled="true">‹</a>
+        <a class="fp-pagination__item" href="#more-data">1</a>
+        <a class="fp-pagination__item is-active" href="#more-data" aria-current="page">2</a>
+        <a class="fp-pagination__item" href="#more-data">3</a>
+        <span class="fp-pagination__ellipsis">…</span>
+        <a class="fp-pagination__item" href="#more-data">›</a>
+      </nav>
+      <p class="fp-text-sm fp-text-muted" style="margin: 0;">The current page can also spend the accent border — the one sanctioned emphasis:</p>
+      <nav class="fp-pagination" aria-label="Pages, accent variant">
+        <a class="fp-pagination__item" href="#more-data">‹</a>
+        <a class="fp-pagination__item" href="#more-data">1</a>
+        <a class="fp-pagination__item is-active fp-sub--accent" href="#more-data" aria-current="page">2</a>
+        <a class="fp-pagination__item" href="#more-data">3</a>
+        <a class="fp-pagination__item" href="#more-data">›</a>
+      </nav>
+      <div class="fp-rating" aria-label="4 out of 5 stars">
+        <svg class="is-lit" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+        <svg class="is-lit" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+        <svg class="is-lit" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+        <svg class="is-lit" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Ring &amp; skeleton</h3>
+      <div class="fp-row" style="align-items: center; gap: var(--fp-space-8);">
+        <div class="fp-ring">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle class="fp-ring__track" cx="36" cy="36" r="30" fill="none" stroke-width="8"/>
+            <circle class="fp-ring__fill" cx="36" cy="36" r="30" fill="none" stroke-width="8" stroke-dasharray="188.5" stroke-dashoffset="66"/>
+          </svg>
+          <span class="fp-ring__label">65%</span>
+        </div>
+        <div class="fp-stack fp-stack--tight" style="flex: 1;">
+          <div class="fp-skeleton" style="height: 18px; width: 70%;"></div>
+          <div class="fp-skeleton" style="height: 18px; width: 90%;"></div>
+          <div class="fp-skeleton" style="height: 18px; width: 50%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= PROGRESS &AMP; LOADING STATES ================= -->
+<section class="fp-section fp-container" id="progress-variants">
+  <div class="fp-section__head">
+    <span class="fp-kicker">09.4 — Progress</span>
+    <h2 class="fp-section__title">Progress &amp; Loading States</h2>
+    <p class="fp-section__desc">Ink, the one emphasised BLP Blue bar, the success bar, the indeterminate slider, loading buttons and the accent ring.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Progress variants</h3>
+      <div class="fp-progress-note">
+        <div class="fp-progress-note__head"><span>Default (ink)</span><span>60%</span></div>
+        <div class="fp-progress"><div class="fp-progress__bar" style="width: 60%"></div></div>
+      </div>
+      <div class="fp-progress-note">
+        <div class="fp-progress-note__head"><span>Emphasised (BLP Blue)</span><span>80%</span></div>
+        <div class="fp-progress"><div class="fp-progress__bar fp-progress__bar--accent" style="width: 80%"></div></div>
+      </div>
+      <div class="fp-progress-note">
+        <div class="fp-progress-note__head"><span>Success</span><span>100%</span></div>
+        <div class="fp-progress"><div class="fp-progress__bar fp-progress__bar--success" style="width: 100%"></div></div>
+      </div>
+      <div class="fp-progress-note">
+        <div class="fp-progress-note__head"><span>Working…</span><span>unknown</span></div>
+        <div class="fp-progress"><div class="fp-progress__bar fp-progress__bar--indeterminate"></div></div>
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Loading buttons &amp; ring</h3>
+      <div class="fp-row">
+        <button class="fp-btn fp-btn--primary is-loading"><span class="fp-btn__spinner"></span>Uploading…</button>
+        <button class="fp-btn fp-btn--sub is-loading"><span class="fp-btn__spinner"></span>Loading…</button>
+      </div>
+      <div class="fp-row" style="align-items: center; gap: var(--fp-space-8);">
+        <div class="fp-ring">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle class="fp-ring__track" cx="36" cy="36" r="30" fill="none" stroke-width="8"/>
+            <circle class="fp-ring__fill" cx="36" cy="36" r="30" fill="none" stroke-width="8" stroke-dasharray="188.5" stroke-dashoffset="47" style="stroke: var(--fp-accent-fill);"/>
+          </svg>
+          <span class="fp-ring__label">75%</span>
+        </div>
+        <p class="fp-text-sm fp-text-muted">The ring can spend the accent once per view — the same budget as every fill.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+<script src="../../../assets/js/flatplanet.js"></script>
+</body>
+</html>

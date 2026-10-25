@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Borderless Sub — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<link rel="stylesheet" href="../../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/actions/">&larr; Buttons</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="quiet-sub">
+  <div class="fp-section__head">
+    <span class="fp-kicker">07 — Elevation</span>
+    <h2 class="fp-section__title">The Borderless Sub Element</h2>
+    <p class="fp-section__desc">A sub element with no border at all. It is still a sub element in every other respect — flat at rest, and on hover it lifts and its shadow appears. It is the tier to reach for when something should be present without competing for attention.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">With a border</h3>
+      <p class="fp-text-sm fp-text-muted">The default sub element: a real 4px inline border, flat at rest, lifting on hover.</p>
+      <div class="fp-row fp-row--tight">
+        <a class="fp-btn fp-btn--sub fp-btn--sm" href="#quiet-sub">Foundations</a>
+        <a class="fp-btn fp-btn--sub fp-btn--sm" href="#quiet-sub">Components</a>
+        <a class="fp-btn fp-btn--sub fp-btn--sm" href="#quiet-sub">Usage</a>
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Borderless</h3>
+      <p class="fp-text-sm fp-text-muted">The same element as <code class="fp-code">fp-btn--ghost</code>. No border at all, no resting shadow — but the lift and the shadow on hover are unchanged.</p>
+      <div class="fp-row fp-row--tight">
+        <a class="fp-btn fp-btn--ghost fp-btn--sm" href="#quiet-sub">Foundations</a>
+        <a class="fp-btn fp-btn--ghost fp-btn--sm" href="#quiet-sub">Components</a>
+        <a class="fp-btn fp-btn--ghost fp-btn--sm" href="#quiet-sub">Usage</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="fp-panel fp-stack" style="margin-top: var(--fp-space-8)">
+    <h3 class="fp-text-lg">As a navbar link</h3>
+    <p class="fp-text-sm fp-text-muted">The navbar links are the reason this tier exists. A row of bordered links reads as a row of boxes; a row of borderless links reads as a list of places.</p>
+    <div class="fp-row fp-row--tight">
+      <a class="fp-navbar__link fp-sub--borderless" href="#quiet-sub">Foundations</a>
+      <a class="fp-navbar__link fp-sub--borderless" href="#quiet-sub">Components</a>
+      <a class="fp-navbar__link fp-sub--borderless" href="#quiet-sub">Usage</a>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../../../assets/js/flatplanet.js"></script>
+</body>
+</html>

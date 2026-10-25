@@ -48,7 +48,10 @@ The stylesheet order matters. `tokens.css` defines the variables,
 `base.css` the reset and primitives, `elevation.css` the shadow system, and
 the two component files the components themselves.
 
-Open `index.html` for the live component gallery.
+Open `index.html` for the live component gallery. The gallery is split
+by kind: `foundations/` holds the rules, elevation and palette, and
+`components/<kind>/` holds one page per component family (actions,
+forms, surfaces, navigation, feedback, data, overlays).
 
 ---
 
@@ -56,7 +59,18 @@ Open `index.html` for the live component gallery.
 
 ```
 flatplanet-design/
-├── index.html                 Live component gallery
+├── index.html                 Gallery landing — the hub card index
+├── foundations/
+│   └── index.html             Rules, elevation, the BLP palette
+├── components/
+│   ├── index.html             The shelf — every family and sub-page
+│   ├── actions/               index + sub-elements/ + fab/
+│   ├── forms/                 index + steppers/ + codes/
+│   ├── surfaces/              index + footer/ + apps/ + content/
+│   ├── navigation/            index + bars/ + wayfinding/ + structure/
+│   ├── feedback/              index + banners/
+│   ├── data/                  index + rows/ + loading/ + metrics/
+│   └── overlays/              index + sheets/ + anchored/
 ├── assets/
 │   ├── css/
 │   │   ├── tokens.css         Colour, radius, elevation and motion tokens

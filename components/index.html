@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Components — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/elevation.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../">&larr; Home</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container">
+  <div class="fp-section__head">
+    <span class="fp-kicker">The library</span>
+    <h2 class="fp-section__title">Components</h2>
+    <p class="fp-section__desc">Every section in the library — pick a card and go straight to it.</p>
+  </div>
+
+  <h2 class="fp-text-lg" style="margin: var(--fp-space-10) 0 var(--fp-space-4);">Actions</h2>
+  <div class="fp-grid fp-grid--3">
+    <article class="fp-card fp-card--interactive" onclick="location.href='actions/#buttons'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Buttons</span>
+        <h3 class="fp-card__title">Buttons</h3>
+        <p class="fp-text-sm fp-text-muted">Main buttons press down and their shadow collapses; pressed to the bottom, the shadow is gone. Sub buttons are flat at rest, lift on hover, and sink back with a smaller shadow and a darker fill when pressed.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='actions/sub-elements/#quiet-sub'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">The Borderless Sub</span>
+        <h3 class="fp-card__title">The Borderless Sub Element</h3>
+        <p class="fp-text-sm fp-text-muted">A sub element with no border at all. It is still a sub element in every other respect — flat at rest, and on hover it lifts and its shadow appears. It is the tier to reach for when something should be present without competing for attention.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='actions/fab/#fab'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">FAB & Compound Actions</span>
+        <h3 class="fp-card__title">The Floating Action Button</h3>
+        <p class="fp-text-sm fp-text-muted">The one main element a mobile screen carries: a circle of accent fill with the standard press — hover collapses the shadow, the press removes it and the button sinks by its full height.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='actions/fab/#compound'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">FAB & Compound Actions</span>
+        <h3 class="fp-card__title">Split, Loading & FAB Menus</h3>
+        <p class="fp-text-sm fp-text-muted">A fused action-and-menu button, the busy state, and the docked FAB's little stack of secondary actions.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="fp-text-lg" style="margin: var(--fp-space-10) 0 var(--fp-space-4);">Forms</h2>
+  <div class="fp-grid fp-grid--3">
+    <article class="fp-card fp-card--interactive" onclick="location.href='forms/#forms'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Forms</span>
+        <h3 class="fp-card__title">Forms</h3>
+        <p class="fp-text-sm fp-text-muted">Inputs are sub elements: they lift on hover and their shadow appears with them. Labels, hints and validation messages stack under the control.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='forms/steppers/#more-forms'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Steppers, Files & Keys</span>
+        <h3 class="fp-card__title">Steppers, Files & Keys</h3>
+        <p class="fp-text-sm fp-text-muted">The smaller input shapes: a quantity stepper, a drop zone, inline code and keyboard keys, and a copy field.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='forms/steppers/#emphasis-forms'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Steppers, Files & Keys</span>
+        <h3 class="fp-card__title">Floating Labels & Emphasised Uploads</h3>
+        <p class="fp-text-sm fp-text-muted">The label that floats above a filled field, and the drop zone that earns the accent border.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='forms/codes/#special-forms'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Codes, Dates & Toggles</span>
+        <h3 class="fp-card__title">Codes, Dates & Toggles</h3>
+        <p class="fp-text-sm fp-text-muted">One box per digit, a day/month/year row, icon toggles that stay pressed, and a colour swatch field.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='forms/codes/#groups'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Codes, Dates & Toggles</span>
+        <h3 class="fp-card__title">Segments & Button Groups</h3>
+        <p class="fp-text-sm fp-text-muted">Icon segments, multiplier segments, and the vertical button group.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="fp-text-lg" style="margin: var(--fp-space-10) 0 var(--fp-space-4);">Surfaces</h2>
+  <div class="fp-grid fp-grid--3">
+    <article class="fp-card fp-card--interactive" onclick="location.href='surfaces/#surfaces'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Cards & Panels</span>
+        <h3 class="fp-card__title">Cards & Panels</h3>
+        <p class="fp-text-sm fp-text-muted">Cards are main elements with a hard shadow. Their inner blocks act as sub elements and lift on hover.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='surfaces/footer/#footer-demo'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">The Footer</span>
+        <h3 class="fp-card__title">The Footer</h3>
+        <p class="fp-text-sm fp-text-muted">The inverse surface: the page’s polarity flipped, so its text and rules follow the inverse tokens. It lives with the surfaces — a footer is a surface first.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='surfaces/apps/#apps'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">App Icons</span>
+        <h3 class="fp-card__title">App Icons</h3>
+        <p class="fp-text-sm fp-text-muted">The home-screen tile: a tint squircle with a label — a sub element that lifts on hover.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='surfaces/content/#content'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Notifications & Galleries</span>
+        <h3 class="fp-card__title">Notifications & Galleries</h3>
+        <p class="fp-text-sm fp-text-muted">Unread notifications wear the tint and the dot; gallery tiles are flat tinted squares that lift on hover.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='surfaces/content/#streams'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Notifications & Galleries</span>
+        <h3 class="fp-card__title">Notification Centres & Carousels</h3>
+        <p class="fp-text-sm fp-text-muted">A panel of notifications with an action, and a snap-scrolling card rail with square dots.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="fp-text-lg" style="margin: var(--fp-space-10) 0 var(--fp-space-4);">Navigation</h2>
+  <div class="fp-grid fp-grid--3">
+    <article class="fp-card fp-card--interactive" onclick="location.href='navigation/#navigation'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Navigation & Menus</span>
+        <h3 class="fp-card__title">Navigation & Menus</h3>
+        <p class="fp-text-sm fp-text-muted">Nav links are sub elements: they lift on hover and gain a hard shadow of their own.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='navigation/bars/#nav-patterns'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Bars & Frames</span>
+        <h3 class="fp-card__title">Bars & Frames</h3>
+        <p class="fp-text-sm fp-text-muted">The two places navigation can live: pinned to the top of the page, or docked at the bottom as a floating bar of sub buttons. Both are real components — copy them out of the page.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='navigation/bars/#mobile-bars'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Bars & Frames</span>
+        <h3 class="fp-card__title">Mobile Bars</h3>
+        <p class="fp-text-sm fp-text-muted">The top bar compresses to a 56px thumb row; the bottom tab bar is the island nav at phone width — the same floating pill, stretched to the screen’s edges and filled with sub buttons. The current destination wears the accent border.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='navigation/wayfinding/#wayfinding'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Menu Bars, Tooltips & Steps</span>
+        <h3 class="fp-card__title">Menu Bars, Tooltips & Steps</h3>
+        <p class="fp-text-sm fp-text-muted">A quiet menu bar, a hard-shadow tooltip, and numbered steps joined by connectors.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='navigation/structure/#structure'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Trees, Commands & Rails</span>
+        <h3 class="fp-card__title">Trees, Commands & Rails</h3>
+        <p class="fp-text-sm fp-text-muted">An indented tree, command-palette rows with shortcut keys, and the icon-only side rail.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="fp-text-lg" style="margin: var(--fp-space-10) 0 var(--fp-space-4);">Feedback</h2>
+  <div class="fp-grid fp-grid--3">
+    <article class="fp-card fp-card--interactive" onclick="location.href='feedback/#feedback'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Alerts & Notifications</span>
+        <h3 class="fp-card__title">Alerts & Notifications</h3>
+        <p class="fp-text-sm fp-text-muted">Colour-coded status surfaces. Each alert is a sub element: a 4px border, a 6&nbsp;px left edge, and no resting shadow — it lifts and casts one on hover.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='feedback/banners/#banner'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Banners & Progress Notes</span>
+        <h3 class="fp-card__title">Banners & Progress Notes</h3>
+        <p class="fp-text-sm fp-text-muted">The inverse banner strip across the top of a page, and an upload-style progress line.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="fp-text-lg" style="margin: var(--fp-space-10) 0 var(--fp-space-4);">Data</h2>
+  <div class="fp-grid fp-grid--3">
+    <article class="fp-card fp-card--interactive" onclick="location.href='data/#data'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Tables & Display</span>
+        <h3 class="fp-card__title">Tables & Display</h3>
+        <p class="fp-text-sm fp-text-muted">Tables sit in a main-element shell — a hard shadow, no border. Rows take a soft tint on hover.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='data/rows/#rows'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">List Rows & Refresh</span>
+        <h3 class="fp-card__title">List Rows & Refresh</h3>
+        <p class="fp-text-sm fp-text-muted">One thumb row: leading tile, two lines of text, trailing affordance — hairline-separated, never bordered. The refresh disc is a sunken circle with a one-colour spinner arc.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='data/loading/#more-data'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Loading & Paging</span>
+        <h3 class="fp-card__title">Pagination, Rating, Ring & Skeleton</h3>
+        <p class="fp-text-sm fp-text-muted">Paging through pages, a star rating, a circular progress ring, and the loading skeleton.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='data/loading/#progress-variants'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Loading & Paging</span>
+        <h3 class="fp-card__title">Progress & Loading States</h3>
+        <p class="fp-text-sm fp-text-muted">Ink, the one emphasised BLP Blue bar, the success bar, the indeterminate slider, loading buttons and the accent ring.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='data/metrics/#metrics'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">KPIs & Sparklines</span>
+        <h3 class="fp-card__title">KPIs, Sparklines & People</h3>
+        <p class="fp-text-sm fp-text-muted">A big number with a delta, flat ink sparkline bars, a chart legend, a key-value list and a user row.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="fp-text-lg" style="margin: var(--fp-space-10) 0 var(--fp-space-4);">Overlays</h2>
+  <div class="fp-grid fp-grid--3">
+    <article class="fp-card fp-card--interactive" onclick="location.href='overlays/#overlay'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Modals, Drawers & Disclosure</span>
+        <h3 class="fp-card__title">Modals, Drawers & Disclosure</h3>
+        <p class="fp-text-sm fp-text-muted">Overlays use the same shell as cards — 36&nbsp;px radius, hard shadow, solid scrim.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='overlays/sheets/#sheet'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">The Bottom Sheet</span>
+        <h3 class="fp-card__title">The Bottom Sheet</h3>
+        <p class="fp-text-sm fp-text-muted">A modal that owns the bottom edge of the screen — a main element with a hard shadow and no border, rounded only at the top corners.</p>
+      </div>
+    </article>
+    <article class="fp-card fp-card--interactive" onclick="location.href='overlays/anchored/#anchored'">
+      <div class="fp-card__body fp-stack fp-stack--tight">
+        <span class="fp-kicker">Popovers & Context Menus</span>
+        <h3 class="fp-card__title">Popovers & Context Menus</h3>
+        <p class="fp-text-sm fp-text-muted">The small anchored overlay and the right-click menu — both main elements with the one hard shadow.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+</main>
+
+<script src="../assets/js/flatplanet.js"></script>
+</body>
+</html>

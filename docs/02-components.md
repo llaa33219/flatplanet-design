@@ -42,10 +42,11 @@ place and its flat resting state.
 | Resting shadow | Still none. The accent border is not a shadow |
 | Hover | Unchanged: the element lifts and its shadow appears |
 
-The accent **border** is the bright blue (`#007bff`) and the accent
-**fill** is the deep step (`#005bdd`). They are two decisions: a border
-is a line and has to be seen; a fill carries white text, and white on
-`#007bff` is only 3.95:1 while white on `#005bdd` is 5.88:1.
+The accent **border** and the accent **fill** are the same blue
+(`#007bff`). They are still two decisions: a border is a line and has
+to be seen; a fill carries the button's large bold label, and white on
+`#007bff` is 3.95:1 — above the 3:1 bar for large text. Hover deepens
+the fill to `#005bdd`.
 
 One modifier, applied to any sub element:
 
@@ -91,9 +92,9 @@ accent does the pointing.
 
 | Rule | Value |
 |------|-------|
-| Checked / ON fill | `--fp-accent-fill` (`#005bdd`) |
+| Checked / ON fill | `--fp-accent-fill` (`#007bff`) |
 | Tick mark and radio dot | `--fp-on-accent` (`#fefeff`) — always white |
-| Unchecked / OFF | **Unchanged.** White surface, ink border, no accent anywhere |
+| Unchecked / OFF | **Unchanged.** White fill, no border, no accent anywhere |
 | Resting shadow | None — a control is a sub element |
 | Hover | Unchanged: the control lifts and its shadow appears |
 
@@ -109,8 +110,9 @@ not as part of the fill.
 
 ### The highlight — `.fp-highlight`
 
-When the accent emphasises *words* rather than an element, the treatment
-is bold text on a plain rectangle of accent colour.
+When the accent emphasises *words* rather than an element, the words
+themselves carry it: bold text in the accent text colour. Emphasis is
+worn by the type, never painted behind it.
 
 ```html
 <p>Some <strong class="fp-highlight">emphasised words</strong> in a sentence.</p>
@@ -119,16 +121,12 @@ is bold text on a plain rectangle of accent colour.
 | Rule | Value |
 |------|-------|
 | Font weight | `800` — bold |
-| Background | `--fp-accent-fill` (`#005bdd`) |
-| Border radius | `0` — a plain rectangle, not a pill |
-| Text colour | `--fp-white` |
-| Works on | `<strong>`, `<mark>`, `<span>`, any inline element |
+| Text colour | `--fp-text-accent` (`#0026a3` on the page, `#7fbcff` on the dark canvas) |
+| Background | None — there is no block of colour behind emphasised words |
+| Works on | `<strong>`, `<span>`, any inline element |
 
-`mark` is the neutral sibling of the same treatment. It keeps its own
-yellow identity — an ordinary editorial highlight should not spend the
-accent — but it follows the same shape rules, so the two read as one
-family: bold, rectangular, no radius. A `<mark class="fp-highlight">`
-takes the accent treatment.
+`mark` stays the neutral sibling: yellow ink on paper, so an ordinary
+editorial highlight never spends the accent.
 
 ---
 
@@ -193,13 +191,15 @@ be able to set it.
 ### The island nav — `.fp-island-nav`
 
 A navigation bar that floats at the bottom of the viewport as a
-detached, pill-shaped island.
+detached, pill-shaped island. The shell is its own main element; the
+items are the system's ordinary bordered sub buttons, re-sized to the
+row.
 
 ```html
 <nav class="fp-island-nav" aria-label="Island navigation">
-  <a class="fp-island-nav__item is-active" href="#">Home</a>
-  <a class="fp-island-nav__item" href="#">Foundations</a>
-  <a class="fp-island-nav__item" href="#">Components</a>
+  <a class="fp-btn fp-btn--sub is-current" href="#" aria-current="page">Home</a>
+  <a class="fp-btn fp-btn--sub" href="#">Library</a>
+  <a class="fp-btn fp-btn--sub" href="#">Settings</a>
 </nav>
 
 <!-- The room the island needs, so the last content is never trapped. -->
@@ -208,32 +208,34 @@ detached, pill-shaped island.
 
 | Part | Kind | Treatment |
 |------|------|-----------|
-| `.fp-island-nav` | **Main** | Fixed to the bottom, centred, 36px radius, **no border**, a 6px hard shadow |
-| `.fp-island-nav__item` | **Sub** | No resting shadow; lifts 2px on hover and its shadow appears |
-| `.fp-island-nav__item.is-active` | Sub | Fills with the ink and inverts its text |
+| `.fp-island-nav` | **Main** | Fixed to the bottom, centred, 36px radius, **no border**, a 6px hard shadow that stays exactly as it is on hover — a pinned island never travels |
+| `.fp-btn--sub` items | **Sub** | The standard sub button, re-sized to 44px — flat at rest, lifting on hover |
+| `.is-current` | Sub | The current destination: the accent border, the one sanctioned emphasis |
 | `.fp-island-nav-spacer` | Utility | Reserves the room the fixed island occupies |
 
 **The container is a main element.** An island is *detached*: it floats
 above the page rather than sitting inside it, so the shadow is what
-makes it read as an object hovering over the content. That is why it
-carries the main treatment — no border, a hard down-right shadow — and
-why it presses **down** on hover, like every other main element.
+makes it read as an object hovering over the content. Being pinned to
+the viewport, it never travels on hover — the shadow stays put; only
+the items inside it lift.
 
-The items inside it are **sub elements**: flat at rest, lifting on hover.
+**The items are real buttons.** They used to be a one-off item class
+with a transparent resting border and an ink-filled active state — a
+fifth kind of button that existed nowhere else. Now they are
+`fp-btn--sub`, and the current destination is marked with the accent
+border, the same emphasis every other sub element uses.
 
-**It must not trap the content.** A fixed island sits on top of the page,
-so without help the last row of a table or the final card ends up
-underneath it. The `.fp-island-nav-spacer` utility reserves that room;
-put it at the end of the page, after the last piece of content.
-
-**Reduced motion** is respected: the global `prefers-reduced-motion`
-block neutralises the island's press, keeping the centring translate.
+---
 
 ---
 
 ## 2. Buttons
 
-Main elements. The shadow is their outline, so they carry no border.
+Main elements (primary, secondary) carry no border — the shadow is
+their outline. Sub elements (`fp-btn--sub`, `fp-btn--ghost`) are flat
+at rest and lift on hover. There is no dark-filled variant: a button
+that needs weight without the accent is a secondary, and the inverted
+fill is reserved for inverted surfaces such as the footer.
 
 ```html
 <button class="fp-btn fp-btn--primary">Get Started</button>
@@ -241,13 +243,29 @@ Main elements. The shadow is their outline, so they carry no border.
 
 ### Variants
 
+**Main buttons** — no border, ever; the hard shadow is the outline. On
+press the shadow disappears entirely and the button sinks by its full
+height.
+
 | Class | Fill | When to use |
 |-------|------|-------------|
-| `fp-btn--primary` | Accent blue, white text | **Once per view.** The main action. |
-| `fp-btn--secondary` | White surface, ink text | Everything else that needs a button. |
-| `fp-btn--ghost` | Transparent | Tertiary actions, icon buttons in a toolbar |
-| `fp-btn--dark` | `#000309` | Actions on a light surface that need weight without the accent |
-| `fp-btn--light` | White | Actions on a dark or tinted surface |
+| `fp-btn--primary` | BLP Blue (`#007bff`), white text | **Once per view.** The main action. Hover deepens to `#005bdd`; pressed, `#0026a3` with no shadow. |
+| `fp-btn--secondary` | BLP White, ink text | The unemphasised main button — everything else that needs a button. |
+
+**Sub buttons** — flat at rest; on hover they lift and the shadow
+appears; pressed, they sink back with a smaller shadow and a fill one
+quiet step darker (`#c7cbd1`).
+
+| Class | Fill / border | When to use |
+|-------|---------------|-------------|
+| `fp-btn--sub` | BLP White, border `#94989e` (BLP Light Ultra Deep Dark) | The default sub button. |
+| `fp-btn--sub fp-btn--sub--accent` | BLP White, border `#007bff` | The one emphasised sub button — the accent recolours the border that is already there. |
+| `fp-btn--ghost` | BLP White, no border at all | The quietest tier: nav-style rows, toolbar actions. |
+
+**Status buttons** — the colour of the consequence, not of emphasis:
+
+| Class | Fill | When to use |
+|-------|------|-------------|
 | `fp-btn--danger` | Red | Destructive actions only |
 | `fp-btn--success` | Green | Confirming a positive outcome |
 | `fp-btn--warning` | Yellow | Actions that need caution but not destruction |
@@ -379,9 +397,10 @@ its outer corners.
 ```
 
 The native input is visually hidden but stays in the tab order. The box
-is a 2px-bordered square (circle for radio) that lifts on hover. The
-checked state fills with ink, not accent — a checked box is a fact about
-the state, not an emphasis — unless the control carries
+is a filled square (circle for radio) with **no border** — a control's
+face is a filled shape, so the fill is its outline — and it lifts on
+hover. The checked state fills with ink, not accent — a checked box is
+a fact about the state, not an emphasis — unless the control carries
 [`fp-check--accent`](#the-accent-fill-on-a-control--fp-check--accent-and-fp-switch--accent),
 which fills it with the accent instead and keeps the tick white.
 
@@ -398,7 +417,7 @@ when checked.
 </label>
 ```
 
-The OFF track is a neutral sunken surface with an ink border; the ON
+The OFF track is a neutral sunken surface with no border; the ON
 track fills with the ink. `fp-switch--accent` fills the ON track with the
 accent instead — and leaves the OFF track exactly as it was.
 
@@ -467,12 +486,12 @@ engines. `box-sizing: border-box` is declared on both pseudo-elements,
 because browser pseudo-elements are not matched by the global `*` reset
 and would otherwise be content-box.
 
-**The progress fill.** The filled portion of the track is a gradient on
-the track itself, driven by the `--fp-range-progress` custom property.
-The JavaScript in `flatplanet.js` keeps that property in step with the
-input.
+**The progress fill.** The filled portion of the rail is a flat block
+whose width is the `--fp-range-progress` custom property — never a
+gradient, because the system bans gradients outright. The JavaScript in
+`flatplanet.js` keeps that property in step with the input.
 
-Without JavaScript the property is unset, the gradient falls back to
+Without JavaScript the property is unset, the width falls back to
 `0%`, and the bar is simply **empty**. That is the honest degradation:
 the control still works, it just does not claim to know its own value.
 
@@ -480,9 +499,11 @@ The fill is the **ink**, not the accent. The accent is budgeted to one
 element per view, and a slider that is being dragged is not the most
 important thing on the screen.
 
-The hover behaviour is unchanged: the thumb lifts 2px and its hard
-shadow appears — it is a sub element, and a rising element never loses
-its shadow.
+The rail is **BLP White**, not the track grey: a light rail against the
+grey page, so the control's end edge is always visible. The thumb is a
+plain full-height rectangle — no radius, no border — and on hover it
+lifts 2px while a 3px hard shadow appears, the same shadow size every
+sub lift uses; a rising element never loses its shadow.
 
 ---
 
@@ -500,14 +521,19 @@ Sub elements. A 2px border at the default size.
 
 | Modifier | Appearance |
 |----------|-----------|
-| *(default)* | White surface, ink border, ink text |
-| `fp-badge--accent` | Accent fill, white text, no border |
-| `fp-badge--success` | Green fill, white text |
-| `fp-badge--danger` | Red fill, white text |
-| `fp-badge--warning` | Yellow fill, dark text |
-| `fp-badge--info` | Tinted info background |
-| `fp-badge--neutral` | Grey fill |
-| `fp-badge--outline` | Transparent fill |
+All badges are square-cornered emphasis marks — no radius, like the
+highlight. Status badges wear the tint background with the status's
+readable text colour in bold, never a saturated fill:
+
+| Modifier | Appearance |
+|----------|-----------|
+| *(default)* | White surface, ink border, ink text — the only badge that wears a border |
+| `fp-badge--accent` | Info tint, deep-blue bold text, no border |
+| `fp-badge--success` | Success tint, deep-green bold text, no border |
+| `fp-badge--danger` | Danger tint, deep-red bold text, no border |
+| `fp-badge--warning` | Warning tint, darkest text, no border |
+| `fp-badge--info` | Info tint, no border |
+| `fp-badge--neutral` | Grey fill, no border |
 | `fp-badge--soft` | Tinted, no border |
 | `fp-badge--dot` | Adds a status dot before the label |
 | `fp-badge--lg` | 34px tall, 18px radius |
@@ -537,7 +563,8 @@ A selectable filter.
 <button class="fp-chip" aria-pressed="false">Docs</button>
 ```
 
-The pressed state fills with ink and inverts the text. Chips use
+The pressed state wears the accent border at the full 4px — the one
+sanctioned emphasis for a sub element, never an ink fill. Chips use
 `aria-pressed`; the JavaScript in `flatplanet.js` toggles it.
 
 ### Avatar
@@ -601,7 +628,6 @@ Main elements. No border — the shadow is the outline.
 |----------|--------|
 | `fp-card--flat` | No shadow. For cards nested inside another card. |
 | `fp-card--outlined` | A 4px border instead of a shadow — a sub element, so it is flat at rest and lifts on hover |
-| `fp-card--accent` | Accent-coloured shadow |
 | `fp-card--interactive` | Adds a pointer cursor |
 | `fp-card--sm` / `fp-card--lg` | Shadow height 3px / 7px |
 
@@ -644,8 +670,10 @@ Items are sub elements: 4px border, lift on hover.
 | `fp-tabs--pill` | No container background; the active tab fills with ink |
 | `fp-tabs--underline` | Underline style, active tab marked with a bottom rule |
 
-The selected tab is a white surface with a 3px ink shadow, sitting on the
-sunken container. The JavaScript manages `aria-selected`.
+The selected tab is a white surface with a real border on the sunken
+container — flat at rest, like every sub element: selection is marked by
+the fill and the border, never by elevation. The JavaScript manages
+`aria-selected`.
 
 ---
 
@@ -823,8 +851,8 @@ The active page fills with ink. Disabled pages use `is-disabled`.
 </div>
 ```
 
-The active segment is a white surface with a 3px ink shadow on the sunken
-container.
+The active segment is a white surface with a real border on the sunken
+container — flat at rest, like every sub element.
 
 ---
 
@@ -885,9 +913,9 @@ is hidden on the last item.
 </div>
 ```
 
-The featured card is the one that may carry the accent — as an accent
-shadow rather than an accent fill, so the primary button inside it still
-reads as the primary button.
+The featured card is marked by the accent-coloured label text and the
+primary button inside it — never by a coloured shadow. The shadow is
+the system's one ink colour everywhere, with no exceptions.
 
 ---
 
@@ -978,15 +1006,16 @@ announcements are read out.
 
 ```html
 <nav class="fp-island-nav" aria-label="Island navigation">
-  <a class="fp-island-nav__item is-active" href="#">Home</a>
-  <a class="fp-island-nav__item" href="#">Foundations</a>
+  <a class="fp-btn fp-btn--sub is-current" href="#" aria-current="page">Home</a>
+  <a class="fp-btn fp-btn--sub" href="#">Library</a>
 </nav>
 <div class="fp-island-nav-spacer" aria-hidden="true"></div>
 ```
 
-A floating bar at the bottom of the viewport. See
-[1. The quietest sub element](#1-the-quietest-sub-element) for the full
-description of its geometry and its main/sub split.
+A floating pill at the bottom of the viewport, filled with ordinary
+`fp-btn--sub` buttons — see
+[1. The quietest sub element](#1-the-quietest-sub-element) for the
+sub-element behaviour they inherit.
 
 ### Sidebar
 
@@ -999,7 +1028,8 @@ description of its geometry and its main/sub split.
 </nav>
 ```
 
-The active item fills with ink and inverts its text.
+The active item wears the accent border — the one sanctioned emphasis
+for a sub element. Nothing fills with ink just for being current.
 
 ### Dropdown
 
@@ -1015,7 +1045,7 @@ The active item fills with ink and inverts its text.
 </div>
 ```
 
-The menu opens on hover or focus-within. `--right` aligns it to the right
+The menu opens on **click** (JavaScript toggles `.is-open`) or keyboard focus — never on a bare hover. `--right` aligns it to the right
 edge of the trigger.
 
 ### Menu bar
@@ -1024,6 +1054,55 @@ edge of the trigger.
 <div class="fp-menubar">
   <button class="fp-menubar__item is-active">File</button>
   <button class="fp-menubar__item">Edit</button>
+</div>
+```
+
+Items wear the full 4px border; the active one turns it to the accent.
+Hover lifts the item and its shadow appears, like every sub element.
+
+### Footer
+
+The inverse surface — the page's polarity flipped, so its text and
+rules follow the inverse tokens (`--fp-text-inverse`,
+`--fp-text-inverse-muted`, `--fp-line-inverse`).
+
+```html
+<footer class="fp-footer">
+  <div class="fp-footer__grid">
+    <div class="fp-footer__brand">…</div>
+    <h4 class="fp-footer__title">…</h4>
+    <div class="fp-footer__links">…</div>
+  </div>
+  <div class="fp-footer__bottom">…</div>
+</footer>
+```
+
+### Mobile patterns
+
+The same two element kinds at thumb size. The demo frames them in an
+`fp-phone`, a plain clipped surface.
+
+| Class | What it is |
+|-------|-----------|
+| `fp-m-navbar` | A top bar compressed to a 56px thumb row: centred title, icon actions at the edges |
+| `fp-m-tabbar` | The bottom bar — the island nav at phone width: the floating pill stretched to the screen's edges, filled with `fp-btn--sub` items (icon over label). The current one wears the accent border |
+| `fp-fab` | The one main element a mobile screen carries: a 56px circle of accent fill with the standard press (hover collapses the shadow, the press removes it) |
+| `fp-fab--dock` | Docks the FAB to the bottom-right corner of its frame |
+| `fp-sheet` / `fp-sheet__handle` | A bottom sheet. A main element owning the screen's bottom edge — hard shadow, no border |
+| `fp-m-row` | A 64px list row: leading tile, two lines of text, trailing affordance. Hairline-separated, never bordered |
+| `fp-refresh` / `fp-refresh__spinner` | The pull-to-refresh disc: a sunken circle with a one-colour spinner arc (no gradient) |
+
+```html
+<div class="fp-phone">
+  <div class="fp-m-navbar">…</div>
+  <div class="fp-phone__body">
+    <span class="fp-refresh"><span class="fp-refresh__spinner"></span></span>
+    <div class="fp-m-row">…</div>
+  </div>
+  <button class="fp-fab fp-fab--dock" aria-label="New">+</button>
+  <nav class="fp-m-tabbar">
+    <a class="fp-btn fp-btn--sub is-current" href="#" aria-current="page">Home</a>
+  </nav>
 </div>
 ```
 
@@ -1080,9 +1159,8 @@ A plain main surface. `fp-panel--flat` removes the shadow.
 <div class="fp-skeleton fp-skeleton--circle"></div>
 ```
 
-The shimmer sweep is the only gradient in the codebase. It is exempt from
-the zero-gradient rule because it is a motion affordance signalling
-"loading", not a surface treatment.
+The placeholder pulses between two flat greys — a colour CHANGE, not a
+sweep. The zero-gradient rule has no exceptions.
 
 ---
 
@@ -1099,8 +1177,58 @@ the zero-gradient rule because it is a motion affordance signalling
 </div>
 ```
 
-The gallery in `index.html` renders these from a JavaScript array that
-mirrors the token definitions.
+The gallery in `foundations/index.html` renders these from a JavaScript
+array that mirrors the token definitions.
+
+---
+
+## 22.5. Small primitives
+
+| Class | What it is |
+|-------|-----------|
+| `fp-kbd` | A keyboard key: a square grey emphasis mark (like inline code) — no border, no radius |
+| `fp-divider` / `fp-divider--plain` | A hairline rule with an optional centred label |
+| `fp-steps` / `fp-step` (`is-done`, `is-current`) / `fp-step__line` | Numbered steps joined by connectors; done = ink, current = accent fill |
+| `fp-copy` / `__value` / `__btn` | A mono value with an attached copy sub-button |
+| `fp-rating` | A row of stars; lit stars are the warning yellow |
+| `fp-counter` / `__value` | A minus / value / plus stepper |
+| `fp-file` | A file drop zone — border-first sub surface, lifts on hover |
+| `fp-m-search` | A mobile search pill with a leading icon, no border |
+| `fp-m-chip-row` | A horizontal scroll rail of chips (scrollbar hidden) |
+| `fp-apps` / `fp-app` / `fp-app__icon` | The home-screen tile: a tint squircle with a label, lifts on hover |
+| `fp-otp` / `fp-otp__digit` | One filled box per digit — no border, focus ring in the accent |
+| `fp-date-row` | A day / month / year field row |
+| `fp-toggle-group` | Icon sub-buttons that stay pressed (`aria-pressed`), current = accent border |
+| `fp-color-field` | A swatch button + mono hex label |
+| `fp-tree` / `fp-tree__row` | Indented rows with carets; rows lift with a shadow on hover, like every sub element |
+| `fp-command` | A command-palette row with a trailing `fp-kbd` shortcut |
+| `fp-rail` / `fp-rail__item` | An icon-only side rail; the active item is quiet, hover lifts |
+| `fp-kpi` / `__value` / `__label` | A big number, a small label, a delta chip |
+| `fp-spark` / `fp-spark__bar` | A flat-bar sparkline — no gradient, no curve |
+| `fp-legend` / `__swatch` | Chart legend rows |
+| `fp-kv` | A key-value description list |
+| `fp-user-row` | Avatar + name + trailing action |
+| `fp-banner` | The inverse strip across the top of a page |
+| `fp-progress-note` | A status line with a progress bar (uploads) |
+| `fp-notif` | A notification row; unread wears the tint + dot |
+| `fp-gallery` / `__tile` | A flat tinted image grid |
+| `fp-popover` | The small anchored overlay — main element, hard shadow |
+| `fp-context` / `__item` | The right-click menu |
+| `fp-split` | A fused action-and-menu main button |
+| `fp-btn.is-loading` / `fp-btn__spinner` | The busy state: a spinner replaces the label |
+| `fp-fab-menu` / `fp-fab--mini` | The docked FAB's stack of secondary actions |
+| `fp-float` / `fp-float__label` | The floating-label field: the label is the border's colour and MOVES onto the border line at the same size on focus or when filled — hover moves the field, never the label |
+| `fp-float--accent` | Border and label both wear the accent |
+| `fp-file--accent` | The emphasised drop zone — the accent border on the existing border |
+| `fp-embed` (`--square`, `--wide`) | A 16:9 media frame — main element, hard shadow |
+| `fp-carousel` / `__dot` | A horizontal snap rail of cards with square dots |
+| `fp-hero--split` / `fp-hero--compact` | Left-aligned and smaller hero variants |
+| `fp-notif-centre` | A panel of notifications with a header action |
+| `fp-progress__bar--indeterminate` | The flat sliding block for unknown progress (no gradient, ever) |
+| `fp-carousel--controls` | The carousel with prev/next sub buttons flanking the rail |
+| `fp-gallery--masonry` / `fp-gallery__col` | The Pinterest wall: tiles grouped into flex columns, each packed top to bottom |
+| `fp-gallery--tiled` | The tiling-window layout: named spans on a fixed grid |
+| `fp-float` — floated label | The label MOVES onto the field's border line at the same size, wearing a chip of the fill colour; its colour is the border's own |
 
 ---
 
@@ -1127,9 +1255,14 @@ mirrors the token definitions.
 | `fp-shadow-none` | No shadow |
 | `fp-sub--accent` | The accent as a sub element's border colour |
 | `fp-sub--borderless` | A sub element with no border — the quietest tier |
-| `fp-island-nav` / `__item` | A floating island navigation bar |
-| `fp-island-nav-spacer` | The room a fixed island nav needs |
-| `fp-highlight` | Bold text on a rectangular block of accent colour |
+| `fp-island-nav` / `fp-island-nav-spacer` | A floating island navigation bar, and the room it needs |
+| `fp-m-navbar` | A 56px mobile top bar |
+| `fp-m-tabbar` | The island nav at phone width: the floating pill stretched to the screen's edges, filled with `fp-btn--sub` items (icon over label) |
+| `fp-fab` / `fp-fab--dock` | The floating action button |
+| `fp-sheet` / `__handle` | A bottom sheet |
+| `fp-m-row` | A 64px mobile list row |
+| `fp-refresh` / `__spinner` | A pull-to-refresh indicator |
+| `fp-highlight` | Bold text in the accent colour — no background block |
 | `fp-code` / `fp-code-block` | Inline and block code |
 | `fp-kbd` | Keyboard key |
 | `fp-divider-label` | A rule with a centred label |

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forms — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../">&larr; Home</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="forms">
+  <div class="fp-section__head">
+    <span class="fp-kicker">05 — Input</span>
+    <h2 class="fp-section__title">Forms</h2>
+    <p class="fp-section__desc">Inputs are sub elements: they lift on hover and their shadow appears with them. Labels, hints and validation messages stack under the control.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <div class="fp-field">
+        <div class="fp-float">
+          <input class="fp-input" id="f-name" type="text" placeholder=" ">
+          <label class="fp-float__label" for="f-name">Full name</label>
+        </div>
+        <span class="fp-field__hint">As it appears on your ID.</span>
+      </div>
+
+      <div class="fp-field">
+        <div class="fp-float fp-float--accent">
+          <input class="fp-input is-invalid" id="f-email" type="email" value="not-an-email" placeholder=" " aria-describedby="f-email-err">
+          <label class="fp-float__label" for="f-email">Email</label>
+        </div>
+        <span class="fp-field__error" id="f-email-err">Enter a valid email address.</span>
+      </div>
+
+      <div class="fp-field">
+        <label class="fp-field__label" for="f-plan">Plan</label>
+        <select class="fp-select" id="f-plan">
+          <option>Starter</option>
+          <option selected>Growth</option>
+          <option>Enterprise</option>
+        </select>
+      </div>
+
+      <div class="fp-field">
+        <label class="fp-field__label" for="f-msg">Message</label>
+        <textarea class="fp-textarea" id="f-msg" placeholder="Tell us what you think…"></textarea>
+      </div>
+
+      <button class="fp-btn fp-btn--primary fp-btn--block">Submit</button>
+    </div>
+
+    <div class="fp-stack">
+      <div class="fp-field">
+        <span class="fp-field__label">Search</span>
+        <div class="fp-search">
+          <span class="fp-search__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></span>
+          <input class="fp-input" type="search" placeholder="Search…">
+        </div>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">With addon</span>
+        <div class="fp-input-group">
+          <span class="fp-input-group__addon">https://</span>
+          <input class="fp-input" type="text" value="flatplanet.dev">
+        </div>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">Checkbox</span>
+        <label class="fp-check">
+          <input type="checkbox" checked>
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Remember this device</span>
+        </label>
+        <label class="fp-check">
+          <input type="checkbox">
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Subscribe to the newsletter</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">Checkbox — accent variant</span>
+        <label class="fp-check fp-check--accent">
+          <input type="checkbox" checked>
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Remember this device</span>
+        </label>
+        <label class="fp-check fp-check--accent">
+          <input type="checkbox">
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Subscribe to the newsletter</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">Radio</span>
+        <label class="fp-check fp-check--radio">
+          <input type="radio" name="plan-rad" checked>
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Monthly billing</span>
+        </label>
+        <label class="fp-check fp-check--radio">
+          <input type="radio" name="plan-rad">
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Annual billing</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">Radio — accent variant</span>
+        <label class="fp-check fp-check--radio fp-check--accent">
+          <input type="radio" name="plan-rad-accent" checked>
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Monthly billing</span>
+        </label>
+        <label class="fp-check fp-check--radio fp-check--accent">
+          <input type="radio" name="plan-rad-accent">
+          <span class="fp-check__box"></span>
+          <span class="fp-check__label">Annual billing</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">Switch</span>
+        <label class="fp-switch">
+          <input type="checkbox" checked>
+          <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
+          <span>Enable notifications</span>
+        </label>
+        <label class="fp-switch">
+          <input type="checkbox">
+          <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
+          <span>Enable beta features</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">Switch — accent variant</span>
+        <label class="fp-switch fp-switch--accent">
+          <input type="checkbox" checked>
+          <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
+          <span>Enable notifications</span>
+        </label>
+        <label class="fp-switch fp-switch--accent">
+          <input type="checkbox">
+          <span class="fp-switch__track"><span class="fp-switch__thumb"></span></span>
+          <span>Enable beta features</span>
+        </label>
+      </div>
+
+      <div class="fp-field">
+        <span class="fp-field__label">Range</span>
+        <span class="fp-range">
+          <span class="fp-range__fill" aria-hidden="true"></span>
+          <input type="range" min="0" max="100" value="65">
+        </span>
+        <span class="fp-field__hint">The thumb is a rectangle that sits inside the track. The filled portion follows the value.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../../assets/js/flatplanet.js"></script>
+</body>
+</html>

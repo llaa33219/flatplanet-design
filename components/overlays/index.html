@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modals, Drawers & Disclosure — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../">&larr; Home</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="overlay">
+  <div class="fp-section__head">
+    <span class="fp-kicker">10 — Overlay</span>
+    <h2 class="fp-section__title">Modals, Drawers &amp; Disclosure</h2>
+    <p class="fp-section__desc">Overlays use the same shell as cards — 36&nbsp;px radius, hard shadow, solid scrim.</p>
+  </div>
+
+  <div class="fp-btn-group" style="margin-bottom: var(--fp-space-8)">
+    <button class="fp-btn fp-btn--primary" data-modal-open="demoModal">Open Modal</button>
+    <button class="fp-btn fp-btn--secondary" data-drawer-open="demoDrawer">Open Drawer</button>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-accordion" id="acc1">
+      <details class="fp-accordion__item" open>
+        <summary class="fp-accordion__trigger">
+          <span>What is the 36px radius rule?</span>
+          <span class="fp-accordion__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </summary>
+        <div class="fp-accordion__panel">
+          36&nbsp;px is the ceiling for corner rounding across the entire system. Radii below 36&nbsp;px are allowed only where the component's height makes a 36&nbsp;px radius physically impossible to read — for example a 36&nbsp;px-tall badge or a 28&nbsp;px-tall chip.
+        </div>
+      </details>
+      <details class="fp-accordion__item">
+        <summary class="fp-accordion__trigger">
+          <span>How does the hover press work?</span>
+          <span class="fp-accordion__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </summary>
+        <div class="fp-accordion__panel">
+          A main element's shadow starts at height H. On hover the shadow collapses to 2&nbsp;px and the element descends by H&nbsp;−&nbsp;2&nbsp;px, so the shadow's absolute bottom edge never moves. Sub elements do the opposite: they rise by the sub-shadow height and gain that shadow at the same time.
+        </div>
+      </details>
+      <details class="fp-accordion__item">
+        <summary class="fp-accordion__trigger">
+          <span>Which way can a shadow fall?</span>
+          <span class="fp-accordion__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </summary>
+        <div class="fp-accordion__panel">
+          Only to the bottom-right. Every shadow is <code class="fp-code">(positive px) (positive px) 0 &lt;ink&gt;</code> — positive offsets, equal on both axes, zero blur, zero spread. There is no upward shadow, no leftward shadow, and no band on all four sides: a band is a border, not a shadow. If you want a different look, change the shadow's <em>size</em>, not its direction.
+        </div>
+      </details>
+      <details class="fp-accordion__item">
+        <summary class="fp-accordion__trigger">
+          <span>Are gradients really banned?</span>
+          <span class="fp-accordion__icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </summary>
+        <div class="fp-accordion__panel">
+          Yes — no component uses a gradient anywhere. Depth is expressed purely with flat fills and solid offset shadows. The only gradient in the codebase is the skeleton shimmer, which is a loading affordance rather than a surface treatment.
+        </div>
+      </details>
+    </div>
+
+    <div class="fp-stack">
+      <details class="fp-disclosure">
+        <summary class="fp-disclosure__summary">
+          Disclosure with a chevron
+          <svg class="fp-disclosure__chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="fp-disclosure__body">A lighter-weight disclosure for secondary information. Built on native <code class="fp-code">&lt;details&gt;</code> so keyboard behaviour comes for free.</div>
+      </details>
+
+      <div class="fp-empty">
+        <span class="fp-empty__icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg>
+        </span>
+        <h3 class="fp-empty__title">Nothing here yet</h3>
+        <p class="fp-empty__text">When a list has no items, show the empty state instead of an empty container.</p>
+        <button class="fp-btn fp-btn--primary">Create the first item</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= MODAL ================= -->
+<div class="fp-modal-backdrop" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle">
+  <div class="fp-modal">
+    <div class="fp-modal__header">
+      <h2 class="fp-modal__title" id="demoModalTitle">Delete project?</h2>
+      <button class="fp-btn fp-btn--sub fp-btn--icon fp-btn--sm" data-modal-close aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="fp-modal__body">
+      <p class="fp-text-muted">This permanently removes <strong>FlatPlanet</strong> and all of its 60 components. This action cannot be undone.</p>
+    </div>
+    <div class="fp-modal__footer">
+      <button class="fp-btn fp-btn--secondary" data-modal-close>Cancel</button>
+      <button class="fp-btn fp-btn--danger" data-modal-close>Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= DRAWER ================= -->
+<div class="fp-drawer-backdrop" id="demoDrawer"></div>
+<aside class="fp-drawer" id="demoDrawerPanel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="fp-drawer__header">
+    <h2 class="fp-modal__title" id="drawerTitle">Filters</h2>
+    <button class="fp-btn fp-btn--sub fp-btn--icon fp-btn--sm" data-drawer-close aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="fp-drawer__body fp-stack">
+    <div class="fp-field">
+      <span class="fp-field__label">Status</span>
+      <label class="fp-check"><input type="checkbox" checked><span class="fp-check__box"></span><span class="fp-check__label">Active</span></label>
+      <label class="fp-check"><input type="checkbox"><span class="fp-check__box"></span><span class="fp-check__label">Archived</span></label>
+    </div>
+    <div class="fp-field">
+      <span class="fp-field__label">Tags</span>
+      <div class="fp-row fp-row--tight">
+        <span class="fp-chip fp-sub--accent" aria-pressed="true">UI</span>
+        <span class="fp-chip">Docs</span>
+        <span class="fp-chip">API</span>
+      </div>
+    </div>
+    <div class="fp-field">
+      <span class="fp-field__label">Owner</span>
+      <div class="fp-dropdown">
+        <button class="fp-btn fp-btn--sub fp-btn--block" type="button">
+          Everyone
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-left: auto;"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="fp-dropdown__menu" style="left: 0; right: 0;">
+          <a class="fp-dropdown__item" href="#">Everyone</a>
+          <a class="fp-dropdown__item" href="#">Me</a>
+          <a class="fp-dropdown__item" href="#">The design team</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fp-drawer__footer">
+    <button class="fp-btn fp-btn--secondary" data-drawer-close>Reset</button>
+    <button class="fp-btn fp-btn--primary" data-drawer-close>Apply</button>
+  </div>
+</aside>
+<script src="../../assets/js/flatplanet.js"></script>
+</body>
+</html>

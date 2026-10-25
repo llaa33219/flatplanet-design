@@ -319,15 +319,32 @@ MAIN_MARKERS = [
     ".fp-modal", ".fp-price-card", ".fp-table-wrap", ".fp-btn",
     ".fp-dropdown__menu", ".fp-sidebar", ".fp-empty", ".fp-code-block",
     ".fp-icon-tile", ".fp-swatch", ".fp-spec", ".fp-elev",
-    ".fp-island-nav",
+    ".fp-fab", ".fp-phone", ".fp-sheet", ".fp-island-nav", ".fp-m-tabbar",
+]
+# PINNED mains: fixed/docked to the viewport or a frame edge, so there is
+# nothing under them to press INTO. Their shadow must NOT change on
+# hover — they never travel.
+MAIN_PINNED = [
+    ".fp-island-nav", ".fp-m-tabbar",
 ]
 
 SUB_MARKERS = [
     ".fp-input", ".fp-select", ".fp-textarea", ".fp-list__item", ".fp-tag",
     ".fp-chip", ".fp-avatar", ".fp-accordion__item", ".fp-pagination__item",
-    ".fp-badge", ".fp-check__box", ".fp-switch__track", ".fp-timeline__dot",
+    ".fp-badge", ".fp-timeline__dot",
     ".fp-check--card", ".fp-input-group__addon", ".fp-sub",
-    ".fp-island-nav__item",
+]
+# The BORDERLESS sub tier: still sub behaviour (flat at rest, lifts on
+# hover), but borderless by design — the same tier `.fp-sub--borderless`
+# opts into. These are rostered separately so the border rule skips them
+# while the hover rule below still applies.
+SUB_BORDERLESS = [
+]
+# FILLED controls: a control's face is a FILLED shape, not a quiet sub
+# element — the fill is the outline, so it carries no border and no
+# resting shadow; hover still lifts it and makes the shadow appear.
+SUB_FILLED = [
+    ".fp-check__box", ".fp-switch__track", ".fp-range", ".fp-progress",
 ]
 
 
@@ -525,6 +542,51 @@ def main():
         if sh is not None and shadow_of_value(sh, marker) is not None:
             fail(f"SUB '{marker}' must have NO default shadow, found: {sh}")
 
+    # ---- 3c. filled controls: NO border, NO resting shadow, lift on hover --
+    for marker in SUB_FILLED:
+        if marker not in by_base:
+            fail(f"SUB(filled) '{marker}' has no rule at all")
+            continue
+        own_rule = None
+        for _, r in by_base.get(marker, []):
+            if r.selector == marker and not is_state(r.selector) and r.media is None:
+                own_rule = r
+        if own_rule is None:
+            fail(f"SUB(filled) '{marker}' has no rule of its own")
+            continue
+        bd = decl(own_rule.body, "border")
+        if bd and not re.match(r"^(none|0)\b", bd.strip()):
+            fail(f"SUB(filled) '{marker}' must be borderless, found: {bd}")
+        sh = decl(own_rule.body, "box-shadow")
+        if sh is not None and shadow_of_value(sh, marker) is not None:
+            fail(f"SUB(filled) '{marker}' must have NO default shadow, found: {sh}")
+
+    # ---- 3b. borderless subs: NO border, NO resting shadow, but the lift --
+    for marker in SUB_BORDERLESS:
+        if marker not in by_base:
+            fail(f"SUB(borderless) '{marker}' has no rule at all")
+            continue
+        own_rule = None
+        for _, r in by_base.get(marker, []):
+            if r.selector == marker and not is_state(r.selector) and r.media is None:
+                own_rule = r
+        if own_rule is None:
+            fail(f"SUB(borderless) '{marker}' has no rule of its own")
+            continue
+        bd = decl(own_rule.body, "border")
+        if bd and not re.match(r"^(none|0)\b", bd.strip()):
+            fail(f"SUB(borderless) '{marker}' must be borderless, found: {bd}")
+        sh = decl(own_rule.body, "box-shadow")
+        if sh is not None and shadow_of_value(sh, marker) is not None:
+            fail(f"SUB(borderless) '{marker}' must have NO default shadow, found: {sh}")
+        # A rising borderless sub must still gain a shadow on hover.
+        has_hover_shadow = False
+        for _, r in by_base.get(marker, []):
+            if ":hover" in r.selector and shadow_of_value(decl(r.body, "box-shadow") or "", marker) is not None:
+                has_hover_shadow = True
+        if not has_hover_shadow:
+            fail(f"SUB(borderless) '{marker}' must gain a shadow on hover")
+
     # ---- 4. hover semantics ---------------------------------------------
     #   MAIN hover: translateY positive (moves down) AND shadow shrinks
     #   SUB  hover: translateY negative (moves up)   AND shadow APPEARS
@@ -544,11 +606,22 @@ def main():
         resting = shadow_of_value(decl(resting_body(base), "box-shadow"), base)
         hover = shadow_of(base, r)
 
+        if base in MAIN_PINNED:
+            hover_sh = shadow_of(base, r)
+            resting_sh = resting
+            if dy != 0:
+                fail(f"{name}: '{r.selector}' is PINNED (fixed/docked) — it must never travel on hover")
+                continue
+            if resting_sh is not None and (hover_sh is None or shadow_size(hover_sh) != shadow_size(resting_sh)):
+                fail(f"{name}: '{r.selector}' is PINNED — its shadow must not change on hover")
+                continue
+            notes.append(f"{name}: '{r.selector}' is pinned and stays put — OK")
+            continue
         if dy < 0:
             if base in MAIN_MARKERS:
                 fail(f"{name}: '{r.selector}' is a MAIN element and moves UP — mains only press down")
                 continue
-            if base in SUB_MARKERS and resting is not None and shadow_size(hover or (0,0,0,0,"")) < shadow_size(resting):
+            if base in SUB_MARKERS + SUB_BORDERLESS + SUB_FILLED and resting is not None and shadow_size(hover or (0,0,0,0,"")) < shadow_size(resting):
                 fail(f"{name}: '{r.selector}' moves UP while its shadow shrinks "
                      f"({shadow_size(resting):g}px -> {shadow_size(hover or (0,0,0,0,'')):g}px) — that combination is forbidden")
                 continue
@@ -561,7 +634,7 @@ def main():
                 continue
             notes.append(f"{name}: '{r.selector}' moves UP and gains a shadow — OK for SUB (the shadow appears while rising)")
         elif dy > 0:
-            if base in SUB_MARKERS and resting is None and hover is None:
+            if base in SUB_MARKERS + SUB_BORDERLESS + SUB_FILLED and resting is None and hover is None:
                 fail(f"{name}: '{r.selector}' is a SUB element but has no shadow at all")
                 continue
             kind = "appears" if resting is None else (

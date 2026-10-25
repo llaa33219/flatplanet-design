@@ -45,7 +45,9 @@
     transform var(--fp-duration-fast) var(--fp-ease),
     visibility var(--fp-duration-fast) var(--fp-ease);
 }
-.fp-dropdown:hover .fp-dropdown__menu,
+/* The menu opens on CLICK (JS toggles .is-open) or keyboard focus —
+   never on a bare hover: a menu that appears under a passing cursor is
+   a surprise, not a control. */
 .fp-dropdown:focus-within .fp-dropdown__menu,
 .fp-dropdown.is-open .fp-dropdown__menu {
   opacity: 1;
@@ -62,11 +64,14 @@
   font-weight: 600;
   color: var(--fp-text);
   border-radius: var(--fp-radius-sm);
-  transition: background-color var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
+  transition: background-color var(--fp-duration-fast) var(--fp-ease), box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
 }
+/* A menu item is a sub element: on hover it lifts and its shadow
+   appears — a sideways nudge is not the system's hover. */
 .fp-dropdown__item:hover {
   background: var(--fp-bg-gray);
-  transform: translateX(3px);
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
   text-decoration: none;
 }
 .fp-dropdown__item--danger { color: var(--fp-text-danger); }
@@ -140,6 +145,7 @@
   gap: var(--fp-space-4);
   padding: var(--fp-space-6);
   border-bottom: var(--fp-border-width-sm) solid var(--fp-line);
+  border-radius: var(--fp-radius) var(--fp-radius) 0 0;
 }
 .fp-modal__title { font-size: var(--fp-text-xl); font-weight: 800; }
 .fp-modal__body { padding: var(--fp-space-6); overflow-y: auto; flex: 1; }
@@ -161,6 +167,9 @@
   padding: var(--fp-space-5) var(--fp-space-6);
   background: var(--fp-surface-sunken);
   border-top: var(--fp-border-width-sm) solid var(--fp-line);
+  /* The footer is the modal's bottom edge: it inherits the modal's
+     radius so the sunken fill never squares off the rounded corner. */
+  border-radius: 0 0 var(--fp-radius) var(--fp-radius);
 }
 
 /* ==========================================================================
@@ -321,24 +330,6 @@
 /* ==========================================================================
    BANNER / HERO / FEATURE PANELS
    ========================================================================== */
-.fp-banner {
-  /* The banner is an inverse surface, like the footer. */
-  --fp-text: var(--fp-text-inverse);
-  --fp-text-muted: var(--fp-text-inverse-muted);
-  --fp-text-accent: var(--fp-on-inverse-accent);
-  display: flex;
-  align-items: center;
-  gap: var(--fp-space-4);
-  padding: var(--fp-space-4) var(--fp-space-6);
-  background: var(--fp-ink);
-  color: var(--fp-on-ink);
-  font-size: var(--fp-text-sm);
-  font-weight: 600;
-}
-.fp-banner a { color: var(--fp-on-inverse-accent); font-weight: 800; }
-.fp-banner__close { margin-left: auto; color: var(--fp-on-ink); opacity: 0.7; }
-.fp-banner__close:hover { opacity: 1; }
-
 .fp-hero {
   /* Inside a surface the text belongs to the SURFACE, not to the page.
      Re-pointing the tokens here means every child inherits the right
@@ -542,6 +533,9 @@
   color: var(--fp-text-subtle);
 }
 
+/* The sidebar item IS the bordered sub button, worn full-width and
+   left-aligned. Same resting border, same lift, same press — nothing
+   here is a button shape that exists nowhere else. */
 .fp-sidebar__item {
   display: flex;
   align-items: center;
@@ -550,11 +544,14 @@
   font-size: var(--fp-text-sm);
   font-weight: 700;
   color: var(--fp-text-muted);
-  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, transparent);
+  text-decoration: none;
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-dark-light-ultra-deep));
   border-radius: var(--fp-radius-sm);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
     color var(--fp-duration-default) var(--fp-ease),
+    border-color var(--fp-duration-default) var(--fp-ease),
     transform var(--fp-duration-default) var(--fp-ease),
     box-shadow var(--fp-duration-default) var(--fp-ease);
 }
@@ -565,7 +562,11 @@
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
   text-decoration: none;
 }
-.fp-sidebar__item.is-active { color: var(--fp-on-ink); background: var(--fp-ink); border-color: transparent; box-shadow: 2px 2px 0 var(--fp-shadow-color-sub); }
+/* The current page wears the accent border — the one sanctioned
+   emphasis for a sub element. Nothing fills with ink just for being
+   "here". The resting state is FLAT like every sub element: no shadow
+   declaration at all, so the accent border is the only marker. */
+.fp-sidebar__item.is-active { --fp-sub-border-color: var(--fp-accent-border); color: var(--fp-text); }
 
 /* ==========================================================================
    ISLAND NAV — a navigation bar that floats at the bottom of the viewport.
@@ -578,8 +579,9 @@
    without it the pill would read as a rectangle of white stuck to the
    bottom of the window rather than as an object hovering over the page.
 
-   The items inside are SUB elements: no resting shadow, they lift on
-   hover and their shadow appears.
+   The items inside are the system's bordered SUB BUTTONS
+   (`.fp-btn--sub`), re-sized to the row — flat at rest, lifting on
+   hover, the press sinking with a smaller shadow.
 
    The bar is a PILL, not a full-width strip, so it is rounded on ALL
    four corners at the system's 36px ceiling.
@@ -632,53 +634,32 @@
     box-shadow var(--fp-duration-default) var(--fp-ease),
     transform var(--fp-duration-default) var(--fp-ease);
 }
-/* The press, like every main element: the shadow collapses and the
-   island sinks toward the page. */
+/* An island never travels: it is pinned to the viewport, not lying on
+   the page, so there is nothing under it to press INTO. The shadow
+   stays exactly as it is on hover — only the items inside it move. */
 .fp-island-nav:hover {
-  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
-  transform: translateX(-50%) translateY(4px);
+  box-shadow: 6px 6px 0 var(--fp-shadow-color-sub);
+  transform: translateX(-50%);
 }
 
-/* The items are SUB elements. Their border is transparent at rest, so
-   the space it occupies is reserved and the active state can draw a
-   real border without moving anything. */
-.fp-island-nav__item {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--fp-space-2);
-  padding: var(--fp-space-2) var(--fp-space-5);
+/* The items are the bordered SUB BUTTONS the system already has: the
+   island re-styles `.fp-btn--sub` down to a nav-item size, keeping the
+   button's own behaviour — flat at rest, lifting on hover, the press
+   sinking with a smaller shadow. Nothing in the island is a button
+   shape that exists nowhere else. */
+.fp-island-nav .fp-btn--sub {
+  --fp-btn-bg: transparent;
   min-height: 44px;
+  padding: var(--fp-space-2) var(--fp-space-5);
   font-size: var(--fp-text-sm);
-  font-weight: 700;
-  color: var(--fp-text-muted);
-  text-decoration: none;
-  white-space: nowrap;
-  background: transparent;
-  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, transparent);
   border-radius: var(--fp-radius-sm);
-  transition:
-    background-color var(--fp-duration-default) var(--fp-ease),
-    color var(--fp-duration-default) var(--fp-ease),
-    border-color var(--fp-duration-default) var(--fp-ease),
-    box-shadow var(--fp-duration-default) var(--fp-ease),
-    transform var(--fp-duration-default) var(--fp-ease);
+  box-shadow: none;
 }
-.fp-island-nav__item:hover {
-  color: var(--fp-text);
-  transform: translateY(-2px);
-  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
-  text-decoration: none;
-}
-/* The active item fills with the ink and inverts its text, the same
-   treatment the sidebar and the menubar use. It is the one element in
-   the island that says "you are here". */
-.fp-island-nav__item.is-active {
-  color: var(--fp-on-ink);
-  background: var(--fp-ink);
-  border-color: transparent;
-}
-.fp-island-nav__item.is-active:hover { color: var(--fp-on-ink); }
+/* Icon-only island items are square. */
+.fp-island-nav .fp-btn--sub.fp-btn--icon { width: 44px; padding: 0; }
+/* The current destination recolours the border that is already there —
+   the one sanctioned emphasis, exactly as `.fp-sub--accent` does it. */
+.fp-island-nav .fp-btn--sub.is-current { --fp-sub-border-color: var(--fp-accent-border); }
 
 /* The room the island needs at the bottom of the page, so the last
    piece of content is never trapped underneath it. */
@@ -706,11 +687,32 @@
   font-size: var(--fp-text-sm);
   font-weight: 700;
   color: var(--fp-text-muted);
+  /* The item's outline is the full 4px border, not the small 2px one —
+     a menu item's state must read as an outline, not a hairline. */
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, transparent);
   border-radius: var(--fp-radius-sm);
-  transition: background-color var(--fp-duration-fast) var(--fp-ease), color var(--fp-duration-fast) var(--fp-ease);
+  transition: background-color var(--fp-duration-fast) var(--fp-ease), color var(--fp-duration-fast) var(--fp-ease), box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
 }
-.fp-menubar__item:hover { background: var(--fp-surface-raised); color: var(--fp-text); }
-.fp-menubar__item.is-active { background: var(--fp-ink); color: var(--fp-on-ink); }
+.fp-menubar__item:hover {
+  background: var(--fp-surface-raised);
+  color: var(--fp-text);
+  /* Same sub rule: the lift and the shadow, not just a colour change. */
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+}
+/* The active menu is marked the sanctioned sub way — the accent border
+   on the border the item already has, never an ink fill. */
+.fp-menubar__item.is-active {
+  background: var(--fp-surface-raised);
+  color: var(--fp-text);
+  --fp-sub-border-color: var(--fp-accent-border);
+}
+/* The active item still lifts on hover — selection never cancels the
+   sub element's hover. */
+.fp-menubar__item.is-active:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+}
 
 /* ==========================================================================
    FOOTER
@@ -727,7 +729,9 @@
   --fp-text-success: var(--fp-text-success-surface);
   --fp-text-warning: var(--fp-text-warning-surface);
   padding: var(--fp-space-16) var(--fp-space-6) var(--fp-space-8);
-  background: var(--fp-ink);
+  /* The footer is the darkest surface of the page — the ultra-deep ink,
+     not the base ink, so the page ends at the bottom of the palette. */
+  background: var(--fp-surface-inverse);
   color: var(--fp-text-inverse-muted);
 }
 .fp-footer__grid {
@@ -810,26 +814,23 @@
 /* ==========================================================================
    SKELETON
 
-   The shimmer sweep below is the ONLY gradient in the codebase, and it is
-   deliberately exempt from the zero-gradient rule: it is a motion affordance
-   signalling "content is loading", not a surface treatment. No component
-   surface, border, icon or text ever uses a gradient.
+   A placeholder pulses between two flat greys — a colour CHANGE, not a
+   sweep. The zero-gradient rule has no exceptions: no component surface,
+   border, icon, text or loader anywhere uses a gradient.
    ========================================================================== */
 .fp-skeleton {
+  /* Flat design: a placeholder does not sweep a gradient. It pulses
+     between the two flat steps of the same grey — sunken and the
+     line tone — so the "loading" signal is a COLOUR CHANGE, not a
+     moving ramp. */
   background: var(--fp-bg-gray);
   border-radius: var(--fp-radius-xs);
-  position: relative;
-  overflow: hidden;
+  animation: fp-skeleton-pulse 1.4s var(--fp-ease-in-out) infinite;
 }
-.fp-skeleton::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, var(--fp-skeleton-sheen), transparent);
-  transform: translateX(-100%);
-  animation: fp-shimmer 1.4s infinite;
+@keyframes fp-skeleton-pulse {
+  0%, 100% { background: var(--fp-bg-gray); }
+  50%      { background: var(--fp-dark-light-deep); }
 }
-@keyframes fp-shimmer { to { transform: translateX(100%); } }
 .fp-skeleton--text { height: 1em; border-radius: var(--fp-radius-xs); }
 .fp-skeleton--title { height: 2em; width: 60%; }
 .fp-skeleton--circle { border-radius: var(--fp-radius-circle); }
@@ -874,7 +875,7 @@
   gap: var(--fp-space-4);
   padding: var(--fp-space-5);
   background: var(--fp-tint-info);
-  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-blue-soft));
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
   border-radius: var(--fp-radius);
   font-size: var(--fp-text-sm);
   line-height: 1.65;
@@ -922,7 +923,10 @@
   transition: transform var(--fp-duration-default) var(--fp-ease), box-shadow var(--fp-duration-default) var(--fp-ease);
 }
 .fp-price-card:hover { transform: translateY(4px); box-shadow: 2px 2px 0 var(--fp-shadow-color-sub); }
-.fp-price-card--featured { box-shadow: 6px 6px 0 var(--fp-accent); }
+/* The featured card is marked by the accent TEXT of its label and the
+   primary button inside it — not by a coloured shadow. The shadow
+   colour is the system's one ink everywhere, no exceptions. */
+.fp-price-card--featured { box-shadow: 6px 6px 0 var(--fp-shadow-color-sub); }
 .fp-price-card__price { display: flex; align-items: baseline; gap: var(--fp-space-2); }
 .fp-price-card__amount { font-size: var(--fp-text-4xl); font-weight: 800; line-height: 1; }
 .fp-price-card__period { color: var(--fp-text-muted); font-weight: 700; }
@@ -1129,33 +1133,6 @@
 /* ==========================================================================
    KBD
    ========================================================================== */
-.fp-kbd {
-  /* A widget that sits ON a surface: its own fill, its own text
-     polarity. The fill inverts between the themes, so its text does
-     too. */
-  --fp-text: var(--fp-text-fill);
-  --fp-text-muted: var(--fp-text-fill-muted);
-  --fp-text-subtle: var(--fp-text-fill-muted);
-  --fp-text-accent: var(--fp-text-fill-accent);
-  --fp-text-accent-label: var(--fp-text-fill-accent);
-  --fp-text-danger: var(--fp-text-fill-danger);
-  --fp-text-success: var(--fp-text-fill-success);
-  --fp-text-warning: var(--fp-text-fill-warning);
-  color: var(--fp-text);
-  display: inline-flex;
-  align-items: center;
-  padding: var(--fp-space-1) var(--fp-space-2);
-  min-width: 26px;
-  min-height: 26px;
-  justify-content: center;
-  font-family: var(--fp-font-mono);
-  font-size: var(--fp-text-xs);
-  font-weight: 700;
-  color: var(--fp-fill-fg);
-  background: var(--fp-fill);
-  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
-  border-radius: var(--fp-radius-xs);
-}
 
 /* ==========================================================================
    DIVIDER WITH LABEL
@@ -1177,6 +1154,811 @@
   height: var(--fp-border-width-sm);
   background: var(--fp-line);
 }
+
+
+/* ==========================================================================
+   MOBILE PATTERNS — the same two element kinds, sized for thumbs.
+
+   The phone frame in the demo (`fp-phone`) is just a clipped surface;
+   everything inside it is the real component at real size.
+   ========================================================================== */
+
+/* The demo handset — a plain surface with a hard shadow, cropped so the
+   bar and the sheet sit at its edges like they would on a screen. */
+.fp-phone {
+  --fp-text: var(--fp-text-surface);
+  --fp-text-muted: var(--fp-text-surface-muted);
+  --fp-text-subtle: var(--fp-text-surface-subtle);
+  --fp-text-accent: var(--fp-text-accent-surface);
+  color: var(--fp-text);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-width: 100%;
+  height: 480px;
+  background: var(--fp-page-bg);
+  border: none;
+  border-radius: var(--fp-radius);
+  box-shadow: 6px 6px 0 var(--fp-shadow-color-sub);
+}
+.fp-phone__body { flex: 1; padding: var(--fp-space-4); overflow: hidden; }
+
+/* --- Mobile top bar ----------------------------------------------------
+   A navbar compressed to a thumb row: centred title, icon actions at
+   the edges. Same surface, same hairline under it. */
+.fp-m-navbar {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-3);
+  min-height: 56px;
+  padding: var(--fp-space-2) var(--fp-space-3);
+  background: var(--fp-surface);
+  border-bottom: var(--fp-border-width-sm) solid var(--fp-line);
+}
+.fp-m-navbar__title { flex: 1; text-align: center; font-weight: 800; font-size: var(--fp-text-base); }
+
+/* --- Mobile tab bar (the bottom bar) -----------------------------------
+   The island nav at phone width: the same floating pill, stretched to
+   the screen's edges and filled with `fp-btn--sub` items — icon over
+   label. It keeps the main-element shell: no border, a hard shadow,
+   and the press on hover. */
+.fp-m-tabbar {
+  position: absolute;
+  bottom: var(--fp-space-3);
+  left: var(--fp-space-3);
+  right: var(--fp-space-3);
+  z-index: var(--fp-z-header);
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-1);
+  padding: var(--fp-space-1);
+  background: var(--fp-surface);
+  border: none;
+  border-radius: var(--fp-radius-pill);
+  box-shadow: 4px 4px 0 var(--fp-shadow-color-sub);
+  transition:
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease);
+}
+/* Pinned to the screen's bottom edge: the bar never travels, and its
+   shadow stays exactly as it is on hover — only the items inside move. */
+.fp-m-tabbar:hover {
+  box-shadow: 4px 4px 0 var(--fp-shadow-color-sub);
+}
+/* The items are the bordered sub buttons, compressed to icon-over-label
+   cells that share the row evenly. */
+.fp-m-tabbar .fp-btn--sub {
+  --fp-btn-bg: transparent;
+  flex: 1;
+  min-height: 52px;
+  padding: var(--fp-space-1) var(--fp-space-2);
+  font-size: var(--fp-text-2xs);
+  border-radius: var(--fp-radius-sm);
+  box-shadow: none;
+}
+/* The tab bar items are icon-only: the label never renders. */
+.fp-m-tabbar .fp-btn--sub { font-size: 0; gap: 0; }
+.fp-m-tabbar .fp-btn--sub svg { width: 22px; height: 22px; }
+.fp-m-tabbar .fp-btn--sub.is-current { --fp-sub-border-color: var(--fp-accent-border); }
+
+/* --- Floating action button ---------------------------------------------
+   The ONE main element a mobile screen carries: a circle of accent fill
+   with the press behaviour of every main element — hover collapses the
+   shadow, the press removes it and sinks the button by its full height. */
+.fp-fab {
+  --fp-elev-h: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  color: var(--fp-on-accent);
+  background: var(--fp-accent-fill);
+  border: none;
+  border-radius: var(--fp-radius-circle);
+  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color-sub);
+  cursor: pointer;
+  transition:
+    background-color var(--fp-duration-default) var(--fp-ease),
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease);
+}
+.fp-fab:hover:not(:disabled) {
+  background: var(--fp-accent-fill-hover);
+  transform: translateY(calc((var(--fp-elev-h) - 2px)));
+  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
+}
+.fp-fab:active:not(:disabled) {
+  background: var(--fp-accent-fill-active);
+  transform: translateY(var(--fp-elev-h));
+  box-shadow: none;
+}
+/* A corner dock, for inside a phone frame or a page. */
+.fp-fab--dock {
+  position: absolute;
+  right: var(--fp-space-4);
+  bottom: var(--fp-space-4);
+  z-index: var(--fp-z-sticky);
+}
+
+/* --- Bottom sheet --------------------------------------------------------
+   A modal that owns the bottom edge of the screen. It is a MAIN
+   element rotated onto that edge: the shadow is still a hard block of
+   ink, still drawn inside the frame — a sheet never carries a border. */
+.fp-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--fp-z-modal);
+  padding: var(--fp-space-3) var(--fp-space-5) var(--fp-space-6);
+  background: var(--fp-surface);
+  border: none;
+  border-radius: var(--fp-radius) var(--fp-radius) 0 0;
+  box-shadow: 4px 4px 0 var(--fp-shadow-color-sub);
+}
+.fp-sheet__handle {
+  width: 40px;
+  height: 6px;
+  margin: 0 auto var(--fp-space-4);
+  background: var(--fp-ink-faint);
+  border-radius: var(--fp-radius-pill);
+}
+
+/* --- List row (the mobile list cell) -------------------------------------
+   One thumb row: leading tile, two lines of text, a trailing affordance.
+   Hairline-separated, never bordered — a list is a stack of rows on one
+   surface, not a stack of boxes. */
+.fp-m-row {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-3);
+  min-height: 64px;
+  padding: var(--fp-space-2) var(--fp-space-4);
+  border-bottom: var(--fp-border-width-sm) solid var(--fp-line);
+}
+.fp-m-row:last-child { border-bottom: none; }
+.fp-m-row__content { flex: 1; min-width: 0; }
+.fp-m-row__title { font-weight: 700; font-size: var(--fp-text-sm); }
+.fp-m-row__meta { font-size: var(--fp-text-xs); color: var(--fp-text-muted); }
+.fp-m-row__trailing { flex: 0 0 auto; color: var(--fp-text-subtle); }
+
+/* --- Pull-to-refresh indicator -------------------------------------------
+   The little disc that says "the list is thinking". A sunken circle
+   with the spinner arc in the ink — one colour, no gradient. */
+.fp-refresh {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  background: var(--fp-surface-sunken);
+  border-radius: var(--fp-radius-circle);
+}
+.fp-refresh__spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--fp-ink);
+  border-right-color: transparent;
+  border-radius: var(--fp-radius-circle);
+  animation: fp-refresh-spin 0.8s linear infinite;
+}
+@keyframes fp-refresh-spin { to { transform: rotate(360deg); } }
+
+
+/* ==========================================================================
+   MORE COMPONENTS — small primitives, same two element kinds.
+   ========================================================================== */
+
+/* --- Keyboard key — the smallest sub element: a 2px-bordered chip with
+   the mono face, made for `Ctrl` `C` in docs. ------------------------- */
+/* A keyboard key is the EMPHASIS-MARK treatment, like inline code and
+   the badge: a square block of neutral grey behind a bold mono glyph —
+   no border, no radius. */
+.fp-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  min-width: 26px;
+  padding: 0 var(--fp-space-2);
+  font-family: var(--fp-font-mono);
+  font-size: var(--fp-text-xs);
+  font-weight: 700;
+  color: var(--fp-text);
+  background: var(--fp-bg-gray);
+  border: none;
+  border-radius: 0;
+}
+
+/* --- Divider — a hairline rule with an optional centred label. ------- */
+.fp-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-4);
+  color: var(--fp-text-subtle);
+  font-size: var(--fp-text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.fp-divider::before,
+.fp-divider::after {
+  content: "";
+  flex: 1;
+  height: var(--fp-border-width-sm);
+  background: var(--fp-line);
+}
+.fp-divider--plain::before, .fp-divider--plain::after { content: none; }
+.fp-divider--plain { height: var(--fp-border-width-sm); background: var(--fp-line); }
+
+/* --- Stepper — numbered steps joined by a connector. The current step
+   wears the accent fill; done steps wear the ink. --------------------- */
+.fp-steps { display: flex; align-items: center; gap: var(--fp-space-2); }
+.fp-step {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  font-size: var(--fp-text-sm);
+  font-weight: 800;
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border-radius: var(--fp-radius-circle);
+}
+.fp-step.is-done { background: var(--fp-ink); color: var(--fp-on-ink); border-color: transparent; }
+.fp-step.is-current { background: var(--fp-accent-fill); color: var(--fp-on-accent); border-color: transparent; }
+.fp-step__line { flex: 1; height: var(--fp-border-width-sm); background: var(--fp-line); min-width: var(--fp-space-4); }
+.fp-step__line.is-done { background: var(--fp-ink); }
+
+/* --- Copy field — a mono value box with a REAL sub button next to it.
+   Two separate elements, not one fused strip: the value is a bordered
+   sub box, the action is an ordinary `fp-btn--sub` that keeps its own
+   4px border and its own press. -------------------------------------- */
+.fp-copy { display: inline-flex; align-items: center; gap: var(--fp-space-3); }
+.fp-copy__value {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 var(--fp-space-4);
+  font-family: var(--fp-font-mono);
+  font-size: var(--fp-text-sm);
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border-radius: var(--fp-radius-sm);
+  user-select: all;
+}
+
+/* --- Rating — a row of stars; filled stars are the warning yellow. ---- */
+.fp-rating { display: inline-flex; gap: var(--fp-space-1); color: var(--fp-ink-faint); }
+.fp-rating .is-lit { color: var(--fp-warning); }
+
+/* --- Counter — a minus / value / plus stepper. ----------------------- */
+.fp-counter { display: inline-flex; align-items: stretch; }
+.fp-counter .fp-btn { border-radius: 0; }
+.fp-counter .fp-btn:first-child { border-radius: var(--fp-radius-sm) 0 0 var(--fp-radius-sm); }
+.fp-counter .fp-btn:last-child { border-radius: 0 var(--fp-radius-sm) var(--fp-radius-sm) 0; }
+.fp-counter__value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 0 var(--fp-space-3);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  background: var(--fp-fill);
+  border-top: var(--fp-border-width-sm) solid var(--fp-line-strong);
+  border-bottom: var(--fp-border-width-sm) solid var(--fp-line-strong);
+}
+
+/* --- File drop zone — a dashed-free, border-first sub surface. ------- */
+.fp-file {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fp-space-2);
+  padding: var(--fp-space-10) var(--fp-space-6);
+  text-align: center;
+  color: var(--fp-text-muted);
+  background: var(--fp-surface-sunken);
+  border: var(--fp-border-width) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  border-radius: var(--fp-radius);
+  cursor: pointer;
+  transition:
+    background-color var(--fp-duration-default) var(--fp-ease),
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease);
+}
+.fp-file:hover {
+  background: var(--fp-fill);
+  transform: translateY(-3px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+}
+/* The emphasised drop zone — the one place a file input earns the
+   accent: the border that is already there turns BLP Blue. */
+.fp-file--accent { --fp-sub-border-color: var(--fp-accent-border); }
+.fp-file--accent:hover { background: var(--fp-tint-info); }
+
+/* --- Floating label — the label starts centred inside the empty field,
+   then slides UP onto the field's border line. Same size both ways —
+   it MOVES, it does not shrink — and the floated label carries a chip
+   of the fill colour so the border never strikes through the text.
+   The label takes the border's own colour, not a muted ghost of it. -- */
+.fp-float { position: relative; }
+.fp-float__label {
+  position: absolute;
+  left: var(--fp-space-5);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 var(--fp-space-2);
+  font-size: var(--fp-text-sm);
+  font-weight: 700;
+  color: var(--fp-line-strong);
+  background: transparent;
+  pointer-events: none;
+  transition: top var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease), background-color var(--fp-duration-fast) var(--fp-ease);
+}
+/* Only FOCUS or a value lifts the label — a hover moves the FIELD (the
+   lift), not the label. */
+.fp-float .fp-input:focus ~ .fp-float__label,
+.fp-float .fp-input:not(:placeholder-shown) ~ .fp-float__label {
+  /* Parked ON the border: centred on the field's top edge, the same
+     size, with the fill colour behind it so the border line passes
+     underneath the chip, not through the glyphs. */
+  top: 0;
+  background: var(--fp-fill);
+}
+
+
+/* --- Embed — a 16:9 media frame. Main: no border, hard shadow. ------ */
+.fp-embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--fp-surface);
+  border: none;
+  border-radius: var(--fp-radius);
+  box-shadow: 6px 6px 0 var(--fp-shadow-color-sub);
+  overflow: hidden;
+}
+.fp-embed > iframe, .fp-embed > video, .fp-embed > img { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+.fp-embed--square { aspect-ratio: 1; }
+.fp-embed--wide { aspect-ratio: 21 / 9; }
+
+/* --- Carousel — a horizontal snap rail of cards. --------------------- */
+.fp-carousel {
+  display: flex;
+  gap: var(--fp-space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: var(--fp-space-2) var(--fp-space-2) var(--fp-space-4);
+  scrollbar-width: none;
+}
+.fp-carousel::-webkit-scrollbar { display: none; }
+.fp-carousel > * { scroll-snap-align: start; flex: 0 0 75%; }
+.fp-carousel__dot-row { display: flex; justify-content: center; gap: var(--fp-space-2); margin-top: var(--fp-space-3); }
+.fp-carousel__dot { width: 10px; height: 10px; border-radius: 0; background: var(--fp-ink-faint); border: none; cursor: pointer; }
+.fp-carousel__dot.is-active { background: var(--fp-ink); }
+
+/* Carousel controls — the prev/next sub buttons flanking the rail. */
+.fp-carousel--controls { align-items: center; }
+.fp-carousel__nav { flex: 0 0 auto; }
+
+/* --- Gallery variants ---------------------------------------------------
+   `.fp-gallery` is the exact grid: every tile the same size.
+   `--masonry` is the Pinterest wall: CSS columns, tiles keep their own
+   aspect and stack in columns.
+   `--tiled` is the tiling-window layout: named spans on a fixed grid. - */
+.fp-gallery--masonry {
+  /* A masonry wall is THREE COLUMNS, each packed top to bottom — never
+     one list flowed into browser columns, which balances heights and
+     leaves sky above the short column. Group the tiles into columns
+     yourself; each column is a flex stack. */
+  display: flex;
+  gap: var(--fp-space-3);
+  align-items: flex-start;
+}
+.fp-gallery__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fp-space-3);
+  flex: 1;
+  min-width: 0;
+  /* The tiles keep their own height — a flex column would stretch them
+     all to the same length, which is the one thing masonry is not. */
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.fp-gallery--masonry .fp-gallery__tile {
+  width: 100%;
+  aspect-ratio: auto !important;
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.fp-gallery--tiled {
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 90px;
+}
+.fp-gallery--tiled .fp-gallery__tile { aspect-ratio: auto; height: 100%; }
+.fp-gallery--tiled .fp-gallery__tile:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.fp-gallery--tiled .fp-gallery__tile:nth-child(4) { grid-column: span 2; }
+.fp-gallery--tiled .fp-gallery__tile:nth-child(6) { grid-row: span 2; }
+
+/* --- Hero variants ---------------------------------------------------- */
+.fp-hero--split { text-align: left; }
+.fp-hero--split .fp-hero__subtitle { margin-inline: 0; }
+.fp-hero--split .fp-hero__actions { justify-content: flex-start; }
+.fp-hero--compact { padding: var(--fp-space-10) var(--fp-space-6); }
+.fp-hero--compact .fp-hero__title { font-size: var(--fp-text-4xl); }
+
+/* --- Notification centre — the panel of notifications. ---------------- */
+.fp-notif-centre {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fp-space-2);
+  padding: var(--fp-space-4);
+  background: var(--fp-surface);
+  border: none;
+  border-radius: var(--fp-radius);
+  box-shadow: 6px 6px 0 var(--fp-shadow-color-sub);
+}
+.fp-notif-centre__head { display: flex; align-items: center; justify-content: space-between; padding-bottom: var(--fp-space-2); border-bottom: var(--fp-border-width-sm) solid var(--fp-line); }
+
+/* --- Indeterminate progress — the bar that does not know its value ---
+   A flat ink block sliding across the rail: a MOVING FLAT SHAPE, never
+   a gradient. */
+.fp-progress__bar--indeterminate {
+  width: 30% !important;
+  animation: fp-indeterminate 1.2s var(--fp-ease-in-out) infinite;
+}
+@keyframes fp-indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(340%); }
+}
+
+/* The emphasised floating field: border AND label both wear the accent
+   — the one sanctioned way to spend the accent on a sub element. */
+.fp-float--accent .fp-input { border-color: var(--fp-accent-border); }
+.fp-float--accent .fp-float__label { color: var(--fp-text-fill-accent); }
+
+/* --- Mobile search bar — the pill field with a leading icon. --------- */
+.fp-m-search {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-2);
+  min-height: 44px;
+  padding: 0 var(--fp-space-4);
+  background: var(--fp-fill);
+  border: none;
+  border-radius: var(--fp-radius-pill);
+  color: var(--fp-fill-fg-muted);
+}
+.fp-m-search input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: var(--fp-fill-fg);
+}
+
+/* --- Mobile chip rail — a horizontal scroll row of chips. ------------ */
+.fp-m-chip-row {
+  display: flex;
+  gap: var(--fp-space-2);
+  padding: var(--fp-space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.fp-m-chip-row::-webkit-scrollbar { display: none; }
+.fp-m-chip-row .fp-chip { flex: 0 0 auto; }
+
+/* --- App icon — the home-screen tile: a squircle of tint with a label. */
+.fp-apps { display: flex; gap: var(--fp-space-5); flex-wrap: wrap; }
+.fp-app { display: flex; flex-direction: column; align-items: center; gap: var(--fp-space-2); width: 64px; text-decoration: none; color: var(--fp-text); font-size: var(--fp-text-2xs); font-weight: 700; text-align: center; }
+.fp-app__icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  color: var(--fp-text);
+  background: var(--fp-tint-info);
+  border-radius: var(--fp-radius-sm);
+  transition:
+    box-shadow var(--fp-duration-default) var(--fp-ease),
+    transform var(--fp-duration-default) var(--fp-ease);
+}
+.fp-app:hover .fp-app__icon { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
+
+
+/* ==========================================================================
+   EXPANSION PACK — 25 more components, same two element kinds.
+   Filled shapes carry no border; quiet sub elements do; mains press.
+   ========================================================================== */
+
+/* --- FORMS ------------------------------------------------------------- */
+/* OTP — one box per digit. Filled fields: no border. */
+.fp-otp { display: flex; gap: var(--fp-space-3); }
+.fp-otp__digit {
+  width: 48px;
+  height: 56px;
+  text-align: center;
+  font-family: var(--fp-font-mono);
+  font-size: var(--fp-text-xl);
+  font-weight: 800;
+  color: var(--fp-fill-fg);
+  background: var(--fp-fill);
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  box-shadow: none;
+  transition: box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-otp__digit:focus { outline: var(--fp-border-width-sm) solid var(--fp-accent); outline-offset: 2px; }
+.fp-otp__digit.is-filled { background: var(--fp-bg-gray); }
+
+/* Date row — three little fields: day / month / year. */
+.fp-date-row { display: flex; gap: var(--fp-space-2); }
+.fp-date-row .fp-input { width: 72px; text-align: center; }
+.fp-date-row .fp-input--year { width: 96px; }
+
+/* Toggle group — icon buttons that stay pressed. Sub: flat, lift on hover. */
+.fp-toggle-group { display: inline-flex; gap: var(--fp-space-2); }
+.fp-toggle-group .fp-btn[aria-pressed="true"] {
+  background: var(--fp-bg-gray);
+  --fp-sub-border-color: var(--fp-accent-border);
+}
+
+/* Colour field — a swatch button opening nothing, but looking clickable. */
+.fp-color-field { display: inline-flex; align-items: center; gap: var(--fp-space-3); }
+.fp-color-field__swatch {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  background: var(--fp-accent-fill);
+  cursor: pointer;
+  transition: box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-color-field__swatch:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
+.fp-color-field__hex { font-family: var(--fp-font-mono); font-size: var(--fp-text-sm); color: var(--fp-text-muted); }
+
+/* --- NAVIGATION -------------------------------------------------------- */
+/* Tree — indented rows, connector rails, hover-lift rows. */
+.fp-tree { display: flex; flex-direction: column; gap: 2px; }
+.fp-tree__row {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-2);
+  min-height: 36px;
+  padding: 0 var(--fp-space-3);
+  font-size: var(--fp-text-sm);
+  font-weight: 600;
+  color: var(--fp-text-muted);
+  border-radius: var(--fp-radius-xs);
+  text-decoration: none;
+  transition: background-color var(--fp-duration-fast) var(--fp-ease), color var(--fp-duration-fast) var(--fp-ease), box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-tree__row:hover {
+  background: var(--fp-bg-gray);
+  color: var(--fp-text);
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+}
+.fp-tree__row.is-active { background: var(--fp-bg-gray); color: var(--fp-text); font-weight: 800; }
+.fp-tree__row--child { margin-left: var(--fp-space-6); }
+.fp-tree__caret { flex: 0 0 auto; transition: transform var(--fp-duration-fast) var(--fp-ease); }
+.fp-tree__row.is-open .fp-tree__caret { transform: rotate(90deg); }
+
+/* Command row — one row of a command palette. */
+.fp-command {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-3);
+  min-height: 44px;
+  padding: 0 var(--fp-space-4);
+  font-size: var(--fp-text-sm);
+  font-weight: 600;
+  color: var(--fp-text);
+  background: var(--fp-fill);
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  cursor: pointer;
+  transition: background-color var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-command:hover, .fp-command.is-active { background: var(--fp-bg-gray); }
+.fp-command kbd, .fp-command .fp-kbd { margin-left: auto; }
+
+/* Side rail — icon-only vertical nav; items are ghost-quiet. */
+.fp-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fp-space-2);
+  padding: var(--fp-space-3) var(--fp-space-2);
+  background: var(--fp-surface);
+  border: none;
+  border-radius: var(--fp-radius);
+  box-shadow: 5px 5px 0 var(--fp-shadow-color-sub);
+}
+.fp-rail__item {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--fp-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  cursor: pointer;
+  transition: background-color var(--fp-duration-fast) var(--fp-ease), color var(--fp-duration-fast) var(--fp-ease), box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-rail__item:hover { color: var(--fp-text); background: var(--fp-bg-gray); transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
+.fp-rail__item.is-active { color: var(--fp-text); background: var(--fp-bg-gray); box-shadow: none; transform: none; }
+
+/* --- DATA -------------------------------------------------------------- */
+/* KPI strip — big number, small label, delta chip. */
+.fp-kpi { display: flex; flex-direction: column; gap: var(--fp-space-1); }
+.fp-kpi__value { font-size: var(--fp-text-3xl); font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+.fp-kpi__label { font-size: var(--fp-text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fp-text-muted); }
+
+/* Sparkline — flat bars of ink; no gradient, no curve. */
+.fp-spark { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+.fp-spark__bar { flex: 1; background: var(--fp-ink); border-radius: 2px 2px 0 0; }
+.fp-spark__bar--muted { background: var(--fp-ink-faint); }
+
+/* Legend — swatch + label rows for a chart. */
+.fp-legend { display: flex; flex-wrap: wrap; gap: var(--fp-space-3) var(--fp-space-5); }
+.fp-legend__item { display: inline-flex; align-items: center; gap: var(--fp-space-2); font-size: var(--fp-text-sm); font-weight: 600; color: var(--fp-text-muted); }
+.fp-legend__swatch { width: 14px; height: 14px; border-radius: var(--fp-radius-xs); flex: 0 0 auto; }
+
+/* Key-value list — the description-list pattern. */
+.fp-kv { display: grid; grid-template-columns: max-content 1fr; gap: var(--fp-space-2) var(--fp-space-5); }
+.fp-kv dt { font-weight: 700; color: var(--fp-text-muted); font-size: var(--fp-text-sm); }
+.fp-kv dd { margin: 0; font-weight: 600; font-size: var(--fp-text-sm); }
+
+/* User row — avatar + name + action button. */
+.fp-user-row { display: flex; align-items: center; gap: var(--fp-space-3); }
+.fp-user-row__name { font-weight: 700; font-size: var(--fp-text-sm); }
+.fp-user-row__meta { font-size: var(--fp-text-xs); color: var(--fp-text-muted); }
+.fp-user-row > :last-child { margin-left: auto; }
+
+/* --- FEEDBACK ---------------------------------------------------------- */
+/* Banner — the inverse strip across the top of a page. */
+.fp-banner {
+  /* The banner is the DARKEST strip on the page — the ultra-deep ink,
+     one step below the footer's ink, so it reads above everything. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fp-space-3);
+  padding: var(--fp-space-3) var(--fp-space-6);
+  font-size: var(--fp-text-sm);
+  font-weight: 700;
+  color: var(--fp-text-inverse);
+  background: var(--fp-surface-inverse);
+}
+.fp-banner a { color: var(--fp-on-inverse-accent); font-weight: 800; }
+
+/* Progress note — a status line with a bar, for uploads. */
+.fp-progress-note { display: flex; flex-direction: column; gap: var(--fp-space-2); }
+.fp-progress-note__head { display: flex; justify-content: space-between; font-size: var(--fp-text-sm); font-weight: 700; }
+
+/* --- SURFACES ---------------------------------------------------------- */
+/* Notification item — unread wears the tint, the dot says which. */
+.fp-notif {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fp-space-3);
+  padding: var(--fp-space-3) var(--fp-space-4);
+  background: var(--fp-fill);
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  transition: background-color var(--fp-duration-fast) var(--fp-ease), box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-notif:hover { background: var(--fp-bg-gray); transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
+.fp-notif.is-unread { background: var(--fp-tint-info); }
+.fp-notif__dot { width: 8px; height: 8px; margin-top: 6px; border-radius: var(--fp-radius-circle); background: var(--fp-accent-fill); flex: 0 0 auto; }
+.fp-notif__title { font-weight: 700; font-size: var(--fp-text-sm); }
+.fp-notif__meta { font-size: var(--fp-text-xs); color: var(--fp-text-muted); }
+
+/* Gallery — an image grid of tinted tiles. */
+.fp-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--fp-space-3); }
+.fp-gallery__tile {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: var(--fp-tint-info);
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  cursor: pointer;
+  transition: box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-gallery__tile:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
+.fp-gallery__tile:nth-child(3n+2) { background: var(--fp-tint-success); }
+.fp-gallery__tile:nth-child(3n) { background: var(--fp-tint-warning); }
+
+/* --- OVERLAYS ---------------------------------------------------------- */
+/* Popover — the small anchored overlay. Main: no border, hard shadow. */
+.fp-popover {
+  position: relative;
+  display: inline-block;
+  padding: var(--fp-space-4) var(--fp-space-5);
+  background: var(--fp-surface);
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  box-shadow: 5px 5px 0 var(--fp-shadow-color-sub);
+}
+.fp-popover__title { font-weight: 800; font-size: var(--fp-text-sm); margin-bottom: var(--fp-space-1); }
+
+/* Context menu — the right-click menu: a list of commands, hard shadow. */
+.fp-context {
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: var(--fp-space-2);
+  background: var(--fp-surface);
+  border: none;
+  border-radius: var(--fp-radius-sm);
+  box-shadow: 5px 5px 0 var(--fp-shadow-color-sub);
+}
+.fp-context__item {
+  display: flex;
+  align-items: center;
+  gap: var(--fp-space-3);
+  min-height: 36px;
+  padding: 0 var(--fp-space-3);
+  font-size: var(--fp-text-sm);
+  font-weight: 600;
+  color: var(--fp-text);
+  background: transparent;
+  border: none;
+  border-radius: var(--fp-radius-xs);
+  cursor: pointer;
+  transition: background-color var(--fp-duration-fast) var(--fp-ease), box-shadow var(--fp-duration-fast) var(--fp-ease), transform var(--fp-duration-fast) var(--fp-ease);
+}
+.fp-context__item:hover {
+  background: var(--fp-bg-gray);
+  /* A menu item is a sub element: it lifts and its shadow appears —
+     a colour change alone is not the system's hover. */
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+}
+.fp-context__item--danger { color: var(--fp-text-danger); }
+.fp-context__sep { height: var(--fp-border-width-sm); background: var(--fp-line); margin: var(--fp-space-1) 0; }
+
+/* --- ACTIONS ----------------------------------------------------------- */
+/* Split button — the action and its menu, fused into one main button. */
+.fp-split { display: inline-flex; }
+.fp-split .fp-btn { border-radius: 0; }
+.fp-split .fp-btn:first-child { border-radius: var(--fp-radius-md) 0 0 var(--fp-radius-md); }
+.fp-split .fp-btn:last-child {
+  border-radius: 0 var(--fp-radius-md) var(--fp-radius-md) 0;
+  padding-inline: var(--fp-space-4);
+  border-left: 2px solid var(--fp-on-accent);
+  margin-left: 0;
+}
+
+/* Loading button — the spinner replaces the label. */
+.fp-btn.is-loading { pointer-events: none; opacity: 0.7; }
+.fp-btn__spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--fp-radius-circle);
+  animation: fp-refresh-spin 0.8s linear infinite;
+}
+
+/* FAB menu — the docked FAB's little stack of secondary actions. */
+.fp-fab-menu { display: flex; flex-direction: column; align-items: flex-end; gap: var(--fp-space-3); }
+.fp-fab-menu .fp-fab--mini { width: 44px; height: 44px; }
 
 /* ==========================================================================
    RESPONSIVE
@@ -1215,5 +1997,5 @@
   }
   .fp-btn:hover, .fp-elev:hover, .fp-card:hover, .fp-stat:hover { transform: none; }
   .fp-island-nav:hover { transform: translateX(-50%); }
-  .fp-skeleton::after { animation: none; }
+  .fp-skeleton { animation: none; }
 }

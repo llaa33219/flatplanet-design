@@ -34,9 +34,13 @@ a floating island nav and a dark theme that is a true inversion.
 **The island nav**
 - `.fp-island-nav` — a navigation bar that floats at the bottom of the
   viewport as a detached, 36px-radius pill. The container is a MAIN
-  element (no border, a hard shadow, it presses down on hover); the items
-  inside are SUB elements (flat at rest, lifting on hover). The active
-  item fills with the ink and inverts its text.
+  element (no border, a hard shadow). Being pinned to the viewport it
+  never travels on hover: the shadow stays exactly as it is.
+- The items are the system's ordinary **`.fp-btn--sub` buttons**,
+  re-sized to the row — the earlier one-off item class (transparent
+  resting border, ink-filled active state) was removed, and the current
+  destination now wears the accent border, the same emphasis every sub
+  element uses.
 - `.fp-island-nav-spacer` — reserves the room the fixed island occupies,
   so the last content is never trapped underneath it.
 
@@ -104,7 +108,7 @@ a floating island nav and a dark theme that is a true inversion.
   now invert with the inverse surface.
 - The code block, which was dark in the light theme, is now light in the
   inverted theme.
-- The select chevron, the switch thumb and the skeleton shimmer all
+- The select chevron, the switch thumb and the skeleton pulse all
   follow the polarity of the surface they sit on.
 
 ---
@@ -166,12 +170,11 @@ spread is zero. A shadow always falls to the bottom-right.
   `--fp-sub-border-color` custom property, so the modifier works on
   every sub element without out-specifying the component's own border
   rule.
-- `.fp-highlight` — the accent as a **block of colour behind emphasised
-  text**. The words are bold and sit on a plain rectangle of accent
-  colour with no radius. Works on `<strong>` and `<mark>` alike.
-- `mark` keeps its own neutral yellow identity, but follows the same
-  shape rules as `.fp-highlight`: bold, rectangular, no radius. A
-  `<mark class="fp-highlight">` takes the accent treatment.
+- `.fp-highlight` — the accent on **emphasised words themselves**: bold
+  text in the accent text colour, with no block of colour behind them.
+  Works on `<strong>` and any inline element.
+- `mark` keeps its own neutral yellow identity — bold, rectangular, no
+  radius — and stays the only highlight that paints the paper.
 
 **Components**
 - `.fp-icon-tile` and `.fp-empty` are main elements: their borders are
@@ -250,7 +253,8 @@ lost their resting shadow, and the hover contract was tightened.)*
 
 **Documentation**
 - Four documents: foundations, components, usage, changelog
-- A live component gallery at `index.html`
+- A live component gallery at `index.html`, split into `foundations/`
+  and `components/<kind>/` pages by component family
 
 ---
 
@@ -293,7 +297,8 @@ radius step always accompanies a height step — never in isolation.
 **Why the accent is budgeted to one per view.** A colour that appears on
 everything marks nothing. Reserving `#007bff` for the single most
 important action in a view is what gives it meaning, and it is why
-`fp-btn--dark` exists as a high-emphasis alternative.
+`fp-btn--sub--accent` exists as the emphasised sub
+alternative.
 
 ---
 

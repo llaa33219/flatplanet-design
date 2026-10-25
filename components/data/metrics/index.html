@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPIs & Sparklines — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<link rel="stylesheet" href="../../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/data/">&larr; Tables & Display</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="metrics">
+  <div class="fp-section__head">
+    <span class="fp-kicker">09.3 — Metrics</span>
+    <h2 class="fp-section__title">KPIs, Sparklines &amp; People</h2>
+    <p class="fp-section__desc">A big number with a delta, flat ink sparkline bars, a chart legend, a key-value list and a user row.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">KPI &amp; sparkline</h3>
+      <div class="fp-row" style="gap: var(--fp-space-10); align-items: flex-end;">
+        <div class="fp-kpi">
+          <span class="fp-kpi__label">Revenue</span>
+          <span class="fp-kpi__value">$48.2k</span>
+          <span class="fp-badge fp-badge--success fp-badge--dot">+12%</span>
+        </div>
+        <div class="fp-spark" style="width: 180px;">
+          <span class="fp-spark__bar fp-spark__bar--muted" style="height: 30%"></span>
+          <span class="fp-spark__bar fp-spark__bar--muted" style="height: 45%"></span>
+          <span class="fp-spark__bar" style="height: 60%"></span>
+          <span class="fp-spark__bar" style="height: 50%"></span>
+          <span class="fp-spark__bar" style="height: 80%"></span>
+          <span class="fp-spark__bar" style="height: 100%"></span>
+        </div>
+      </div>
+      <div class="fp-legend">
+        <span class="fp-legend__item"><span class="fp-legend__swatch" style="background: var(--fp-ink);"></span>This year</span>
+        <span class="fp-legend__item"><span class="fp-legend__swatch" style="background: var(--fp-ink-faint);"></span>Last year</span>
+      </div>
+      <div class="fp-row" style="gap: var(--fp-space-10); align-items: flex-end;">
+        <div class="fp-kpi">
+          <span class="fp-kpi__label">Uptime</span>
+          <span class="fp-kpi__value">99.98%</span>
+          <span class="fp-badge fp-badge--success">Healthy</span>
+        </div>
+        <div class="fp-kpi">
+          <span class="fp-kpi__label">Errors</span>
+          <span class="fp-kpi__value">0.02%</span>
+          <span class="fp-badge fp-badge--danger">+2</span>
+        </div>
+        <div class="fp-kpi">
+          <span class="fp-kpi__label">Active users</span>
+          <span class="fp-kpi__value">1,204</span>
+          <span class="fp-badge fp-badge--accent">Live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Details &amp; people</h3>
+      <dl class="fp-kv">
+        <dt>Status</dt><dd>Active</dd>
+        <dt>Version</dt><dd>1.0.0</dd>
+        <dt>License</dt><dd>MIT</dd>
+      </dl>
+      <div class="fp-user-row">
+        <span class="fp-avatar fp-avatar--sm fp-avatar--purple">AL</span>
+        <div>
+          <div class="fp-user-row__name">Ada Lovelace</div>
+          <div class="fp-user-row__meta">ada@flatplanet.dev</div>
+        </div>
+        <button class="fp-btn fp-btn--sub fp-btn--sm">Message</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+<script src="../../../assets/js/flatplanet.js"></script>
+</body>
+</html>

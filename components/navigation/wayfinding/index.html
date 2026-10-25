@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Bars, Tooltips & Steps — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<link rel="stylesheet" href="../../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/navigation/">&larr; Navigation & Menus</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="wayfinding">
+  <div class="fp-section__head">
+    <span class="fp-kicker">07.3 — Wayfinding</span>
+    <h2 class="fp-section__title">Menu Bars, Tooltips &amp; Steps</h2>
+    <p class="fp-section__desc">A quiet menu bar, a hard-shadow tooltip, and numbered steps joined by connectors.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Menu bar &amp; tooltip</h3>
+      <div class="fp-menubar">
+        <button class="fp-menubar__item is-active">File</button>
+        <button class="fp-menubar__item">Edit</button>
+        <button class="fp-menubar__item">View</button>
+        <button class="fp-menubar__item">Help</button>
+      </div>
+      <p class="fp-text-sm fp-text-muted">
+        Hover the
+        <span class="fp-tooltip" tabindex="0">underlined term
+          <span class="fp-tooltip__content">A hard-shadow tooltip</span>
+        </span>
+        to see a tooltip.
+      </p>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Steps</h3>
+      <div class="fp-steps">
+        <span class="fp-step is-done">1</span>
+        <span class="fp-step__line is-done"></span>
+        <span class="fp-step is-current">2</span>
+        <span class="fp-step__line"></span>
+        <span class="fp-step">3</span>
+      </div>
+      <div class="fp-divider">or</div>
+      <div class="fp-divider fp-divider--plain" role="separator"></div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+<script src="../../../assets/js/flatplanet.js"></script>
+</body>
+</html>

@@ -36,7 +36,7 @@ a colour.
 - focus rings
 - text links
 - the "info" alert border
-- opt-in modifiers such as `fp-card--accent`
+- the accent border modifier `.fp-sub--accent`
 
 If a view contains more than one accent-filled element, the accent has
 stopped meaning "important" and should be reduced to ink or a neutral
@@ -272,19 +272,21 @@ foreground, so contrast holds in both directions.
 | `--fp-accent-hover` | `#005bdd` | The accent on hover |
 | `--fp-accent-active` | `#0026a3` | The accent, pressed |
 | `--fp-accent-border` | `#007bff` | The accent as a **sub-element border** |
-| `--fp-accent-fill` | `#005bdd` | The accent as a **fill** — a background that carries text |
-| `--fp-accent-fill-hover` | `#0026a3` | The accent fill on hover |
+| `--fp-accent-fill` | `#007bff` | The accent as a **fill** — it IS the brand blue |
+| `--fp-accent-fill-hover` | `#005bdd` | The accent fill on hover |
+| `--fp-accent-fill-active` | `#0026a3` | The accent fill, pressed |
 | `--fp-accent-ink` | `#0026a3` | Accent-coloured text that is not a link |
 | `--fp-on-accent` | `#fefeff` | Text and marks **on** an accent fill |
 
 **The accent, the accent fill and the accent border are three decisions.**
 `--fp-accent` is the brand blue (`#007bff`) and it is what the accent
-IS: a focus ring, an accent border, an accent-coloured line. A fill is
-a different decision, because a fill has to carry white text and white
-on `#007bff` is only 3.95:1 — below the 4.5:1 that body text needs. So
-`--fp-accent-fill` is the accent's deep step (`#005bdd`), which carries
-white at 5.88:1. All of them are still the accent: the same hue family,
-the only blue in the system, spent on one element per view.
+IS: a focus ring, an accent border, an accent-coloured line. The fill
+is the same blue — `--fp-accent-fill` IS `#007bff`. White button text
+on it is 3.95:1, which clears the 3:1 bar for the large bold type a
+button carries; hover deepens to `#005bdd`, and the press goes to
+`#0026a3` as the element sinks. All of them are still the accent: the
+same hue family, the only blue in the system, spent on one element per
+view.
 
 The accent **as text** is a third step again: `#0026a3` on a light
 surface (roughly 11:1) and `#7fbcff` on the dark canvas (roughly 10:1).
@@ -362,7 +364,7 @@ its border and its shadow.
 
 | | **Main element** | **Sub element** | **Borderless sub** |
 |---|---|---|---|
-| **Examples** | Cards, panels, buttons, modals, hero, stat tiles, the island nav | List items, tabs, chips, tags, inputs, badges | Navbar links, quiet toolbars |
+| **Examples** | Cards, panels, buttons, modals, hero, stat tiles, the FAB | List items, tabs, chips, tags, inputs, badges | Navbar links, quiet toolbars |
 | **Border** | **None** | **4px** (`--fp-border-width`), 2px under 40px tall | **None** |
 | **Shadow** | The system's one shadow ink, offset equally and positively | **None at rest** — it appears on hover | **None at rest** — it appears on hover |
 | **On hover** | Presses **down**, shadow shrinks | **Lifts up**, shadow appears | **Lifts up**, shadow appears |
@@ -683,7 +685,7 @@ when the movement does.
 ### Reduced motion
 
 A global `prefers-reduced-motion` block collapses all durations to
-`0.01ms` and disables the skeleton shimmer. Hover transforms are
+`0.01ms` and stops the skeleton pulse. Hover transforms are
 neutralised but colour changes are kept, so the interface remains legible
 without motion.
 
@@ -731,9 +733,8 @@ is a **rectangular block of accent colour** behind bold text:
 | Rule | Value | Why |
 |------|-------|-----|
 | Weight | `800` | The words must read as emphasised even without colour. |
-| Background | `--fp-accent-fill` (`#005bdd`) | The accent as a fill. |
-| Shape | A plain rectangle, `border-radius: 0` | A pill would soften the accent into a shape the system does not use. |
-| Text colour | `--fp-white` | `#005bdd` is a mid-dark blue; white is the readable colour on top of it (5.88:1). |
+| Text colour | `--fp-text-accent` | The accent text step — `#0026a3` on the page (11:1), `#7fbcff` on the dark canvas. |
+| Background | none | Emphasis is worn by the type, never painted behind it. |
 
 The class works on `<strong>` and on `<mark>` alike.
 
@@ -824,13 +825,12 @@ theme's value, inverted.
 | `--fp-on-ink` | `#fefeff` | `#000309` | The mark on an ink fill inverts |
 | `--fp-on-accent` | `#fefeff` | `#fefeff` | White on blue, in both themes |
 | `--fp-accent` | `#007bff` | `#007bff` | The accent itself — the brand blue in both themes |
-| `--fp-accent-fill` | `#005bdd` | `#005bdd` | The accent **fill** — the same in both themes |
+| `--fp-accent-fill` | `#007bff` | `#007bff` | The accent **fill** — the same in both themes |
 | `--fp-accent-border` | `#007bff` | `#007bff` | The accent **border** — the bright blue |
 | `--fp-text-accent` | `#0026a3` | `#7fbcff` | The accent as text, by context |
 | `--fp-danger` | `#db0000` | `#db0000` | The danger fill — the same in both themes |
 | `--fp-code-bg` | `#000309` | `#fefeff` | The code block was dark; now it is light |
 | `--fp-code-fg` | `#d4dce8` | `#000309` | …and its text inverts with it |
-| `--fp-skeleton-sheen` | `rgba(255,255,255,.6)` | `rgba(0,3,9,.45)` | The shimmer inverts with its placeholder |
 | `--fp-select-arrow` | ink chevron | light chevron | The arrow follows the field's ink |
 | `--fp-switch-thumb-on` | `#fefeff` | `#000309` | The lit thumb contrasts with the lit track |
 | **`--fp-shadow-color-sub`** | `rgba(0,25,61,.22)` | **`#000309`** | **The one exception — the shadow does not invert** |

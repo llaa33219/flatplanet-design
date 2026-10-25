@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steppers, Files & Keys — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<link rel="stylesheet" href="../../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/forms/">&larr; Forms</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="more-forms">
+  <div class="fp-section__head">
+    <span class="fp-kicker">05.1 — More input</span>
+    <h2 class="fp-section__title">Steppers, Files &amp; Keys</h2>
+    <p class="fp-section__desc">The smaller input shapes: a quantity stepper, a drop zone, inline code and keyboard keys, and a copy field.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Stepper &amp; file</h3>
+      <div class="fp-field">
+        <span class="fp-field__label">Quantity</span>
+        <div class="fp-counter">
+          <button class="fp-btn fp-btn--sub fp-btn--sm" aria-label="Decrease">−</button>
+          <span class="fp-counter__value">2</span>
+          <button class="fp-btn fp-btn--sub fp-btn--sm" aria-label="Increase">+</button>
+        </div>
+      </div>
+      <div class="fp-field">
+        <span class="fp-field__label">Attachment</span>
+        <label class="fp-file">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
+          <span class="fp-text-sm">Drop a file here, or click to browse</span>
+          <input type="file" hidden>
+        </label>
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Inline code &amp; keys</h3>
+      <p class="fp-text-sm fp-text-muted">Inline <code class="fp-code">fp-code</code> is a text treatment — the words themselves, no block. Keys use <kbd class="fp-kbd">Ctrl</kbd> + <kbd class="fp-kbd">C</kbd>.</p>
+      <div class="fp-field">
+        <span class="fp-field__label">Copy install command</span>
+        <span class="fp-copy">
+          <span class="fp-copy__value">npm i flatplanet</span>
+          <button class="fp-btn fp-btn--sub fp-btn--sm" aria-label="Copy">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= FLOATING LABELS &AMP; EMPHASISED UPLOADS ================= -->
+<section class="fp-section fp-container" id="emphasis-forms">
+  <div class="fp-section__head">
+    <span class="fp-kicker">05.3 — Emphasis</span>
+    <h2 class="fp-section__title">Floating Labels &amp; Emphasised Uploads</h2>
+    <p class="fp-section__desc">The label that floats above a filled field, and the drop zone that earns the accent border.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Floating label — accent</h3>
+      <div class="fp-field">
+        <div class="fp-float fp-float--accent">
+          <input class="fp-input" id="fl-proj" type="text" placeholder=" ">
+          <label class="fp-float__label" for="fl-proj">Project name</label>
+        </div>
+      </div>
+      <p class="fp-text-sm fp-text-muted">The emphasised field: the border and the label both wear the accent. The label lifts only on focus or when the field holds a value — never on a bare hover.</p>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Emphasised drop zone</h3>
+      <label class="fp-file fp-file--accent">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>
+        <span class="fp-text-sm"><strong>Drop the brand kit here</strong> — the accent border is the one sanctioned emphasis.</span>
+        <input type="file" hidden>
+      </label>
+    </div>
+  </div>
+
+</section>
+
+</main>
+<script src="../../../assets/js/flatplanet.js"></script>
+</body>
+</html>

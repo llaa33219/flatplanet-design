@@ -141,7 +141,7 @@
   --fp-ink-muted:               #94989e;                /* LIGHT ULTRA    */
   --fp-ink-faint:               #c7cbd1;                /* LIGHT DEEP     */
   --fp-ink-border:              var(--fp-line-sub);     /* sub borders    */
-  --fp-surface-ink:             #000309;                /* inverted fills */
+  --fp-surface-ink:             var(--fp-dark-ultra-deep); /* inverted fills */
   --fp-surface-ink-hover:       var(--fp-dark-deep);
 
   /* --- Text -----------------------------------------------------------
@@ -170,9 +170,11 @@
   --fp-text-surface-muted:      var(--fp-ink-soft);        /* #3e4d5f */
   /* Subtle text on a SURFACE. The muted grey (#94989e) is only 2.88:1
      against white, which is fine for a decorative caption but not for
-     text anybody has to read, so the surface's subtle step is a
-     half-step darker (#6b737b, roughly 4.8:1). */
-  --fp-text-surface-subtle:     #6b737b;
+     text anybody has to read, so the surface's subtle step is the
+     palette's SUB DARK (#3e4d5f, 8.57:1) — the same tone the muted
+     step above it uses, so the subtle hierarchy is kept by the step
+     below it on the page, not by an off-palette grey. */
+  --fp-text-surface-subtle:     var(--fp-sub-dark);   /* #3e4d5f */
   --fp-text-surface-accent:     var(--fp-blue-ultra-deep); /* #0026a3 */
   /* Text on a NEUTRAL fill — a sunken well, a track, a grey badge. The
      fill is a mid grey, so the text is the palette's darkest and the
@@ -239,10 +241,12 @@
   --fp-text-success-surface:    var(--fp-green-ultra-deep);
   /* The warning text on a light surface. The palette's yellow is
      inherently light — even its deepest step (#b2a400) is only 2.54:1
-     against white — so the warning TEXT on a surface takes a step
-     further down (#7d6a00, roughly 5.3:1). The yellow still carries the
-     identity in the tint background and in the icon. */
-  --fp-text-warning-surface:    #7d6a00;
+     against white, which is unreadable — and there is no yellow in the
+     palette dark enough to be legible on a light ground, so the warning
+     TEXT on a surface takes the palette's darkest colour (#000309,
+     19.14:1). The yellow still carries the identity in the tint
+     background and in the icon. */
+  --fp-text-warning-surface:    var(--fp-dark-ultra-deep);   /* #000309 */
 
   /* --- Lines ----------------------------------------------------------
      The SUB-ELEMENT BORDER is `--fp-line-sub`. It used to be the ink
@@ -269,14 +273,6 @@
      two themes, so its hairline does too. */
   --fp-line-inverse:            var(--fp-dark-deep);
 
-  /* --- The skeleton sheen ----------------------------------------------
-     The shimmer sweep is a highlight travelling across a placeholder. It
-     has to be LIGHTER than the placeholder in the light theme and
-     LIGHTER-THAN-NOTHING in the inverted theme — but the placeholder
-     itself inverts, so the sweep has to invert with it or it would be
-     invisible against a dark block. */
-  --fp-skeleton-sheen:          rgba(255, 255, 255, 0.6);
-
   /* --- The code block --------------------------------------------------
      A code block was DARK in the light theme, so in the inverted theme
      it becomes LIGHT. It has its own pair of tokens because it is the one
@@ -293,8 +289,9 @@
      The FILL is a separate decision, because a fill has to carry white
      text and white on #007bff is only 3.95:1 — below the 4.5:1 that
      body text needs. `--fp-accent-fill` is the accent's DEEP step
-     (#005bdd), which carries white at 5.88:1. So the accent is used
-     for lines and the accent fill is used for surfaces.
+     So the accent is used for lines, and the accent fill is used for
+     surfaces — and the FILL IS THE ACCENT ITSELF, not a deeper shade:
+     the primary button wears the brand blue exactly as it is.
 
      The accent is still the accent: it is the same hue family, still
      the only blue in the system, still spent on one element per view. */
@@ -302,9 +299,14 @@
   --fp-accent-hover:            var(--fp-blue-deep);   /* #005bdd */
   --fp-accent-active:           var(--fp-blue-ultra-deep);
   --fp-accent-ink:              var(--fp-blue-ultra-deep);
-  /* The accent as a FILL — a background that carries text or a mark. */
-  --fp-accent-fill:             var(--fp-blue-deep);   /* #005bdd */
-  --fp-accent-fill-hover:       var(--fp-blue-ultra-deep);
+  /* The accent as a FILL — a background that carries text or a mark.
+     The fill IS the brand blue (#007bff): white button text on it is
+     3.95:1, which clears the 3:1 bar for the large bold type a button
+     carries. Hover deepens to the deep step, and the PRESS goes to
+     the ultra-deep step — the colour darkens as the element sinks. */
+  --fp-accent-fill:             var(--fp-blue);        /* #007bff */
+  --fp-accent-fill-hover:       var(--fp-blue-deep);   /* #005bdd */
+  --fp-accent-fill-active:      var(--fp-blue-ultra-deep); /* #0026a3 */
   /* The accent as a SUB-ELEMENT BORDER. This is the one sanctioned way
      to emphasise a sub element: it recolours the border that is already
      there, without making the element bigger or moving it. */
@@ -483,7 +485,7 @@
      than the canvas in one theme and darker than the canvas in the
      other, because in both cases the canvas is the one that recedes. */
   --fp-surface:            var(--fp-white);        /* #fefeff — the lightest */
-  --fp-surface-raised:     var(--fp-white-deep);   /* #fafcff */
+  --fp-surface-raised:     var(--fp-white);        /* the same lightest step */
   --fp-surface-sunken:     var(--fp-bg-gray);      /* wells, insets — darker */
   --fp-surface-inverse:    var(--fp-dark-ultra-deep);
   --fp-surface-inverse-soft: var(--fp-dark-soft);
@@ -492,8 +494,9 @@
   /* The track inverts with the fill that sits on it. */
   --fp-track:              var(--fp-dark-soft);    /* #1e2b3d */
   /* A widget that was white on white in the light theme has to turn
-     dark here, or it would be invisible on a white card. */
-  --fp-fill:               var(--fp-dark-soft);    /* #1e2b3d */
+     dark here, or it would be invisible on a white card — the exact
+     dark counterpart of BLP White is the palette's darkest. */
+  --fp-fill:               var(--fp-dark-ultra-deep); /* #000309 */
   --fp-fill-fg:            var(--fp-white);
   --fp-fill-fg-muted:      var(--fp-dark-light-deep);
 
@@ -503,7 +506,7 @@
      the inverted theme it is near-white, so an "inverted" surface (the
      footer, the banner, an active nav item) becomes a dark shape on a
      light page. */
-  --fp-ink:                var(--fp-dark-light);   /* #d4dce8 — inverted fills */
+  --fp-ink:                var(--fp-white);        /* #fefeff — inverted fills */
   --fp-ink-soft:           var(--fp-dark-light-deep);
   --fp-ink-muted:          var(--fp-dark-light-ultra-deep);
   --fp-ink-faint:          var(--fp-dark-deep);    /* #000a19 — the lightest ink */
@@ -531,7 +534,7 @@
      the same values the light theme uses. */
   --fp-text-danger-surface: var(--fp-red-deep);       /* #db0000 */
   --fp-text-success-surface: var(--fp-green-ultra-deep); /* #007512 */
-  --fp-text-warning-surface: #7d6a00;                  /* see the light theme */
+  --fp-text-warning-surface: var(--fp-dark-ultra-deep); /* see the light theme */
   --fp-text-page-muted:    var(--fp-dark-light-deep); /* #c7cbd1 */
   --fp-text-page-subtle:   var(--fp-dark-light-ultra-deep); /* #94989e */
   --fp-text-page-accent:   var(--fp-blue-soft);       /* #7fbcff */
@@ -565,10 +568,10 @@
      light surface needs dark text in either theme. */
   --fp-text-surface-muted: var(--fp-sub-dark);        /* #3e4d5f */
   /* The surface's subtle step. The surface is the palette's LIGHTEST
-     in this theme, so its subtle text must be the dark half-step —
+     in this theme, so its subtle text must be the dark SUB DARK —
      exactly as in the light theme. A light grey here would be
      unreadable on a white card. */
-  --fp-text-surface-subtle: #6b737b;      /* the same step as the light theme */
+  --fp-text-surface-subtle: var(--fp-sub-dark);   /* the same step as the light theme */
   --fp-text:               var(--fp-text-page);
   --fp-text-muted:         var(--fp-text-page-muted);
   --fp-text-subtle:        var(--fp-text-page-subtle);
@@ -605,8 +608,8 @@
      The light theme's `--fp-surface-ink` is the near-black used by the
      dark button. Inverted, it is the near-white used by the same
      button — a light button on the dark canvas. */
-  --fp-surface-ink:        var(--fp-white);
-  --fp-surface-ink-hover:  var(--fp-dark-light);
+  --fp-surface-ink:        var(--fp-white);        /* #fefeff, the light theme's #000309 swapped */
+  --fp-surface-ink-hover:  var(--fp-dark-light);   /* one step down — the press/hover shade */
 
   /* --- Neutral fills that would otherwise stay light ------------------
      The light theme's grey (#f5f5f5) becomes a deep grey in the
@@ -627,10 +630,11 @@
   --fp-accent:             var(--fp-blue);        /* #007bff */
   --fp-accent-hover:       var(--fp-blue-deep);   /* #005bdd */
   --fp-accent-active:      var(--fp-blue-ultra-deep);
-  /* The accent FILL is the same in both themes — it carries white text
-     in either one, and the deep step is the one that carries it. */
-  --fp-accent-fill:        var(--fp-blue-deep);   /* #005bdd */
-  --fp-accent-fill-hover:  var(--fp-blue-ultra-deep);
+  /* The accent FILL is the same in both themes — the brand blue
+     itself, carrying white text in either one. */
+  --fp-accent-fill:        var(--fp-blue);        /* #007bff */
+  --fp-accent-fill-hover:  var(--fp-blue-deep);   /* #005bdd */
+  --fp-accent-fill-active: var(--fp-blue-ultra-deep); /* #0026a3 */
   /* The accent BORDER is the bright blue in both themes: it is a line,
      and a line has to be seen. */
   --fp-accent-border:      var(--fp-blue);
@@ -703,8 +707,6 @@
 
   /* The skeleton placeholder is a sunken surface, so the sweep runs
      across it as a dark highlight rather than a light one. */
-  --fp-skeleton-sheen:     rgba(0, 3, 9, 0.45);
-
   /* The switch thumb ON the lit track: the lit track is the light ink,
      so the thumb takes the darkest colour in the palette to stay a
      visible, grabbable handle on top of it. */

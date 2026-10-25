@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List Rows & Refresh — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<link rel="stylesheet" href="../../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/data/">&larr; Tables & Display</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="rows">
+  <div class="fp-section__head">
+    <span class="fp-kicker">09.1 — Mobile</span>
+    <h2 class="fp-section__title">List Rows &amp; Refresh</h2>
+    <p class="fp-section__desc">One thumb row: leading tile, two lines of text, trailing affordance — hairline-separated, never bordered. The refresh disc is a sunken circle with a one-colour spinner arc.</p>
+  </div>
+
+  <div class="fp-row" style="align-items: flex-start; gap: var(--fp-space-8); flex-wrap: wrap;">
+    <div class="fp-phone">
+      <div class="fp-phone__body fp-stack fp-stack--tight">
+        <div style="display: flex; justify-content: center; padding: var(--fp-space-2) 0;">
+          <span class="fp-refresh"><span class="fp-refresh__spinner"></span></span>
+        </div>
+        <div class="fp-m-row">
+          <span class="fp-icon-tile fp-icon-tile--sm fp-icon-tile--light">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 7l8 6 8-6"/></svg>
+          </span>
+          <div class="fp-m-row__content">
+            <div class="fp-m-row__title">Build finished</div>
+            <div class="fp-m-row__meta">flatplanet@1.0 — 2 min ago</div>
+          </div>
+          <span class="fp-m-row__trailing"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </div>
+        <div class="fp-m-row">
+          <span class="fp-icon-tile fp-icon-tile--sm fp-icon-tile--green">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <div class="fp-m-row__content">
+            <div class="fp-m-row__title">Deploy succeeded</div>
+            <div class="fp-m-row__meta">12 min ago</div>
+          </div>
+          <span class="fp-m-row__trailing"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../../../assets/js/flatplanet.js"></script>
+</body>
+</html>

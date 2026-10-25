@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alerts & Notifications — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../">&larr; Home</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="feedback">
+  <div class="fp-section__head">
+    <span class="fp-kicker">08 — Feedback</span>
+    <h2 class="fp-section__title">Alerts &amp; Notifications</h2>
+    <p class="fp-section__desc">Colour-coded status surfaces. Each alert is a sub element: a 4px border, a 6&nbsp;px left edge, and no resting shadow — it lifts and casts one on hover.</p>
+  </div>
+
+  <div class="fp-stack">
+    <div class="fp-alert fp-alert--info">
+      <span class="fp-alert__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+      <div class="fp-alert__content">
+        <div class="fp-alert__title">New version available</div>
+        FlatPlanet 1.1 adds a dark theme and 12 new components.
+      </div>
+    </div>
+
+    <div class="fp-alert fp-alert--success">
+      <span class="fp-alert__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span>
+      <div class="fp-alert__content">
+        <div class="fp-alert__title">Deployment complete</div>
+        Your build is live at flatplanet.dev.
+      </div>
+    </div>
+
+    <div class="fp-alert fp-alert--warning">
+      <span class="fp-alert__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></span>
+      <div class="fp-alert__content">
+        <div class="fp-alert__title">Storage almost full</div>
+        You have used 92% of your storage quota.
+      </div>
+    </div>
+
+    <div class="fp-alert fp-alert--danger">
+      <span class="fp-alert__icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg></span>
+      <div class="fp-alert__content">
+        <div class="fp-alert__title">Payment failed</div>
+        We could not process the last invoice. Update your card to restore access.
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="../../assets/js/flatplanet.js"></script>
+</body>
+</html>

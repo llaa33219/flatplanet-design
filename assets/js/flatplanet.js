@@ -286,16 +286,19 @@
   }
 
   /* --------------------------------------------------------------------
-     Range slider — the filled portion of the track
+     Range slider — the filled portion of the rail
 
-     The progress is drawn by a CSS gradient on the track, driven by the
-     `--fp-range-progress` custom property. Without JavaScript the
-     property is unset, the gradient falls back to 0%, and the bar is
-     simply empty — the control still works, it just does not pretend to
-     know its own value.
+     The progress is a FLAT BLOCK, not a gradient: the fill's width is
+     the `--fp-range-progress` custom property. The system bans
+     gradients outright, and a hard stop is still a gradient, so the
+     fill is a rectangle of solid ink whose width is the value.
 
-     The property is written on the INPUT, so the gradient on the track
-     pseudo-element inherits it.
+     Without JavaScript the property is unset, the width falls back to
+     0%, and the bar is simply empty — the control still works, it just
+     does not pretend to know its own value.
+
+     The property is written on the WRAPPER, because that is where the
+     fill element lives. The fill inherits the property from it.
      ------------------------------------------------------------------ */
   function syncRange(range) {
     var min = parseFloat(range.min);
@@ -304,7 +307,29 @@
     var pct = ((parseFloat(range.value) - min) / (max - min)) * 100;
     if (isNaN(pct)) return;
     pct = Math.max(0, Math.min(100, pct));
-    range.style.setProperty('--fp-range-progress', pct + '%');
+    /* The fill may sit inside a wrapper, or — for a legacy bare input —
+       on the input itself. The wrapper is the host that has a fill. */
+    var host = range.closest('.fp-range') || range;
+    host.style.setProperty('--fp-range-progress', pct + '%');
+  }
+
+  /* --------------------------------------------------------------------
+     Dropdown — the menu opens on CLICK, never on a bare hover.
+     The trigger toggles `is-open`; a click anywhere else closes it.
+     ------------------------------------------------------------------ */
+  function initDropdowns(scope) {
+    (scope || document).querySelectorAll('.fp-dropdown > .fp-btn, .fp-dropdown > [class*="fp-btn"]').forEach(function (trigger) {
+      trigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var dd = trigger.closest('.fp-dropdown');
+        var open = dd.classList.contains('is-open');
+        document.querySelectorAll('.fp-dropdown.is-open').forEach(function (d) { d.classList.remove('is-open'); });
+        if (!open) dd.classList.add('is-open');
+      });
+    });
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.fp-dropdown.is-open').forEach(function (d) { d.classList.remove('is-open'); });
+    });
   }
 
   function initRanges(scope) {
@@ -340,6 +365,7 @@
   /* --------------------------------------------------------------------
      Boot
      ------------------------------------------------------------------ */
+  initDropdowns();
   initTabs();
   initSegments();
   initRanges();

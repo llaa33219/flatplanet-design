@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codes, Dates & Toggles — FlatPlanet</title>
+<meta name="description" content="FlatPlanet is a hard-shadow, zero-gradient design system built on the BLP colour palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/elevation.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<link rel="stylesheet" href="../../../assets/css/components-2.css">
+</head>
+<body>
+
+<p><a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/forms/">&larr; Forms</a> <a class="fp-btn fp-btn--ghost fp-btn--sm" href="../../../components/">Components</a></p>
+
+<main id="top">
+
+<section class="fp-section fp-container" id="special-forms">
+  <div class="fp-section__head">
+    <span class="fp-kicker">05.2 — Specialised input</span>
+    <h2 class="fp-section__title">Codes, Dates &amp; Toggles</h2>
+    <p class="fp-section__desc">One box per digit, a day/month/year row, icon toggles that stay pressed, and a colour swatch field.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Verification code</h3>
+      <div class="fp-otp">
+        <input class="fp-otp__digit is-filled" value="4" aria-label="Digit 1">
+        <input class="fp-otp__digit is-filled" value="2" aria-label="Digit 2">
+        <input class="fp-otp__digit is-filled" value="9" aria-label="Digit 3">
+        <input class="fp-otp__digit" aria-label="Digit 4">
+      </div>
+      <h3 class="fp-text-lg" style="margin-top: var(--fp-space-4);">Date</h3>
+      <div class="fp-date-row">
+        <input class="fp-input" value="23" aria-label="Day">
+        <input class="fp-input" value="10" aria-label="Month">
+        <input class="fp-input fp-input--year" value="2026" aria-label="Year">
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Toggle group</h3>
+      <div class="fp-toggle-group" role="group" aria-label="Text style">
+        <button class="fp-btn fp-btn--sub fp-btn--sm" aria-pressed="true"><strong>B</strong></button>
+        <button class="fp-btn fp-btn--sub fp-btn--sm" aria-pressed="false"><em>I</em></button>
+        <button class="fp-btn fp-btn--sub fp-btn--sm" aria-pressed="false"><u>U</u></button>
+      </div>
+      <h3 class="fp-text-lg" style="margin-top: var(--fp-space-4);">Colour</h3>
+      <div class="fp-color-field">
+        <button class="fp-color-field__swatch" aria-label="Pick a colour"></button>
+        <span class="fp-color-field__hex">#007bff</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= SEGMENTS &AMP; BUTTON GROUPS ================= -->
+<section class="fp-section fp-container" id="groups">
+  <div class="fp-section__head">
+    <span class="fp-kicker">05.4 — Groups</span>
+    <h2 class="fp-section__title">Segments &amp; Button Groups</h2>
+    <p class="fp-section__desc">Icon segments, multiplier segments, and the vertical button group.</p>
+  </div>
+
+  <div class="fp-grid fp-grid--2">
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Segment variants</h3>
+      <div class="fp-segment">
+        <button class="fp-segment__item is-active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>List</button>
+        <button class="fp-segment__item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Grid</button>
+      </div>
+      <div class="fp-segment">
+        <button class="fp-segment__item">1x</button>
+        <button class="fp-segment__item is-active">2x</button>
+        <button class="fp-segment__item">4x</button>
+        <button class="fp-segment__item">8x</button>
+      </div>
+    </div>
+
+    <div class="fp-panel fp-stack">
+      <h3 class="fp-text-lg">Vertical &amp; radio groups</h3>
+      <div class="fp-btn-group" style="flex-direction: column; align-items: stretch;">
+        <button class="fp-btn fp-btn--sub">Profile</button>
+        <button class="fp-btn fp-btn--sub">Security</button>
+        <button class="fp-btn fp-btn--sub">Billing</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+<script src="../../../assets/js/flatplanet.js"></script>
+</body>
+</html>

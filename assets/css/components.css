@@ -45,10 +45,16 @@
     opacity var(--fp-duration-fast) var(--fp-ease);
 }
 .fp-btn:hover:not(:disabled):not([aria-disabled="true"]),
-.fp-btn:focus-visible:not(:disabled),
-.fp-btn:active:not(:disabled) {
+.fp-btn:focus-visible:not(:disabled) {
   transform: translateY(calc((var(--fp-elev-h) - 2px)));
   box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
+}
+/* The press: a MAIN element bottoms out — the shadow disappears
+   entirely and the button sinks by the full height of the shadow it
+   just lost, so the shadow's outer edge still never moves. */
+.fp-btn:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(var(--fp-elev-h));
+  box-shadow: none;
 }
 .fp-btn:disabled,
 .fp-btn[aria-disabled="true"] {
@@ -68,42 +74,85 @@
 .fp-btn:hover:not(:disabled) .fp-btn__icon--start { transform: translateX(-2px); }
 
 /* --- Variants ---------------------------------------------------------
-   primary is the ONE accent-filled button per view. Everything else
-   stays neutral white so the accent keeps its meaning.
+   FIVE buttons, nothing else:
+
+     MAIN — no border, ever; the hard shadow is the outline.
+       fp-btn--primary    the ONE accent fill per view: BLP Blue,
+                          deepening as it is pressed
+       fp-btn--secondary  plain BLP White
+
+     SUB — flat at rest; on hover it lifts and the shadow appears.
+       fp-btn--ghost      borderless, the quietest tier
+       fp-btn--sub        a real border in BLP LIGHT ULTRA DEEP DARK
+       fp-btn--sub--accent  the same border in BLP Blue — the one
+                          sanctioned way to emphasise a sub button
+
+   The status fills (danger / success / warning) below are not
+   emphasis; they are the colour of the consequence itself.
    ---------------------------------------------------------------------- */
 .fp-btn--primary {
   --fp-btn-bg: var(--fp-accent-fill);
   --fp-btn-fg: var(--fp-on-accent);
 }
-.fp-btn--primary:hover:not(:disabled) { --fp-btn-bg: var(--fp-accent-fill-hover); }
+.fp-btn--primary:hover:not(:disabled):not([aria-disabled="true"]),
+.fp-btn--primary:focus-visible:not(:disabled) { --fp-btn-bg: var(--fp-accent-fill-hover); }
+.fp-btn--primary:active:not(:disabled):not([aria-disabled="true"]) { --fp-btn-bg: var(--fp-accent-fill-active); }
 
 .fp-btn--secondary {
   --fp-btn-bg: var(--fp-fill);
   --fp-btn-fg: var(--fp-fill-fg);
 }
 .fp-btn--secondary:hover:not(:disabled) { --fp-btn-bg: var(--fp-bg-gray); }
+/* The press darkens one step further: the palette's LIGHT DEEP DARK,
+   the same quiet darkening every sub button takes. */
+.fp-btn--secondary:active:not(:disabled):not([aria-disabled="true"]) { --fp-btn-bg: var(--fp-dark-light-deep); }
 
+/* The borderless SUB. It declares no border of its own — not even a
+   transparent one — so the base button's `border: none` stands. */
 .fp-btn--ghost {
-  --fp-btn-bg: transparent;
-  --fp-btn-fg: var(--fp-text);
+  --fp-btn-bg: var(--fp-fill);
+  --fp-btn-fg: var(--fp-fill-fg);
   box-shadow: none;
-  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-line-strong));
 }
 /* The button's own hover rule is more specific than the ghost's, so
    the ghost states the same specificity to take the hover state over. */
 .fp-btn--ghost:hover:not(:disabled):not([aria-disabled="true"]),
-.fp-btn--ghost:focus-visible:not(:disabled),
-.fp-btn--ghost:active:not(:disabled) {
+.fp-btn--ghost:focus-visible:not(:disabled) {
   --fp-btn-bg: var(--fp-bg-gray);
   transform: translateY(-3px);
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
 }
-
-.fp-btn--dark {
-  --fp-btn-bg: var(--fp-surface-ink);
-  --fp-btn-fg: var(--fp-on-surface-ink);
+/* The press: the lift collapses a little, the shadow shrinks with it,
+   and the fill darkens to the palette's LIGHT DEEP DARK. */
+.fp-btn--ghost:active:not(:disabled):not([aria-disabled="true"]) {
+  --fp-btn-bg: var(--fp-dark-light-deep);
+  transform: translateY(-1px);
+  box-shadow: 1px 1px 0 var(--fp-shadow-color-sub);
 }
-.fp-btn--dark:hover:not(:disabled) { --fp-btn-bg: var(--fp-surface-ink-hover); }
+
+/* The bordered SUB. Its border is the palette's LIGHT ULTRA DEEP DARK
+   (#94989e): quiet enough not to shout, dark enough to read as an
+   outline. */
+.fp-btn--sub {
+  --fp-btn-bg: var(--fp-fill);
+  --fp-btn-fg: var(--fp-fill-fg);
+  box-shadow: none;
+  border: var(--fp-sub-border-width, var(--fp-border-width)) solid var(--fp-sub-border-color, var(--fp-dark-light-ultra-deep));
+}
+.fp-btn--sub:hover:not(:disabled):not([aria-disabled="true"]),
+.fp-btn--sub:focus-visible:not(:disabled) {
+  --fp-btn-bg: var(--fp-bg-gray);
+  transform: translateY(-3px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+}
+.fp-btn--sub:active:not(:disabled):not([aria-disabled="true"]) {
+  --fp-btn-bg: var(--fp-dark-light-deep);
+  transform: translateY(-1px);
+  box-shadow: 1px 1px 0 var(--fp-shadow-color-sub);
+}
+
+/* The ACCENTED sub — the border, and only the border, turns BLP Blue. */
+.fp-btn--sub--accent { --fp-sub-border-color: var(--fp-accent-border); }
 
 .fp-btn--danger {
   --fp-btn-bg: var(--fp-danger);
@@ -125,18 +174,16 @@
 }
 .fp-btn--warning:hover:not(:disabled) { --fp-btn-bg: var(--fp-warning-hover); }
 
-.fp-btn--light {
-  --fp-btn-bg: var(--fp-fill);
-  --fp-btn-fg: var(--fp-fill-fg);
-}
-.fp-btn--light:hover:not(:disabled) { --fp-btn-bg: var(--fp-bg-gray); }
 
 /* --- Sizes -------------------------------------------------------------
    Radii shrink only where a short height forces it (per the 36px rule).
    ---------------------------------------------------------------------- */
 .fp-btn--lg { min-height: 60px; padding: var(--fp-space-4) var(--fp-space-8); font-size: var(--fp-text-md); --fp-elev-h: 5px; }
 .fp-btn--sm { min-height: 36px; padding: var(--fp-space-2) var(--fp-space-4); font-size: var(--fp-text-sm); border-radius: var(--fp-radius-sm); --fp-elev-h: 3px; border-width: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)); }
-.fp-btn--xs { min-height: 28px; padding: var(--fp-space-1) var(--fp-space-3); font-size: var(--fp-text-xs); border-radius: var(--fp-radius-xs); --fp-elev-h: 2px; border-width: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)); }
+/* The XS button keeps a 3px shadow like the small one: a 2px shadow
+   collapses to 2px on hover — zero travel, no press. 3px leaves the
+   1px of sink the press needs. */
+.fp-btn--xs { min-height: 28px; padding: var(--fp-space-1) var(--fp-space-3); font-size: var(--fp-text-xs); border-radius: var(--fp-radius-xs); --fp-elev-h: 3px; border-width: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)); }
 
 .fp-btn--block { display: flex; width: 100%; }
 .fp-btn--pill { border-radius: var(--fp-radius-pill); }
@@ -157,14 +204,26 @@
 .fp-btn-group--attached { gap: 0; }
 .fp-btn-group--attached .fp-btn {
   border-radius: 0;
-  box-shadow: none;
   margin-right: -2px;
 }
 .fp-btn-group--attached .fp-btn:first-child { border-radius: var(--fp-radius) 0 0 var(--fp-radius); }
 .fp-btn-group--attached .fp-btn:last-child { border-radius: 0 var(--fp-radius) var(--fp-radius) 0; }
-.fp-btn-group--attached .fp-btn:hover {
-  transform: translateY(2px);
+/* Attached buttons are still MAIN buttons, so they press like one:
+   on hover the shadow collapses to 2px, and pressed to the bottom it
+   disappears while the button sinks by its full height. The button
+   rises above its neighbours so its own shadow never lands on them. */
+.fp-btn-group--attached .fp-btn {
+  box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-shadow-color-sub);
+}
+.fp-btn-group--attached .fp-btn:hover:not(:disabled):not([aria-disabled="true"]),
+.fp-btn-group--attached .fp-btn:focus-visible:not(:disabled) {
+  transform: translateY(calc((var(--fp-elev-h) - 2px)));
   box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
+  z-index: 1;
+}
+.fp-btn-group--attached .fp-btn:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(var(--fp-elev-h));
+  box-shadow: none;
   z-index: 1;
 }
 
@@ -340,7 +399,10 @@
   display: grid;
   place-items: center;
   background: var(--fp-fill);
-  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  /* A control's face is a FILLED shape, not a quiet sub element: the
+     fill is the outline, so it carries no border — borders belong to
+     quiet sub elements, never to a mark you can tick. */
+  border: none;
   border-radius: var(--fp-radius-xs);
   transition:
     background-color var(--fp-duration-fast) var(--fp-ease),
@@ -455,7 +517,9 @@
   height: 34px;
   flex: 0 0 auto;
   background: var(--fp-track);
-  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  /* The track is a FILLED control surface: the fill is the outline, so
+     it carries no border. */
+  border: none;
   border-radius: var(--fp-radius-pill);
   transition:
     background-color var(--fp-duration-default) var(--fp-ease),
@@ -464,13 +528,17 @@
 }
 .fp-switch__thumb {
   position: absolute;
-  top: 3px;
-  left: 3px;
+  /* The track is 34px, the thumb 24px: centred, that is 5px on every
+     side — not 3px, which parked the thumb 2px too high. */
+  top: 5px;
+  left: 5px;
   width: 24px;
   height: 24px;
   background: var(--fp-switch-thumb-off);
   border-radius: var(--fp-radius-circle);
-  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
+  /* The thumb rides INSIDE the track: it is part of the control, not an
+     object floating on it, so it carries no shadow of its own. */
+  box-shadow: none;
   transition: transform var(--fp-duration-default) var(--fp-ease);
 }
 .fp-switch input:checked + .fp-switch__track { background: var(--fp-ink); }
@@ -503,6 +571,30 @@
 /* --------------------------------------------------------------------------
    RANGE SLIDER
 
+   THE MARKUP
+   ----------
+   The slider is a WRAPPER around the native input, because the track
+   pseudo-elements cannot host a fill:
+
+       <span class="fp-range">
+         <span class="fp-range__fill" aria-hidden="true"></span>
+         <input type="range" min="0" max="100" value="65">
+       </span>
+
+   `::-webkit-slider-runnable-track` and `::-moz-range-track` are
+   pseudo-elements themselves, so they cannot carry a child element.
+   The fill therefore lives on a real element — a plain block whose
+   WIDTH is the progress — and the native input sits on top of it.
+
+   WHY A BLOCK AND NOT A BACKGROUND
+   --------------------------------
+   The system bans gradients outright, and a hard stop is still a
+   gradient: `linear-gradient(ink, ink)` is a gradient declaration, and
+   the rule is about the declaration, not about the result. A flat block
+   whose width is the progress is the same picture with no gradient in
+   it at all — one rectangle of solid ink, clipped to the rail's
+   rounded ends.
+
    THE THUMB IS A RECTANGLE THAT SITS INSIDE THE TRACK
    ---------------------------------------------------
    The thumb used to be a circle that rode ON TOP of the track: 28px tall
@@ -526,8 +618,8 @@
    the vertical correction in Chromium: the thumb's centre must land on
    the track's centre line. The obvious arithmetic is wrong by exactly
    the track's border width, because Chromium aligns the thumb against
-   the INNER edge of the track and that 2px border is inside the track's
-   18px box — the thumb already starts 2px below the track's top edge:
+   the INNER edge of the track and that 2px border is inside its 18px
+   box — the thumb already starts 2px below the track's top edge:
 
        margin-top = (track height - thumb height) / 2 - track border
                   = (18 - 10) / 2 - 2
@@ -542,23 +634,43 @@
    ignores `margin-top` entirely, so the same 2px is a no-op there and
    the handle lands in exactly the same place in both engines.
 
-   With a 10px handle on an 18px rail the thumb never touches the top or
-   the bottom edge of the track, in either direction, in either browser.
+   With a 10px handle on an 18px rail the thumb never touches the top
+   or the bottom edge of the track, in either direction, in either
+   browser.
 
    THE PROGRESS FILL
    -----------------
-   The filled portion of the track is drawn with a background gradient on
-   the track itself, driven by `--fp-range-progress` (a percentage).
+   The filled portion of the rail is a FLAT BLOCK, not a gradient: the
+   fill's width is `--fp-range-progress` (a percentage) and its colour
+   is a single flat `--fp-ink`. There is no ramp, no fade and no soft
+   edge anywhere — the fill stops dead where the thumb is.
+
+   The fill lives INSIDE the rail's border, so its height is the rail's
+   inner height and its radius is the rail's inner radius: the ink
+   follows the pill's curve instead of squaring off its corner. The
+   `inherit` picks up the rail's own radius, and the browser reduces it
+   to the radius the inner curve actually has.
+
+   The native input's own track is transparent. The rail the user sees
+   is drawn by the wrapper, so if the native track kept its background
+   it would cover the fill.
+
+   The input is pulled back over the wrapper's border by exactly the
+   border width, so its box — and therefore the native track inside it
+   — lands on the rail's outer edge. That is what keeps the thumb's
+   travel identical to the old track's: the native track still has its
+   own 2px border, so Chromium still aligns the thumb against its inner
+   edge and the 2px correction below still holds.
+
+   Firefox paints its own `::-moz-range-progress` on top of the track,
+   so that one is made transparent — otherwise Firefox would show a
+   second, differently-coloured fill on top of ours.
 
    The CSS-ONLY fallback is `0%`: with no JavaScript the bar is simply
    empty, which is honest — the control still works, it just does not
    claim to know the value. The JavaScript in `flatplanet.js` keeps the
-   custom property in step with the input, and the fill is a plain
-   gradient with NO transition, so dragging stays smooth.
-
-   Firefox paints its own progress element on top of the track, so that
-   one is made transparent — otherwise Firefox would show a second,
-   differently-coloured fill on top of the gradient.
+   custom property in step with the input, and the fill has NO
+   transition, so dragging stays smooth.
 
    The fill is the INK, not the accent: the accent is spent on one
    element per view, and a slider that is being dragged is not the most
@@ -567,96 +679,145 @@
 .fp-range {
   --fp-range-progress: 0%;
   --fp-range-track-h: 18px;
-  --fp-range-thumb-h: 10px;
+  /* The thumb is a RECTANGLE that fills the rail top to bottom: the
+     rail's own height, no radius, no border. */
+  --fp-range-thumb-h: var(--fp-range-track-h);
   --fp-range-thumb-w: 28px;
+  position: relative;
+  display: block;
   width: 100%;
-  height: 24px;
+  height: var(--fp-range-track-h);
+  /* The rail the user sees: BLP WHITE — a light rail against the grey
+     page, so the control's end edge is always visible. No border: the
+     fill is the outline. The progress block is painted on top of it. */
+  background: var(--fp-fill);
+  border: none;
+  border-radius: var(--fp-radius-pill);
+}
+.fp-range__fill {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: var(--fp-range-progress, 0%);
+  background: var(--fp-ink);
+  /* The fill inherits the rail's radius, which the browser reduces to
+     the rail's INNER radius — the curve the ink actually has to
+     follow. */
+  border-radius: inherit;
+  /* The fill is decoration, not content: it must never take a click
+     away from the slider. */
+  pointer-events: none;
+}
+.fp-range input[type="range"] {
+  position: absolute;
+  /* The wrapper has no border, so the input simply covers it exactly. */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
   appearance: none;
   background: transparent;
   cursor: pointer;
+  /* Above the fill, so the native thumb and the pointer events both
+     land on the input. */
+  z-index: 1;
 }
-.fp-range::-webkit-slider-runnable-track {
+.fp-range input[type="range"]::-webkit-slider-runnable-track {
   box-sizing: border-box;
   height: var(--fp-range-track-h);
-  /* The gradient paints the ink from the left edge to the progress
-     point, and the track colour from there to the right. It is a hard
-     stop, not a fade — the system has no gradients. */
-  background:
-    linear-gradient(to right,
-      var(--fp-ink) 0,
-      var(--fp-ink) var(--fp-range-progress),
-      var(--fp-track) var(--fp-range-progress),
-      var(--fp-track) 100%);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
-  border-radius: var(--fp-radius-pill);
-}
-.fp-range::-webkit-slider-thumb {
-  appearance: none;
-  box-sizing: border-box;
-  width: var(--fp-range-thumb-w);
-  height: var(--fp-range-thumb-h);
-  /* The vertical correction for Chromium — see the geometry note above.
-     Firefox ignores it and centres the thumb itself.
-
-     The value is 2px, NOT the (18 - 10) / 2 = 4px that the arithmetic
-     suggests. Chromium positions a native thumb by its top edge against
-     the INNER edge of the track, and the track's 2px border is part of
-     its 18px box, so the thumb already starts 2px below the track's top
-     edge. The correction is therefore the remainder:
-
-         margin-top = (track height - thumb height) / 2 - track border
-                    = (18 - 10) / 2 - 2
-                    = 2px
-
-     Measured in Chromium at deviceScaleFactor 2: the thumb's centre lands
-     exactly on the track's centre line, with 4px of clearance above and
-     below. */
-  margin-top: 2px;
-  background: var(--fp-fill);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
-  /* A small radius: enough to belong to the system's soft-cornered
-     family, not enough to make the handle read as a pill. */
-  border-radius: var(--fp-radius-xs);
-  transition: transform var(--fp-duration-fast) var(--fp-ease);
-}
-/* The hover lift is a SUB behaviour: the thumb rises and its shadow
-   appears. The shadow never shrinks while the thumb is rising. */
-.fp-range::-webkit-slider-thumb:hover {
-  transform: translateY(-2px);
-  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
-}
-.fp-range::-moz-range-track {
-  box-sizing: border-box;
-  height: var(--fp-range-track-h);
-  background:
-    linear-gradient(to right,
-      var(--fp-ink) 0,
-      var(--fp-ink) var(--fp-range-progress),
-      var(--fp-track) var(--fp-range-progress),
-      var(--fp-track) 100%);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
-  border-radius: var(--fp-radius-pill);
-}
-/* Firefox paints its own progress bar over the track. It is made
-   transparent so that the gradient above is the ONLY fill, in every
-   engine. */
-.fp-range::-moz-range-progress {
+  /* The rail is the wrapper's job. The native track is a transparent
+     window onto the fill, so it must not paint over it. */
   background: transparent;
   border: none;
   border-radius: var(--fp-radius-pill);
 }
-.fp-range::-moz-range-thumb {
+.fp-range input[type="range"]::-webkit-slider-thumb,
+input.fp-range::-webkit-slider-thumb {
+  appearance: none;
+  box-sizing: border-box;
+  width: var(--fp-range-thumb-w);
+  height: var(--fp-range-thumb-h);
+  /* The thumb is the rail's full height, so there is nothing to centre:
+     Chromium's top-edge alignment lands it exactly on the rail's top
+     edge, and Firefox centres a full-height thumb over a same-height
+     track. margin-top: 0 in both. */
+  margin-top: 0;
+  background: var(--fp-fill);
+  /* The handle is a handle: a plain rectangle, full height, no border
+     and no radius — it reads as the grab-bar, not as a pill. */
+  border: none;
+  border-radius: 0;
+  transition: transform var(--fp-duration-fast) var(--fp-ease);
+}
+/* The hover lift is a SUB behaviour: the thumb rises and its shadow
+   appears — the shadow is the SAME 3px the sub lift uses everywhere,
+   so a rising handle never wears a shadow smaller than its travel. */
+.fp-range input[type="range"]::-webkit-slider-thumb:hover,
+input.fp-range::-webkit-slider-thumb:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+}
+.fp-range input[type="range"]::-moz-range-track {
+  box-sizing: border-box;
+  height: var(--fp-range-track-h);
+  background: transparent;
+  border: none;
+  border-radius: var(--fp-radius-pill);
+}
+/* Firefox paints its own progress bar over the track. It is made
+   transparent so that our flat fill is the ONLY fill, in every engine. */
+.fp-range input[type="range"]::-moz-range-progress {
+  background: transparent;
+  border: none;
+  border-radius: var(--fp-radius-pill);
+}
+.fp-range input[type="range"]::-moz-range-thumb,
+input.fp-range::-moz-range-thumb {
   box-sizing: border-box;
   width: var(--fp-range-thumb-w);
   height: var(--fp-range-thumb-h);
   background: var(--fp-fill);
-  border: var(--fp-border-width-sm) solid var(--fp-sub-border-color, var(--fp-line-strong));
-  border-radius: var(--fp-radius-xs);
+  border: none;
+  border-radius: 0;
   transition: transform var(--fp-duration-fast) var(--fp-ease);
 }
-.fp-range::-moz-range-thumb:hover {
+.fp-range input[type="range"]::-moz-range-thumb:hover,
+input.fp-range::-moz-range-thumb:hover {
   transform: translateY(-2px);
-  box-shadow: 2px 2px 0 var(--fp-shadow-color-sub);
+  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
+}
+
+/* A LEGACY `input.fp-range` — the markup from before the wrapper
+   existed. The rail and the thumb still render, and the geometry is
+   the same; only the progress fill is missing, because a bare input
+   has no child to put one in. */
+input.fp-range {
+  position: static;
+  height: var(--fp-range-track-h);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+input.fp-range::-webkit-slider-runnable-track {
+  box-sizing: border-box;
+  height: var(--fp-range-track-h);
+  background: var(--fp-track);
+  border: none;
+  border-radius: var(--fp-radius-pill);
+}
+input.fp-range::-moz-range-track {
+  box-sizing: border-box;
+  height: var(--fp-range-track-h);
+  background: var(--fp-track);
+  border: none;
+  border-radius: var(--fp-radius-pill);
+}
+input.fp-range::-moz-range-progress {
+  background: transparent;
+  border: none;
+  border-radius: var(--fp-radius-pill);
 }
 
 /* ==========================================================================
@@ -687,19 +848,22 @@
   color: var(--fp-fill-fg);
   background: var(--fp-fill);
   border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
-  border-radius: var(--fp-radius-xs);
+  /* A badge is an EMPHASIS MARK, not a button: square corners, like the
+     highlight — no pill, no radius. */
+  border-radius: 0;
   white-space: nowrap;
 }
-.fp-badge--accent   { background: var(--fp-accent-fill); color: var(--fp-on-accent); border-color: transparent; }
-.fp-badge--success  { background: var(--fp-success); color: var(--fp-on-success); border-color: transparent; }
-.fp-badge--danger   { background: var(--fp-danger); color: var(--fp-on-danger); border-color: transparent; }
-.fp-badge--warning  { background: var(--fp-warning); color: var(--fp-on-warning); border-color: transparent; }
-.fp-badge--info     { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); border-color: transparent; }
-.fp-badge--neutral  { background: var(--fp-bg-gray); color: var(--fp-text); }
-/* The outline variant is transparent, so the surface shows through it —
-   its text therefore matches the surface, not the fill. */
-.fp-badge--outline  { background: transparent; color: var(--fp-text-surface); }
-.fp-badge--soft     { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); border-color: transparent; }
+/* Status badges use the EMPHASIS-TEXT treatment: the tint background
+   carries the identity and the status's readable text colour sits on it
+   in bold — never a saturated fill with white text. A filled badge
+   carries no border: the fill is the outline. */
+.fp-badge--accent   { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); border: none; }
+.fp-badge--success  { background: var(--fp-tint-success); color: var(--fp-tint-success-fg); border: none; }
+.fp-badge--danger   { background: var(--fp-tint-danger); color: var(--fp-tint-danger-fg); border: none; }
+.fp-badge--warning  { background: var(--fp-tint-warning); color: var(--fp-tint-warning-fg); border: none; }
+.fp-badge--info     { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); border: none; }
+.fp-badge--soft     { background: var(--fp-tint-info); color: var(--fp-tint-info-fg); border: none; }
+.fp-badge--neutral  { background: var(--fp-bg-gray); color: var(--fp-text); border: none; }
 .fp-badge--dot::before {
   content: "";
   width: 8px;
@@ -708,7 +872,7 @@
   background: currentColor;
   flex: 0 0 auto;
 }
-.fp-badge--lg { min-height: 34px; padding: var(--fp-space-2) var(--fp-space-4); font-size: var(--fp-text-sm); border-radius: var(--fp-radius-sm); }
+.fp-badge--lg { min-height: 34px; padding: var(--fp-space-2) var(--fp-space-4); font-size: var(--fp-text-sm); border-radius: 0; }
 
 /* Tag — removable */
 .fp-tag {
@@ -795,10 +959,15 @@
   transform: translateY(-2px);
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
 }
+/* The pressed chip never fills with ink — that was a button shape that
+   exists nowhere else. Selection wears the accent BORDER, the one
+   sanctioned emphasis, at the full 4px so it reads. */
 .fp-chip[aria-pressed="true"],
 .fp-chip.is-active {
-  background: var(--fp-ink);
-  color: var(--fp-on-ink);
+  background: var(--fp-fill);
+  color: var(--fp-fill-fg);
+  --fp-sub-border-color: var(--fp-accent-border);
+  --fp-sub-border-width-sm: var(--fp-border-width);
 }
 
 /* Avatar */
@@ -836,12 +1005,14 @@
 .fp-avatar--lg { width: 64px; height: 64px; font-size: var(--fp-text-lg); }
 .fp-avatar--xl { width: 96px; height: 96px; font-size: var(--fp-text-2xl); }
 .fp-avatar--square { border-radius: var(--fp-radius); }
-.fp-avatar--accent { background: var(--fp-accent-fill); color: var(--fp-on-accent); }
-.fp-avatar--red { background: var(--fp-red-light); }
-.fp-avatar--yellow { background: var(--fp-yellow-light); }
-.fp-avatar--green { background: var(--fp-green-light); }
-.fp-avatar--purple { background: var(--fp-purple-light); }
-.fp-avatar--dark { background: var(--fp-ink); color: var(--fp-on-ink); }
+/* Coloured avatars are FILLED marks: the fill is the outline, so they
+   carry no border — borders belong to quiet sub elements only. */
+.fp-avatar--accent { background: var(--fp-accent-fill); color: var(--fp-on-accent); border: none; }
+.fp-avatar--red { background: var(--fp-red-light); border: none; }
+.fp-avatar--yellow { background: var(--fp-yellow-light); border: none; }
+.fp-avatar--green { background: var(--fp-green-light); border: none; }
+.fp-avatar--purple { background: var(--fp-purple-light); border: none; }
+.fp-avatar--dark { background: var(--fp-ink); color: var(--fp-on-ink); border: none; }
 
 .fp-avatar-group { display: inline-flex; align-items: center; }
 .fp-avatar-group .fp-avatar { margin-left: -12px; }
@@ -929,7 +1100,6 @@
   box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
   transform: translateY(-3px);
 }
-.fp-card--accent { box-shadow: var(--fp-elev-h) var(--fp-elev-h) 0 var(--fp-accent); }
 .fp-card--lg { --fp-elev-h: 7px; }
 .fp-card--sm { --fp-elev-h: 3px; }
 
@@ -1055,12 +1225,13 @@
     box-shadow var(--fp-duration-default) var(--fp-ease);
 }
 .fp-tab:hover { color: var(--fp-text); transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
+/* The selected tab is still a SUB element: flat at rest, no shadow —
+   selection is marked by the fill and the border, never by elevation. */
 .fp-tab[aria-selected="true"],
 .fp-tab.is-active {
   background: var(--fp-fill);
   color: var(--fp-fill-fg);
   border-color: var(--fp-sub-border-color, var(--fp-line-strong));
-  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
 }
 .fp-tabs--pill .fp-tab[aria-selected="true"] { background: var(--fp-ink); color: var(--fp-on-ink); border-color: transparent; box-shadow: none; }
 
@@ -1200,7 +1371,8 @@
   width: 100%;
   height: 18px;
   background: var(--fp-track);
-  border: var(--fp-sub-border-width-sm, var(--fp-border-width-sm)) solid var(--fp-sub-border-color, var(--fp-line-strong));
+  /* A meter is a FILLED well: the fill is the outline, so no border. */
+  border: none;
   border-radius: var(--fp-radius-pill);
   overflow: hidden;
 }
@@ -1414,11 +1586,12 @@
     transform var(--fp-duration-default) var(--fp-ease);
 }
 .fp-segment__item:hover { color: var(--fp-text); transform: translateY(-2px); box-shadow: 3px 3px 0 var(--fp-shadow-color-sub); }
+/* The active segment is still a SUB element: flat at rest, no shadow —
+   selection is marked by the fill and the border, never by elevation. */
 .fp-segment__item[aria-pressed="true"], .fp-segment__item.is-active {
   background: var(--fp-fill);
   color: var(--fp-fill-fg);
   border-color: var(--fp-sub-border-color, var(--fp-line-strong));
-  box-shadow: 3px 3px 0 var(--fp-shadow-color-sub);
 }
 
 /* ==========================================================================
@@ -1501,13 +1674,18 @@
    CODE / KEY VALUE / DESCRIPTION LIST
    ========================================================================== */
 .fp-code {
-  display: inline-block;
-  padding: var(--fp-space-1) var(--fp-space-3);
+  /* Inline code wears the same shape as the highlight: a square block
+     of neutral grey behind mono words — no border, no radius. */
+  display: inline;
+  padding: 0.05em 0.35em;
   font-family: var(--fp-font-mono);
-  font-size: var(--fp-text-sm);
-  color: var(--fp-on-blue-light);
-  background: var(--fp-tint-info);
-  border-radius: var(--fp-radius-xs);
+  font-size: 0.9em;
+  color: var(--fp-text);
+  background: var(--fp-bg-gray);
+  border: none;
+  border-radius: 0;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 .fp-code-block {
   --fp-text: var(--fp-code-fg);

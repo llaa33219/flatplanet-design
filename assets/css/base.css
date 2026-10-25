@@ -112,31 +112,24 @@ em, i { font-style: italic; }
    accent. Both are rectangles with no radius, so they read as the same
    family.
    ---------------------------------------------------------------------- */
-mark,
-.fp-highlight {
+/* `mark` is the NEUTRAL editorial marker: yellow ink on paper, so a
+   plain highlight never spends the accent. */
+mark {
   display: inline;
   padding: 0.05em 0.25em;
   border-radius: 0;
   font-weight: 800;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-}
-/* `mark` is the NEUTRAL primitive: yellow ink on paper. It keeps its own
-   identity so that an ordinary editorial highlight does not spend the
-   accent. It is declared first, so `fp-highlight` wins on a
-   `<mark class="fp-highlight">` and the accent treatment always applies
-   when it is asked for. */
-mark {
   background: var(--fp-yellow);
   color: var(--fp-dark-ultra-deep);
 }
-/* `fp-highlight` is the ACCENT-EMPHASIS primitive: bold words on a plain
-   rectangle of accent colour. No radius — the accent is a print, not a
-   surface, and a pill would soften it into something the system does not
-   use. */
+/* `fp-highlight` is the ACCENT-EMPHASIS primitive: the words themselves
+   carry the accent — bold text in the accent TEXT step, never a block
+   of colour behind them. Emphasis is worn by the type, not the paper. */
 .fp-highlight {
-  background: var(--fp-accent-fill);
-  color: var(--fp-white);
+  font-weight: 800;
+  color: var(--fp-text-accent);
 }
 
 small { font-size: var(--fp-text-sm); }
@@ -287,5 +280,5 @@ hr + * { margin-top: var(--fp-space-6); }
    -------------------------------------------------------------------------- */
 @media print {
   .fp-no-print { display: none !important; }
-  body { background: #fff; color: #000; }
+  body { background: var(--fp-white); color: var(--fp-dark-ultra-deep); }
 }
